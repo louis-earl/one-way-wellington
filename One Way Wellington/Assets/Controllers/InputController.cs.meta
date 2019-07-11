@@ -1,0 +1,13 @@
+fileFormatVersion: 2
+guid: 8024a08ab11594ef68fa7fd2bffcfada
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - circleCursorPrefab: {fileID: 3755749708508936623, guid: dee896475bc7f4fb7a0afa8c4a730daa,
+      type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
