@@ -100,10 +100,6 @@ public class PersistenceController : MonoBehaviour
             saveFile.planets.Add(planetData);
         }
 
-        // JOURNEY
-        saveFile.shipPosX = JourneyController.Instance.shipCoordinates.x;
-        saveFile.shipPosY = JourneyController.Instance.shipCoordinates.y;
-
 
         bf.Serialize(fileStream, saveFile);
         fileStream.Close();
@@ -161,11 +157,6 @@ public class PersistenceController : MonoBehaviour
             WorldController.Instance.InsertPlanets(saveFile.planets);
             JourneyController.Instance.earth = WorldController.Instance.GetPlanets()[0].GetComponent<Planet>();
 
-            // Journey
-            JourneyController.Instance.fuelRemaining = BuildModeController.Instance.furnitureTileOWWMap["Fuel Tank"].Count * 10;
-
-            JourneyController.Instance.shipCoordinates = new Vector2(saveFile.shipPosX, saveFile.shipPosY);
-            JourneyController.Instance.FixPlanetLinks(JourneyController.Instance.earth);
 
             fileStream.Close();
         }

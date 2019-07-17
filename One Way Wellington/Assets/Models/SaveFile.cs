@@ -22,13 +22,8 @@ public class SaveFile
     public List<JobSerializable> guardsJobQueue;
     public List<JobSerializable> passengersJobQueue;
 
-    // TODO: Passenger Data 
-
 
     // TODO: Planets
     public List<PlanetData> planets;
 
-    // TODO: Journey
-    public float shipPosX;
-    public float shipPosY;
 }
