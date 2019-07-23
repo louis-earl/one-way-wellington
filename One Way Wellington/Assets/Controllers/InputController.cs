@@ -26,6 +26,8 @@ public class InputController : MonoBehaviour
     private bool isMode_FurnitureMulti;
     private FurnitureType furnitureTypeInUse;
     private bool isMode_RemoveFurniture;
+    private bool isMode_Rooms;
+    private String roomTypeInUse;
 
     private GameObject staff;
 
@@ -130,6 +132,8 @@ public class InputController : MonoBehaviour
         isMode_FurnitureMulti = false;
         furnitureTypeInUse = null;
         isMode_RemoveFurniture = false;
+        isMode_Rooms = false;
+        roomTypeInUse = null;
 
         BuildModeController.Instance.SetGridVisible(false);
         BuildModeController.Instance.ClearPreviews();
@@ -219,6 +223,15 @@ public class InputController : MonoBehaviour
 
     }
 
+    public void ToggleMode_Rooms()
+    {
+        bool temp = isMode_Rooms;
+        SetMode_None();
+        isMode_Rooms = !temp;
+
+        BuildModeController.Instance.SetGridVisible(true);
+    }
+
     void UpdateDragging()
     {
         // If we're over a UI element, then bail out from this.
@@ -262,8 +275,9 @@ public class InputController : MonoBehaviour
             if (isMode_Hull) BuildModeController.Instance.PreviewHull(start_x, end_x, start_y, end_y);
             else if (isMode_RemoveHull) BuildModeController.Instance.PreviewRemoveHull(start_x, end_x, start_y, end_y);
             else if (isMode_Wall) BuildModeController.Instance.PreviewWall(start_x, end_x, start_y, end_y);
-            else if (isMode_RemoveWall) BuildModeController.Instance.PreviewRemoveWall(start_x, end_x, start_y, end_y);   
+            else if (isMode_RemoveWall) BuildModeController.Instance.PreviewRemoveWall(start_x, end_x, start_y, end_y);
             else if (isMode_FurnitureMulti) BuildModeController.Instance.PreviewFurniture(furnitureTypeInUse, start_x, end_x, start_y, end_y);
+            else if (isMode_Rooms) BuildModeController.Instance.PreviewRoom(roomTypeInUse, start_x, end_x, start_y, end_y);
         }
 
         // Cancel drag
@@ -317,6 +331,10 @@ public class InputController : MonoBehaviour
             {
                 List<TileOWW> furnitureTiles = BuildModeController.Instance.PreviewFurniture(furnitureTypeInUse, start_x, end_x, start_y, end_y);
                 BuildModeController.Instance.PlanFurniture(furnitureTiles, furnitureTypeInUse);
+            }
+            else if (isMode_Rooms)
+            {
+                Debug.Log("Room to place here!");
             }
 
             BuildModeController.Instance.ClearPreviews();

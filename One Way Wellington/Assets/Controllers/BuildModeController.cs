@@ -312,6 +312,36 @@ public class BuildModeController : MonoBehaviour
         return wall_tiles;
     }
 
+    public List<TileOWW> PreviewRoom(string roomType, int start_x, int end_x, int start_y, int end_y)
+    {
+        List<TileOWW> room_tiles = new List<TileOWW>();
+
+        ClearPreviews();
+
+        for (int x = start_x; x <= end_x; x++)
+        {
+            for (int y = start_y; y <= end_y; y++)
+            {
+                TileOWW t = WorldController.Instance.GetWorld().GetTileAt(x, y);
+
+                if (t != null)
+                {
+
+                    // Check valid 
+                    if (t.GetInstalledFurniture()?.GetFurnitureType() != "Wall" && t.GetTileType() == "Hull")
+                    {
+                        room_tiles.Add(t);
+                        CreatePreview(validPreviewPrefab, "Hull", x, y); // TODO: Different looks per room?
+                    }
+                    else CreatePreview(invalidPreviewPrefab, "Hull", x, y); // TODO: Different looks per room?
+
+                }
+            }
+        }
+        
+        return room_tiles;
+    }
+
     public void PreviewStaff(string staffType, int posX, int posY)
     {
         ClearPreviews();
@@ -481,6 +511,12 @@ public class BuildModeController : MonoBehaviour
 
         // Remove from map of furnitureType TileOWW
         furnitureTileOWWMap[furnitureType].Remove(tile);
+    }
+
+    public void PlaceRoom(TileOWW tile, string roomType)
+    {
+        // set the TileOWW's room type
+        // uhhhh
     }
 
     public void PlaceStaff(float x, float y, GameObject staff, float energy = 100, float health = 100)
