@@ -16,6 +16,7 @@ public class UserInterfaceController : MonoBehaviour
     public Button button_Wall;
     public Button button_Storage;
     public Button button_Furniture;
+    public Button button_Rooms;
     public Button button_Staff;
 
 
@@ -71,6 +72,7 @@ public class UserInterfaceController : MonoBehaviour
         button_Wall.image.color = Color.white;
         button_Storage.image.color = Color.white;
         button_Furniture.image.color = Color.white;
+        button_Rooms.image.color = Color.white;
         button_Staff.image.color = Color.white;
 
     }
@@ -107,11 +109,19 @@ public class UserInterfaceController : MonoBehaviour
         else button_Furniture.image.color = new Color(1f, 0.73f, 0.94f);
     }
 
-    public void ToggleStaffPanel()
+    public void ToggleRoomsPanel()
     {
         CloseOtherBuilding(4);
         subPanels[4].SetActive(!subPanels[4].activeInHierarchy);
         if (!subPanels[4].activeInHierarchy) InputController.Instance.SetMode_None();
+        else button_Rooms.image.color = new Color(1f, 0.73f, 0.94f);
+    }
+
+    public void ToggleStaffPanel()
+    {
+        CloseOtherBuilding(5);
+        subPanels[5].SetActive(!subPanels[5].activeInHierarchy);
+        if (!subPanels[5].activeInHierarchy) InputController.Instance.SetMode_None();
         else button_Staff.image.color = new Color(1f, 0.73f, 0.94f);
     }
 
