@@ -25,8 +25,9 @@ public class BuildModeController : MonoBehaviour
     List<GameObject> dragPreviewGameObjects;
 
     public Dictionary<string, List<TileOWW>> furnitureTileOWWMap;
-
     public Dictionary<string, FurnitureType> furnitureTypes;
+
+    public Dictionary<string, List<TileOWW>> roomsTileOWWMap;
 
     // Start is called before the first frame update
     void Start()
@@ -36,6 +37,8 @@ public class BuildModeController : MonoBehaviour
 
         InstantiateFurnitureTypes();
         furnitureTileOWWMap = new Dictionary<string, List<TileOWW>>();
+
+        roomsTileOWWMap = new Dictionary<string, List<TileOWW>>();
 
         roomsTilemap.SetActive(false);
     }
@@ -520,8 +523,25 @@ public class BuildModeController : MonoBehaviour
     {
         foreach (TileOWW tile in room_tiles)
         {
+            // check if we need to remove existing room tiles - they'll proably be assigned multiple times in the dictionary 
+            if (tile.GetRoomType() != null)
+            {
+                if (roomsTileOWWMap.ContainsKey(tile.GetRoomType())) // TODO: This check shouldn't be necessary once the maps get set up properly on load 
+                {
+                    roomsTileOWWMap[tile.GetRoomType()].Remove(tile);
+                }
+            }
+
             tile.SetRoomType(roomType);
+
+            if (!roomsTileOWWMap.ContainsKey(roomType))
+            {
+                roomsTileOWWMap.Add(roomType, new List<TileOWW>());
+            }
+            roomsTileOWWMap[roomType].Add(tile);
         }
+
+        RoomController.Instance.DoRoomChecks();
     }
 
     public void PlaceStaff(float x, float y, GameObject staff, float energy = 100, float health = 100)
