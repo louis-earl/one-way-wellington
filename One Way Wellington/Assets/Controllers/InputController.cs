@@ -136,6 +136,8 @@ public class InputController : MonoBehaviour
         roomTypeInUse = null;
 
         BuildModeController.Instance.SetGridVisible(false);
+        BuildModeController.Instance.roomsTilemap.SetActive(false);
+
         BuildModeController.Instance.ClearPreviews();
     }
 
@@ -223,12 +225,14 @@ public class InputController : MonoBehaviour
 
     }
 
-    public void ToggleMode_Rooms()
+    public void ToggleMode_Rooms(string roomType)
     {
         bool temp = isMode_Rooms;
         SetMode_None();
         isMode_Rooms = !temp;
+        roomTypeInUse = roomType;
 
+        BuildModeController.Instance.roomsTilemap.SetActive(true);
         BuildModeController.Instance.SetGridVisible(true);
     }
 
@@ -334,7 +338,8 @@ public class InputController : MonoBehaviour
             }
             else if (isMode_Rooms)
             {
-                Debug.Log("Room to place here!");
+                List<TileOWW> roomTiles = BuildModeController.Instance.PreviewRoom(roomTypeInUse, start_x, end_x, start_y, end_y);
+                BuildModeController.Instance.PlaceRoom(roomTiles, roomTypeInUse);
             }
 
             BuildModeController.Instance.ClearPreviews();

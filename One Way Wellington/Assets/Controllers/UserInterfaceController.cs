@@ -59,6 +59,7 @@ public class UserInterfaceController : MonoBehaviour
         button_Storage.image.color = Color.white;
         button_Furniture.image.color = Color.white;
         button_Staff.image.color = Color.white;
+        BuildModeController.Instance.roomsTilemap.SetActive(false);
 
     }
 
@@ -74,6 +75,7 @@ public class UserInterfaceController : MonoBehaviour
         button_Furniture.image.color = Color.white;
         button_Rooms.image.color = Color.white;
         button_Staff.image.color = Color.white;
+        BuildModeController.Instance.roomsTilemap.SetActive(false);
 
     }
 
@@ -114,7 +116,12 @@ public class UserInterfaceController : MonoBehaviour
         CloseOtherBuilding(4);
         subPanels[4].SetActive(!subPanels[4].activeInHierarchy);
         if (!subPanels[4].activeInHierarchy) InputController.Instance.SetMode_None();
-        else button_Rooms.image.color = new Color(1f, 0.73f, 0.94f);
+        else
+        {
+
+            button_Rooms.image.color = new Color(1f, 0.73f, 0.94f);
+            BuildModeController.Instance.roomsTilemap.SetActive(true);
+        }
     }
 
     public void ToggleStaffPanel()

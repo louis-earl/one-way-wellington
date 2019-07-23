@@ -11,6 +11,7 @@ public class BuildModeController : MonoBehaviour
     public static BuildModeController Instance;
 
     public GameObject tilemap;
+    public GameObject roomsTilemap;
 
     public GameObject validPreviewPrefab;
     public GameObject invalidPreviewPrefab;
@@ -34,7 +35,9 @@ public class BuildModeController : MonoBehaviour
         dragPreviewGameObjects = new List<GameObject>();
 
         InstantiateFurnitureTypes();
-        furnitureTileOWWMap = new Dictionary<string, List<TileOWW>>(); 
+        furnitureTileOWWMap = new Dictionary<string, List<TileOWW>>();
+
+        roomsTilemap.SetActive(false);
     }
 
 
@@ -513,10 +516,12 @@ public class BuildModeController : MonoBehaviour
         furnitureTileOWWMap[furnitureType].Remove(tile);
     }
 
-    public void PlaceRoom(TileOWW tile, string roomType)
+    public void PlaceRoom(List<TileOWW> room_tiles, string roomType)
     {
-        // set the TileOWW's room type
-        // uhhhh
+        foreach (TileOWW tile in room_tiles)
+        {
+            tile.SetRoomType(roomType);
+        }
     }
 
     public void PlaceStaff(float x, float y, GameObject staff, float energy = 100, float health = 100)

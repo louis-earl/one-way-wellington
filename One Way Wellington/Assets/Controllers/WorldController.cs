@@ -59,6 +59,7 @@ public class WorldController : MonoBehaviour
             TileSpriteController.Instance.UpdateTile(tile);
             FurnitureSpriteController.Instance.UpdateFurniture(tile);
             JobSpriteController.Instance.UpdateJob(tile);
+            RoomSpriteController.Instance.UpdateRoom(tile);
         }
     }
 

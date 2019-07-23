@@ -11,6 +11,8 @@ public class TileOWW
     private string tileType;
     private InstalledFurniture installedFurniture;
 
+    private string roomType;
+
     private bool isWalkable;
 
     public string currentJobType;
@@ -52,6 +54,8 @@ public class TileOWW
         if (installedFurniture.GetFurnitureType() == "Wall")
         {
             isWalkable = false;
+            roomType = null;
+            RoomSpriteController.Instance.UpdateRoom(this);
         }
         else
         {
@@ -86,6 +90,18 @@ public class TileOWW
     public void SetIsWalkable(bool isWalkable)
     {
         this.isWalkable = isWalkable;
+    }
+
+    public string GetRoomType()
+    {
+        return roomType;
+    }
+
+    public void SetRoomType(string roomType)
+    {
+        this.roomType = roomType;
+        RoomSpriteController.Instance.UpdateRoom(this);
+
     }
 
     public override string ToString()
