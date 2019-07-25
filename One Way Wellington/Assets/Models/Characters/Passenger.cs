@@ -19,7 +19,8 @@ public class Passenger : Character
     protected float energy;
     protected float health;
 
-    
+    // Interface
+    private static GameObject passengerUIInstance;
 
     protected override void Init()
     {
@@ -36,6 +37,17 @@ public class Passenger : Character
 
     }
 
+
+    public void OnMouseDown()
+    {
+        if (passengerUIInstance != null) Destroy(passengerUIInstance);
+
+        passengerUIInstance = Instantiate(UserInterfaceController.Instance.passengerUIPrefab);
+        passengerUIInstance.transform.position = new Vector3(currentX, currentY, 0);
+        passengerUIInstance.transform.localScale = Vector3.one / 500;
+        passengerUIInstance.GetComponent<CharacterInterface>().character = this;
+
+    }
 
     public void SetPassengerInformation(string name, string career, int fare)
     {

@@ -9,6 +9,8 @@ public class Staff : Character
     protected float energy;
     protected float health;
 
+    // Interface
+    private static GameObject staffUIInstance;
     
 
     protected override void Init()
@@ -20,7 +22,16 @@ public class Staff : Character
         //energy = 100f;
         //health = 100f;
 
-        
+    }
+
+    public void OnMouseDown()
+    {
+        if (staffUIInstance != null) Destroy(staffUIInstance);
+
+        staffUIInstance = Instantiate(UserInterfaceController.Instance.staffUIPrefab);
+        staffUIInstance.transform.position = new Vector3(currentX, currentY, 0);
+        staffUIInstance.transform.localScale = Vector3.one / 500;
+        staffUIInstance.GetComponent<CharacterInterface>().character = this;
 
     }
 
