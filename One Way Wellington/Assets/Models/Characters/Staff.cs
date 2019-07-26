@@ -10,7 +10,7 @@ public class Staff : Character
     protected float health;
 
     // Interface
-    private static GameObject staffUIInstance;
+    public static GameObject staffUIInstance;
     
 
     protected override void Init()
@@ -26,6 +26,7 @@ public class Staff : Character
 
     public void OnMouseDown()
     {
+        if (Passenger.passengerUIInstance != null) Destroy(Passenger.passengerUIInstance);
         if (staffUIInstance != null) Destroy(staffUIInstance);
 
         staffUIInstance = Instantiate(UserInterfaceController.Instance.staffUIPrefab);

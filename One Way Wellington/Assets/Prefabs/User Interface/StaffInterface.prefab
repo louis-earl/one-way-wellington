@@ -1181,7 +1181,6 @@ GameObject:
   m_Component:
   - component: {fileID: 8373868074346453487}
   - component: {fileID: 5168852495200557836}
-  - component: {fileID: 3682073605557064962}
   - component: {fileID: 912814755047573708}
   - component: {fileID: 5172955732820274580}
   - component: {fileID: 6393028737851694128}
@@ -1234,28 +1233,6 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 40
   m_TargetDisplay: 0
---- !u!114 &3682073605557064962
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4408079604442949160}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 1980459831, guid: f70555f144d8491a825f0804e09c671c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
-  m_ReferencePixelsPerUnit: 100
-  m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
-  m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
-  m_PhysicalUnit: 3
-  m_FallbackScreenDPI: 96
-  m_DefaultSpriteDPI: 96
-  m_DynamicPixelsPerUnit: 1
 --- !u!114 &912814755047573708
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1297,7 +1274,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 300, y: 300}
+  m_Size: {x: 270, y: 150}
   m_EdgeRadius: 0
 --- !u!114 &6393028737851694128
 MonoBehaviour:

@@ -6,7 +6,7 @@ using UnityEngine;
 public class Passenger : Character
 {
     // Passenger information 
-    protected string name;
+    protected string passengerName;
     protected string career;
     protected int fare; 
     
@@ -20,7 +20,7 @@ public class Passenger : Character
     protected float health;
 
     // Interface
-    private static GameObject passengerUIInstance;
+    public static GameObject passengerUIInstance;
 
     protected override void Init()
     {
@@ -40,6 +40,7 @@ public class Passenger : Character
 
     public void OnMouseDown()
     {
+        if (Staff.staffUIInstance != null) Destroy(Staff.staffUIInstance);
         if (passengerUIInstance != null) Destroy(passengerUIInstance);
 
         passengerUIInstance = Instantiate(UserInterfaceController.Instance.passengerUIPrefab);

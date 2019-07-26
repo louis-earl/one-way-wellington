@@ -119,7 +119,7 @@ public class PersistenceController : MonoBehaviour
             WorldController.Instance.ClearAllStaff();
             WorldController.Instance.ClearAllPlanets();
             BuildModeController.Instance.furnitureTileOWWMap.Clear();
-
+            JourneyController.Instance.shipCoordinates = Vector2.zero;
 
 
             // LOAD
