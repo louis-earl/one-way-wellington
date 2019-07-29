@@ -14,7 +14,7 @@ public class Planet : MonoBehaviour
     public float planetScale;
     public Vector2 planetCoordinates;
 
-    private static GameObject planetUI;
+    public static GameObject planetUI;
 
     public GameObject linkLine;
 

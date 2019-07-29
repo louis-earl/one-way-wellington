@@ -77,7 +77,16 @@ public class InputController : MonoBehaviour
         currFramePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         currFramePosition.z = 0;
 
-        if (Input.GetButtonDown("Cancel")) SetMode_None();
+        if (Input.GetButtonDown("Cancel"))
+        {
+            // Clear build modes 
+            SetMode_None();
+
+            // Clear pop-up interfaces 
+            if (Passenger.passengerUIInstance != null) Destroy(Passenger.passengerUIInstance);
+            if (Staff.staffUIInstance != null) Destroy(Staff.staffUIInstance);
+            if (Planet.planetUI != null) Destroy(Planet.planetUI);
+        }
 
         UpdateDragging();
         UpdateCameraMovement();
