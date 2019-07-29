@@ -67,7 +67,7 @@ public class JourneyController : MonoBehaviour
         }
     }
 
-    public void AddNextPlanet(Planet planet, bool forceSuccess = false)
+    public void AddNextPlanet(Planet planet)
     {
         Debug.Log("Attempting to add " + planet.name);
         if (isJourneyEditMode)
@@ -77,7 +77,7 @@ public class JourneyController : MonoBehaviour
             if (fuelRemaining > Vector3.Distance(planet.transform.position, lastPlanet.transform.position))
             {
                 Debug.Log("Fuel okay");
-                if (earth.SetNextPlanet(planet, earth, forceSuccess)) // If successful 
+                if (earth.SetNextPlanet(planet, earth)) // If successful 
                 {
                     Debug.Log("set next worked");
                     lastPlanetVisit = planet;
@@ -250,16 +250,6 @@ public class JourneyController : MonoBehaviour
 
         }
         
-    }
-
-    public void FixPlanetLinks(Planet planet)
-    {
-        isJourneyEditMode = true;
-        AddNextPlanet(planet, true);
-        if (planet.nextPlanet != null)
-        {
-            FixPlanetLinks(planet.nextPlanet);
-        }
     }
 
 }

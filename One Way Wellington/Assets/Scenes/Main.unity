@@ -16199,6 +16199,10 @@ MonoBehaviour:
   button_Furniture: {fileID: 905406893}
   button_Rooms: {fileID: 914056127}
   button_Staff: {fileID: 1091113910}
+  passengerUIPrefab: {fileID: 4408079604442949160, guid: 105e4bfb389c01148b3ff5973f85dafd,
+    type: 3}
+  staffUIPrefab: {fileID: 4408079604442949160, guid: e9336f4068fe2af4ca821912784c8019,
+    type: 3}
   canvas_Main: {fileID: 13648919}
 --- !u!1 &1966745386
 GameObject:

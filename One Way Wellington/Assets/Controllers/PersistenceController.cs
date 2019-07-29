@@ -119,7 +119,7 @@ public class PersistenceController : MonoBehaviour
             WorldController.Instance.ClearAllStaff();
             WorldController.Instance.ClearAllPlanets();
             BuildModeController.Instance.furnitureTileOWWMap.Clear();
-
+            JourneyController.Instance.shipCoordinates = Vector2.zero;
 
 
             // LOAD
@@ -156,6 +156,10 @@ public class PersistenceController : MonoBehaviour
             // PLANETS
             WorldController.Instance.InsertPlanets(saveFile.planets);
             JourneyController.Instance.earth = WorldController.Instance.GetPlanets()[0].GetComponent<Planet>();
+
+
+            // SHIP SPEED
+            JourneyController.Instance.shipSpeedMax = BuildModeController.Instance.furnitureTileOWWMap["Engine"].Count * 5;
 
 
             fileStream.Close();

@@ -70,7 +70,7 @@ public class Job
         {
             // tileOWW.currentJob = null;
             JobSpriteController.Instance.UpdateJob(tileOWW);
-            action.Invoke();
+            action?.Invoke();
             tileOWW.currentJobType = null;
             return true;
         }
