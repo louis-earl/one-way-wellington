@@ -158,6 +158,10 @@ public class PersistenceController : MonoBehaviour
             JourneyController.Instance.earth = WorldController.Instance.GetPlanets()[0].GetComponent<Planet>();
 
 
+            // SHIP SPEED
+            JourneyController.Instance.shipSpeedMax = BuildModeController.Instance.furnitureTileOWWMap["Engine"].Count * 5;
+
+
             fileStream.Close();
         }
     }
