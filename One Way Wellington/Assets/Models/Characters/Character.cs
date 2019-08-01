@@ -70,7 +70,7 @@ public class Character : MonoBehaviour
         // Check if at job location
         if (currentJob != null)
         {
-            if (Vector3.Distance(new Vector3(currentX, currentY), new Vector3(currentJob.GetTileOWW().GetX(), currentJob.GetTileOWW().GetY())) < 2)
+            if (Vector3.Distance(new Vector3(currentX, currentY), new Vector3(currentJob.GetJobPosX(), currentJob.GetJobPosY())) < 2)
             {
                 // Do job until finished 
                 if (currentJob.DoJob(Time.deltaTime))

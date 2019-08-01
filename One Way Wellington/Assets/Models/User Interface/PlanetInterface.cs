@@ -64,11 +64,23 @@ public class PlanetInterface : MonoBehaviour
     // Activated by UI button
     public void ContinueJourney()
     {
+        Vector3 stairwellPos = Vector3.zero;
+
+        // Get position of stairwell 
+        if (BuildModeController.Instance.furnitureTileOWWMap.ContainsKey("Stairwell"))
+        {
+             stairwellPos = new Vector3(BuildModeController.Instance.furnitureTileOWWMap["Stairwell"][0].GetX(), BuildModeController.Instance.furnitureTileOWWMap["Stairwell"][0].GetY(), 0);
+        }
+        else
+        {
+            Debug.LogWarning("Couldn't find a stairwell!!");
+        }
+
         // Instantiate passengers 
         foreach (PotentialPassenger potentialPassenger in planet.selectedPassengers)
         {
 
-            GameObject passengerGO = Instantiate(passengerPrefab, new Vector3(50, 50, 0), Quaternion.identity);
+            GameObject passengerGO = Instantiate(passengerPrefab, stairwellPos, Quaternion.identity);
             int distance = (int)Vector2.Distance(planet.GetPlanetCoordinates(), Vector2.zero);
 
             passengerGO.GetComponent<Passenger>().SetPassengerInformation(

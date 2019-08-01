@@ -471,13 +471,48 @@ public class BuildModeController : MonoBehaviour
         {
             if (tile.currentJobType == null)
             {
-                Action removeFurnitureAction = delegate () { RemoveFurniture(tile); };
-                Job j = new Job(removeFurnitureAction, tile, 2, "removeFurniture");
-                tile.currentJobType = j.GetJobType();
-                JobQueueController.BuildersJobQueue.AddJob(j);
+                // If tile is not walkable, the job will always fail!
+                if (tile.GetInstalledFurniture()?.GetFurnitureType() == "Wall")
+                {
+                    // Find a neighbour tile that is not blocked
+                    if (WorldController.Instance.GetWorld().GetTileAt(tile.GetX() + 1, tile.GetY()).GetInstalledFurniture()?.GetFurnitureType() != "Wall")
+                    {
+                        CreateRemoveFurnitureAction(tile, 1, 0);
+                    }
+                    else if (WorldController.Instance.GetWorld().GetTileAt(tile.GetX() - 1, tile.GetY()).GetInstalledFurniture()?.GetFurnitureType() != "Wall")
+                    {
+                        CreateRemoveFurnitureAction(tile, -1, 0);
+                    }
+                    else if (WorldController.Instance.GetWorld().GetTileAt(tile.GetX(), tile.GetY() + 1).GetInstalledFurniture()?.GetFurnitureType() != "Wall")
+                    {
+                        CreateRemoveFurnitureAction(tile, 0, 1);
+                    }
+                    else if (WorldController.Instance.GetWorld().GetTileAt(tile.GetX(), tile.GetY() - 1).GetInstalledFurniture()?.GetFurnitureType() != "Wall")
+                    {
+                        CreateRemoveFurnitureAction(tile, 0, -1);
+                    }
+                    else
+                    {
+                        Debug.LogWarning("Job isn't reachable, send help!!");
+                    }
+
+                }
+                else
+                {
+                    CreateRemoveFurnitureAction(tile);
+                }
             }
         }
 
+    }
+
+    private void CreateRemoveFurnitureAction(TileOWW tile, int offsetX = 0, int offsetY = 0)
+    {
+        Action removeFurnitureAction = delegate () { RemoveFurniture(tile); };
+        Job j = new Job(removeFurnitureAction, tile, 2, "removeFurniture");
+        j.SetAltPosition(tile.GetX() + offsetX, tile.GetY() + offsetY);
+        tile.currentJobType = j.GetJobType();
+        JobQueueController.BuildersJobQueue.AddJob(j);
     }
 
     public void PlaceHull(TileOWW tile)
@@ -512,7 +547,7 @@ public class BuildModeController : MonoBehaviour
 
     public void RemoveFurniture(TileOWW tile)
     {
-        string furnitureType = tile.GetInstalledFurniture().GetFurnitureType();
+        string furnitureType = tile.GetInstalledFurniture()?.GetFurnitureType();
         tile.RemoveInstalledFurniture();
 
         // Remove from map of furnitureType TileOWW
