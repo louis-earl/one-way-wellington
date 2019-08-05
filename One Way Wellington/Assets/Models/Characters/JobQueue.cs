@@ -25,7 +25,7 @@ public class JobQueue
                 }
                 else
                 {
-                    Debug.Log("Failed job: " + jobs[i].GetJobType());
+                    // Debug.Log("Failed job: " + jobs[i].GetJobType());
                 }
             }
 
@@ -34,7 +34,6 @@ public class JobQueue
             {
                 Job temp = jobs[closestIndex];
                 jobs.RemoveAt(closestIndex);
-                Debug.Log("Checking out job: " + temp.GetJobType() + " " + characterPos.ToString());
                 return temp;
             }
         }
@@ -47,7 +46,6 @@ public class JobQueue
         {
             if (job.GetJobType() != "recharge")
             {
-                Debug.Log("Checking in: " + job.GetJobType());
                 jobs.Add(job);
                 JobSpriteController.Instance.UpdateJob(job.GetTileOWW());
             }

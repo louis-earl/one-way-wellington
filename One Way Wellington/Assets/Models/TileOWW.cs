@@ -9,7 +9,10 @@ public class TileOWW
     private int y;
 
     private string tileType;
+
     private InstalledFurniture installedFurniture;
+    public int ?installedFurnitureAltX; // Used if this tile is apart of a multi-tile furniture object, 
+    public int ?installedFurnitureAltY; // and links to the furniture origin tile.
 
     private string roomType;
 
