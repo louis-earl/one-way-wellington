@@ -12,6 +12,8 @@ public class FurnitureType
     public BuildCategory category;
     public int cost;
     public int installTime;
+    public int sizeX;
+    public int sizeY;
     public bool fixedRotation;
     public bool requireElectricity;
     public bool requireFuel;
@@ -22,8 +24,8 @@ public class FurnitureType
 
 
     public FurnitureType(string title, string description, BuildCategory category, 
-        int cost, int installTime, bool fixedRotation = false, bool requireElectricity = false, 
-        bool requireFuel = false, bool requireOxygen = false, 
+        int cost, int installTime, int sizeX = 1, int sizeY = 1, bool fixedRotation = false, 
+        bool requireElectricity = false, bool requireFuel = false, bool requireOxygen = false, 
         bool exteriorOnly = false, bool multiSize = false)
     {
         this.title = title;
@@ -31,6 +33,8 @@ public class FurnitureType
         this.category = category;
         this.cost = cost;
         this.installTime = installTime;
+        this.sizeX = sizeX;
+        this.sizeY = sizeY;
         this.fixedRotation = fixedRotation;
         this.requireElectricity = requireElectricity;
         this.requireFuel = requireFuel;
@@ -49,6 +53,7 @@ public class FurnitureType
             FurnitureType.BuildCategory.Furniture,
             1000,
             5,
+            sizeY: 2,
             requireElectricity: true
             ));
 
@@ -58,6 +63,7 @@ public class FurnitureType
             FurnitureType.BuildCategory.Utility,
             200,
             4,
+            sizeX: 2,
             requireElectricity: true
             ));
 
@@ -65,8 +71,9 @@ public class FurnitureType
             "Art Station",
             "Passengers can sit at the workstation and create art. Passengers become happier and produce Artist Cards for the ship.",
             FurnitureType.BuildCategory.Furniture,
-            150, 
+            150,
             3,
+            sizeX: 2,
             requireElectricity: true));
 
         furnitureTypes.Add("Battery", new FurnitureType("Battery",
@@ -83,7 +90,8 @@ public class FurnitureType
             "Passengers lay on the bed to sleep. The maximum number of passengers is determined by the number of beds on board.",
             FurnitureType.BuildCategory.Furniture,
             200,
-            2
+            2,
+            sizeX: 2
             ));
 
         furnitureTypes.Add("Cafe", new FurnitureType(
@@ -92,6 +100,8 @@ public class FurnitureType
             FurnitureType.BuildCategory.Furniture,
             500,
             5,
+            sizeX: 3,
+            sizeY: 2,
             requireElectricity: true
             ));
 
@@ -101,6 +111,7 @@ public class FurnitureType
             FurnitureType.BuildCategory.Furniture,
             300,
             5,
+            sizeY: 2,
             requireElectricity: true
             ));
 
@@ -109,7 +120,8 @@ public class FurnitureType
             "Passengers can sit on the couch. They can watch tv or rest.",
             FurnitureType.BuildCategory.Furniture,
             300,
-            2
+            2,
+            sizeX: 2
             ));
 
         furnitureTypes.Add("Dining Table", new FurnitureType(
@@ -117,7 +129,9 @@ public class FurnitureType
             "Passengers sit at the dining table and eat.",
             FurnitureType.BuildCategory.Furniture,
             300,
-            2
+            2,
+            sizeX: 3,
+            sizeY: 2
             ));
 
         furnitureTypes.Add("Engine", new FurnitureType(
@@ -126,6 +140,7 @@ public class FurnitureType
             FurnitureType.BuildCategory.Utility,
             1000,
             10,
+            sizeY: 2,
             fixedRotation: true,
             requireFuel: true,
             requireElectricity: true,
@@ -179,6 +194,8 @@ public class FurnitureType
             FurnitureType.BuildCategory.Furniture,
             500,
             5,
+            sizeX: 2,
+            sizeY: 3,
             fixedRotation: true,
             requireElectricity: true
             ));
@@ -188,7 +205,8 @@ public class FurnitureType
             "Passengers can use the Shower Stall to increase their personal hygiene.",
             FurnitureType.BuildCategory.Furniture,
             300,
-            4
+            4,
+            sizeY: 2
             ));
 
         furnitureTypes.Add("Stairwell", new FurnitureType(
@@ -197,6 +215,7 @@ public class FurnitureType
             FurnitureType.BuildCategory.Furniture,
             200,
             5,
+            sizeX: 2,
             fixedRotation: true
             ));
 
@@ -225,7 +244,8 @@ public class FurnitureType
             "Passengers can relieve their bladders in a Toilet Stall.",
             FurnitureType.BuildCategory.Furniture,
             300,
-            4
+            4,
+            sizeY: 2
             ));
 
         // Turrets not planned for release 
@@ -258,6 +278,7 @@ public class FurnitureType
             FurnitureType.BuildCategory.Furniture,
             300,
             4,
+            sizeX: 2,
             requireElectricity: true
             ));
 
