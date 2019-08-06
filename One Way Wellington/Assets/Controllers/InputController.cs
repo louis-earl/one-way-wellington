@@ -290,6 +290,7 @@ public class InputController : MonoBehaviour
             else if (isMode_Wall) BuildModeController.Instance.PreviewWall(start_x, end_x, start_y, end_y);
             else if (isMode_RemoveWall) BuildModeController.Instance.PreviewRemoveWall(start_x, end_x, start_y, end_y);
             else if (isMode_FurnitureMulti) BuildModeController.Instance.PreviewFurniture(furnitureTypeInUse, start_x, end_x, start_y, end_y);
+            else if (isMode_RemoveFurniture) BuildModeController.Instance.PreviewRemoveFurniture(start_x, end_x, start_y, end_y);
             else if (isMode_Rooms) BuildModeController.Instance.PreviewRoom(roomTypeInUse, start_x, end_x, start_y, end_y);
         }
 
@@ -344,6 +345,11 @@ public class InputController : MonoBehaviour
             {
                 List<TileOWW> furnitureTiles = BuildModeController.Instance.PreviewFurniture(furnitureTypeInUse, start_x, end_x, start_y, end_y);
                 BuildModeController.Instance.PlanFurniture(furnitureTiles, furnitureTypeInUse);
+            }
+            else if (isMode_RemoveFurniture)
+            {
+                List<TileOWW> wall_tiles = BuildModeController.Instance.PreviewRemoveFurniture(start_x, end_x, start_y, end_y);
+                BuildModeController.Instance.PlanRemoveFurniture(wall_tiles);
             }
             else if (isMode_Rooms)
             {
