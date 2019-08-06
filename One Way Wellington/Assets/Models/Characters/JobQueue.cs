@@ -23,12 +23,21 @@ public class JobQueue
                         shortestDistance = d;
                     }
                 }
+                else
+                {
+                    // Debug.Log("Failed job: " + jobs[i].GetJobType());
+                }
             }
-            Job temp = jobs[closestIndex];
-            jobs.RemoveAt(closestIndex);
-            return temp;
+
+            // Ensuring Job with index 0 is not automatically assigned after the fail-checks
+            if (!failedJobs.Contains(jobs[0]))
+            {
+                Job temp = jobs[closestIndex];
+                jobs.RemoveAt(closestIndex);
+                return temp;
+            }
         }
-        else return null;
+        return null;
     }
 
     public void AddJob(Job job)

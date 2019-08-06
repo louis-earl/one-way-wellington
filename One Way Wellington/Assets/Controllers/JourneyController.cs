@@ -67,19 +67,16 @@ public class JourneyController : MonoBehaviour
         }
     }
 
-    public void AddNextPlanet(Planet planet, bool forceSuccess = false)
+    public void AddNextPlanet(Planet planet)
     {
-        Debug.Log("Attempting to add " + planet.name);
         if (isJourneyEditMode)
         {
             
             Planet lastPlanet = earth.GetNextPlanet();
             if (fuelRemaining > Vector3.Distance(planet.transform.position, lastPlanet.transform.position))
             {
-                Debug.Log("Fuel okay");
-                if (earth.SetNextPlanet(planet, earth, forceSuccess)) // If successful 
+                if (earth.SetNextPlanet(planet, earth)) // If successful 
                 {
-                    Debug.Log("set next worked");
                     lastPlanetVisit = planet;
                     nextPlanetVisit = lastPlanet;
 
@@ -118,7 +115,6 @@ public class JourneyController : MonoBehaviour
         if (BuildModeController.Instance.furnitureTileOWWMap.ContainsKey("Fuel Tank"))
         {
             fuelRemaining = BuildModeController.Instance.furnitureTileOWWMap["Fuel Tank"].Count * 10;
-            Debug.Log("on map mode fuel remaining " + fuelRemaining);
             // Draw circle around planet 
             Destroy(distanceRingInstance);
             distanceRingInstance = Instantiate(distanceRingPrefab);
@@ -250,16 +246,6 @@ public class JourneyController : MonoBehaviour
 
         }
         
-    }
-
-    public void FixPlanetLinks(Planet planet)
-    {
-        isJourneyEditMode = true;
-        AddNextPlanet(planet, true);
-        if (planet.nextPlanet != null)
-        {
-            FixPlanetLinks(planet.nextPlanet);
-        }
     }
 
 }

@@ -14,7 +14,7 @@ public class Planet : MonoBehaviour
     public float planetScale;
     public Vector2 planetCoordinates;
 
-    private static GameObject planetUI;
+    public static GameObject planetUI;
 
     public GameObject linkLine;
 
@@ -47,18 +47,12 @@ public class Planet : MonoBehaviour
         return planetCoordinates;
     }
 
-    public bool SetNextPlanet(Planet nextPlanet, Planet previousPlanet, bool forceSuccess = false)
+    public bool SetNextPlanet(Planet nextPlanet, Planet previousPlanet)
     {
         this.previousPlanet = previousPlanet;
         Debug.Log(nextPlanet.name + " <- " + planetName + " <- " + this.previousPlanet.name);
         if (nextPlanet != this)
         {
-            if (forceSuccess)
-            {
-                if (this.nextPlanet == null) this.nextPlanet = nextPlanet;
-                else this.nextPlanet.SetNextPlanet(nextPlanet, this, true);
-                return true;
-            }
             if (this.nextPlanet == null) this.nextPlanet = nextPlanet;
             else return this.nextPlanet.SetNextPlanet(nextPlanet, this);
             return true;

@@ -9,6 +9,8 @@ public class Staff : Character
     protected float energy;
     protected float health;
 
+    // Interface
+    public static GameObject staffUIInstance;
     
 
     protected override void Init()
@@ -20,7 +22,17 @@ public class Staff : Character
         //energy = 100f;
         //health = 100f;
 
-        
+    }
+
+    public void OnMouseDown()
+    {
+        if (Passenger.passengerUIInstance != null) Destroy(Passenger.passengerUIInstance);
+        if (staffUIInstance != null) Destroy(staffUIInstance);
+
+        staffUIInstance = Instantiate(UserInterfaceController.Instance.staffUIPrefab);
+        staffUIInstance.transform.position = new Vector3(currentX, currentY, 0);
+        staffUIInstance.transform.localScale = Vector3.one / 500;
+        staffUIInstance.GetComponent<CharacterInterface>().character = this;
 
     }
 
@@ -38,35 +50,42 @@ public class Staff : Character
             // Enter a low power mode (staff never die from zero energy) 
             spriteRenderer.color = Color.red;
 
-
-            // Does a charger exist?
-            if (BuildModeController.Instance.furnitureTileOWWMap.ContainsKey("Charging Pad"))
+            if (targetJob?.GetJobType() != "UseChargingPad")
             {
-                // Loop through all chargers
-                for (int i = 0; i < BuildModeController.Instance.furnitureTileOWWMap["Charging Pad"].Count; i++)
+                FindCharger();
+            }
+        }
+    }
+
+    private void FindCharger()
+    {
+        // Does a charger exist?
+        if (BuildModeController.Instance.furnitureTileOWWMap.ContainsKey("Charging Pad"))
+        {
+            // Loop through all chargers
+            for (int i = 0; i < BuildModeController.Instance.furnitureTileOWWMap["Charging Pad"].Count; i++)
+            {
+                TileOWW tileCharger = BuildModeController.Instance.furnitureTileOWWMap["Charging Pad"][i];
+                if (tileCharger.currentJobType == null)
                 {
-                    TileOWW tileCharger = BuildModeController.Instance.furnitureTileOWWMap["Charging Pad"][i];
-                    if (tileCharger.currentJobType == null)
+                    if (targetJob != null)
                     {
-                        if (targetJob != null)
-                        {
 
-                            if (targetJob.GetJobType() != "UseChargingPad")
-                            {
-                                JobQueueController.BuildersJobQueue.AddJob(targetJob);
-                                targetJob = currentJob = null;
-                            }
-                            Action rechargeAction = delegate () { UseChargingPad(); };
-                            targetJob = new Job(UseChargingPad, tileCharger, 5, "UseChargingPad");
-                            return;
-
-                        }
-                        else
+                        if (targetJob.GetJobType() != "UseChargingPad")
                         {
-                            Action rechargeAction = delegate () { UseChargingPad(); };
-                            targetJob = new Job(UseChargingPad, tileCharger, 5, "UseChargingPad");
-                            return;
+                            JobQueueController.BuildersJobQueue.AddJob(targetJob);
+                            targetJob = currentJob = null;
                         }
+                        Action rechargeAction = delegate () { UseChargingPad(); };
+                        targetJob = new Job(UseChargingPad, tileCharger, 5, "UseChargingPad");
+                        return;
+
+                    }
+                    else
+                    {
+                        Action rechargeAction = delegate () { UseChargingPad(); };
+                        targetJob = new Job(UseChargingPad, tileCharger, 5, "UseChargingPad");
+                        return;
                     }
                 }
             }

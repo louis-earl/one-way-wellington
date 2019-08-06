@@ -19,6 +19,8 @@ public class UserInterfaceController : MonoBehaviour
     public Button button_Rooms;
     public Button button_Staff;
 
+    public GameObject passengerUIPrefab;
+    public GameObject staffUIPrefab;
 
     public GameObject canvas_Main;
 

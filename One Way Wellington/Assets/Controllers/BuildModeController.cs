@@ -72,7 +72,9 @@ public class BuildModeController : MonoBehaviour
                     if (t.GetX() == start_x || t.GetX() == end_x || t.GetY() == start_y || t.GetY() == end_y)
                     {
                         // Check valid 
-                        if (t.GetInstalledFurniture() == null)
+                        if (t.GetInstalledFurniture() == null && 
+                            t.installedFurnitureAltX == null && // not apart of a multi-tile furniture
+                            t.installedFurnitureAltY == null)
                         {
                             wall_tiles.Add(t);
                             CreatePreview(validPreviewPrefab, "Wall", x, y);
@@ -146,7 +148,9 @@ public class BuildModeController : MonoBehaviour
                     if (t.GetX() == start_x || t.GetX() == end_x || t.GetY() == start_y || t.GetY() == end_y)
                     {
                         // Check valid 
-                        if (t.GetInstalledFurniture() == null && t.GetTileType() == "Hull")
+                        if (t.GetInstalledFurniture() == null && t.GetTileType() == "Hull"  && 
+                            t.installedFurnitureAltX == null && // not apart of a multi-tile furniture
+                            t.installedFurnitureAltY == null)
                         {
                             wall_tiles.Add(t);
                             CreatePreview(validPreviewPrefab, "Wall", x, y);
@@ -181,6 +185,49 @@ public class BuildModeController : MonoBehaviour
         else return wall_tiles;
     }
 
+
+    public bool CheckFurniturePreviewValid(TileOWW tile, FurnitureType furnitureType)
+    {    
+        if (furnitureType.cost > CurrencyController.Instance.GetBankBalance())
+        {
+            Debug.Log("Couldn't affoard.");
+            return false;
+        }
+
+        // Check all tiles of multi-tile furniture 
+        for (int i = 0; i < furnitureType.sizeX; i++)
+        {
+            for (int j = 0; j < furnitureType.sizeY; j++)
+            {
+                TileOWW t = WorldController.Instance.GetWorld().GetTileAt(tile.GetX() + i, tile.GetY() + j);
+                if ((t.GetTileType() == "Hull" && furnitureType.exteriorOnly) || (t.GetTileType() == "Empty" && !furnitureType.exteriorOnly))
+                {
+                    Debug.Log("Interior / exterior check failed.");
+                    return false;
+                }
+                if (t.installedFurnitureAltX != null || t.installedFurnitureAltY != null)
+                {
+                    Debug.Log("Multi-tile furniture check failed.");
+                    return false;
+                }
+                if (t.GetInstalledFurniture() != null)
+                {
+                    Debug.Log("Installed furniture check failed");
+                    return false;
+                }
+                if (t.currentJobType != null)
+                {
+                    Debug.Log("Existing job check failed.");
+                    return false;
+                }
+            }
+        }
+        
+        // All checks passed, furniture is valid.
+        return true;
+    }
+
+
     public List<TileOWW> PreviewFurniture(FurnitureType furnitureType, int start_x, int end_x, int start_y, int end_y)
     {
         List<TileOWW> furniture_tiles = new List<TileOWW>();
@@ -199,8 +246,7 @@ public class BuildModeController : MonoBehaviour
                 {
 
                     // Check valid 
-                    if ((t.GetInstalledFurniture() == null && t.GetTileType() == "Hull" && !furnitureType.exteriorOnly) ||
-                        (t.GetInstalledFurniture() == null && t.GetTileType() == "Empty" && furnitureType.exteriorOnly))
+                    if (CheckFurniturePreviewValid(t, furnitureType))
                     {
                         furniture_tiles.Add(t);
                         CreatePreview(validPreviewPrefab, furnitureType.title, x, y);
@@ -247,9 +293,7 @@ public class BuildModeController : MonoBehaviour
         {
 
             // Check valid 
-            if (((furnitureTile.GetInstalledFurniture() == null && furnitureTile.GetTileType() == "Hull" && !furnitureType.exteriorOnly) ||
-                (furnitureTile.GetInstalledFurniture() == null && furnitureTile.GetTileType() == "Empty" && furnitureType.exteriorOnly)) &&
-                furnitureType.cost < CurrencyController.Instance.GetBankBalance())
+            if (CheckFurniturePreviewValid(furnitureTile, furnitureType))
             {
                 CreatePreview(validPreviewPrefab, furnitureType.title, posX, posY);
                 furnitureTileReturn = furnitureTile;
@@ -288,6 +332,58 @@ public class BuildModeController : MonoBehaviour
         return hull_tiles;
     }
 
+    public TileOWW PreviewRemoveFurniture(int posX, int posY)
+    {
+        ClearPreviews();
+
+        TileOWW t = WorldController.Instance.GetWorld().GetTileAt(posX, posY);
+
+        if (t != null)
+        {
+            // Check valid 
+            if (t.GetInstalledFurniture() != null)
+            {
+                if (t.GetInstalledFurniture().GetFurnitureType() == "Wall")
+                {
+                    
+                    CreatePreview(removePreviewPrefab, "Wall", posX, posY);
+                    return t;
+                }
+            }
+        }
+        return null;
+    }
+
+    public List<TileOWW> PreviewRemoveFurniture(int start_x, int end_x, int start_y, int end_y)
+    {
+        List<TileOWW> furniture_tiles = new List<TileOWW>();
+
+        ClearPreviews();
+
+        // Loop through all the tiles
+        for (int x = start_x; x <= end_x; x++)
+        {
+            for (int y = start_y; y <= end_y; y++)
+            {
+                TileOWW t = WorldController.Instance.GetWorld().GetTileAt(x, y);
+
+                if (t != null)
+                {
+                    // Check valid 
+                    if (t.GetInstalledFurniture() != null)
+                    {
+                        if (t.GetInstalledFurniture().GetFurnitureType() != "Wall") // Do NOT remove wall furniture items! 
+                        {
+                            furniture_tiles.Add(t);
+                            CreatePreview(removePreviewPrefab, "Hull", x, y);
+                        }
+                    }
+                }
+            }
+        }
+        return furniture_tiles;
+    }
+
     public List<TileOWW> PreviewRemoveWall(int start_x, int end_x, int start_y, int end_y)
     {
         List<TileOWW> wall_tiles = new List<TileOWW>();
@@ -306,7 +402,7 @@ public class BuildModeController : MonoBehaviour
                     // Check valid 
                     if (t.GetInstalledFurniture() != null)
                     {
-                        if (t.GetInstalledFurniture().GetFurnitureType() == "Wall")
+                        if (t.GetInstalledFurniture().GetFurnitureType() == "Wall") // Only remove wall furniture items! 
                         {
                             wall_tiles.Add(t);
                             CreatePreview(removePreviewPrefab, "Wall", x, y);
@@ -406,17 +502,7 @@ public class BuildModeController : MonoBehaviour
     {
         foreach (TileOWW tile in furniture_tiles)
         {
-            if (tile.currentJobType == null)
-            {
-                Action placeFurnitureAction = delegate () { PlaceFurniture(tile, furnitureType.title); };
-                Job j = new Job(placeFurnitureAction, tile, furnitureType.installTime, furnitureType.title);
-                tile.currentJobType = j.GetJobType();
-                JobQueueController.BuildersJobQueue.AddJob(j);
-
-                CurrencyController.Instance.ChangeBankBalance(-furnitureType.cost);
-
-            }
-            else Debug.Log("There's already a job here! Remove it first. " + tile.ToString());
+            PlanFurniture(tile, furnitureType);
         }
     }
 
@@ -425,18 +511,38 @@ public class BuildModeController : MonoBehaviour
     {
         if (furniture_tile != null)
         {
-            if (furniture_tile.currentJobType == null)
+            // Check validity for multi-tile 
+            for (int i = 0; i < furnitureType.sizeX; i++)
             {
-                Action placeFurnitureAction = delegate () { PlaceFurniture(furniture_tile, furnitureType.title); };
-                Job j = new Job(placeFurnitureAction, furniture_tile, furnitureType.installTime, furnitureType.title);
-                furniture_tile.currentJobType = j.GetJobType();
-                JobQueueController.BuildersJobQueue.AddJob(j);
-
-                CurrencyController.Instance.ChangeBankBalance(-furnitureType.cost);
+                for (int j = 0; j < furnitureType.sizeY; j++)
+                {
+                    TileOWW temp = WorldController.Instance.GetWorld().GetTileAt(furniture_tile.GetX() + i, furniture_tile.GetY() + j);
+                    if (temp.currentJobType != null)
+                    {
+                        Debug.Log("Unable to place job baceause tile already had an existing job! Try remove it first.");
+                        return; // Failed to place 
+                    }
+                }
             }
-            else Debug.Log("There's already a job here! Remove it first. " + furniture_tile.ToString());
 
+            Action placeFurnitureAction = delegate () { PlaceFurniture(furniture_tile, furnitureType.title); };
+            Job job = new Job(placeFurnitureAction, furniture_tile, furnitureType.installTime, furnitureType.title);
+            furniture_tile.currentJobType = job.GetJobType();
+            JobQueueController.BuildersJobQueue.AddJob(job);
+
+            CurrencyController.Instance.ChangeBankBalance(-furnitureType.cost);
+
+            // Multi-tile furniture items 
+            for (int i = 0; i < furnitureType.sizeX; i++)
+            {
+                for (int j = 0; j < furnitureType.sizeY; j++)
+                {
+                    TileOWW temp = WorldController.Instance.GetWorld().GetTileAt(furniture_tile.GetX() + i, furniture_tile.GetY() + j);
+                    temp.currentJobType = furniture_tile.currentJobType;
+                }
+            }
         }
+
     }
 
     public void PlanRemoveHull(List<TileOWW> hull_tiles)
@@ -469,15 +575,50 @@ public class BuildModeController : MonoBehaviour
     {
         foreach (TileOWW tile in furniture_tiles)
         {
-            if (tile.currentJobType == null)
+            if (tile.currentJobType == null || tile.currentJobType.Contains("Use"))
             {
-                Action removeFurnitureAction = delegate () { RemoveFurniture(tile); };
-                Job j = new Job(removeFurnitureAction, tile, 2, "removeFurniture");
-                tile.currentJobType = j.GetJobType();
-                JobQueueController.BuildersJobQueue.AddJob(j);
+                // If tile is not walkable, the job will always fail!
+                if (tile.GetInstalledFurniture()?.GetFurnitureType() == "Wall")
+                {
+                    // Find a neighbour tile that is not blocked
+                    if (WorldController.Instance.GetWorld().GetTileAt(tile.GetX() + 1, tile.GetY()).GetInstalledFurniture()?.GetFurnitureType() != "Wall")
+                    {
+                        CreateRemoveFurnitureAction(tile, 1, 0);
+                    }
+                    else if (WorldController.Instance.GetWorld().GetTileAt(tile.GetX() - 1, tile.GetY()).GetInstalledFurniture()?.GetFurnitureType() != "Wall")
+                    {
+                        CreateRemoveFurnitureAction(tile, -1, 0);
+                    }
+                    else if (WorldController.Instance.GetWorld().GetTileAt(tile.GetX(), tile.GetY() + 1).GetInstalledFurniture()?.GetFurnitureType() != "Wall")
+                    {
+                        CreateRemoveFurnitureAction(tile, 0, 1);
+                    }
+                    else if (WorldController.Instance.GetWorld().GetTileAt(tile.GetX(), tile.GetY() - 1).GetInstalledFurniture()?.GetFurnitureType() != "Wall")
+                    {
+                        CreateRemoveFurnitureAction(tile, 0, -1);
+                    }
+                    else
+                    {
+                        Debug.LogWarning("Job isn't reachable, send help!!");
+                    }
+
+                }
+                else
+                {
+                    CreateRemoveFurnitureAction(tile);
+                }
             }
         }
 
+    }
+
+    private void CreateRemoveFurnitureAction(TileOWW tile, int offsetX = 0, int offsetY = 0)
+    {
+        Action removeFurnitureAction = delegate () { RemoveFurniture(tile); };
+        Job j = new Job(removeFurnitureAction, tile, 2, "removeFurniture");
+        j.SetAltPosition(tile.GetX() + offsetX, tile.GetY() + offsetY);
+        tile.currentJobType = j.GetJobType();
+        JobQueueController.BuildersJobQueue.AddJob(j);
     }
 
     public void PlaceHull(TileOWW tile)
@@ -508,15 +649,46 @@ public class BuildModeController : MonoBehaviour
             // TODO: Different speeds per engine 
             JourneyController.Instance.shipSpeedMax = furnitureTileOWWMap[furnitureType].Count * 5;
         }
+
+        // Multi-tile references 
+        for (int i = 0; i < furnitureTypes[furnitureType].sizeX; i++)
+        {
+            for (int j = 0; j < furnitureTypes[furnitureType].sizeY; j++)
+            {
+                TileOWW temp = WorldController.Instance.GetWorld().GetTileAt(tile.GetX() + i, tile.GetY() + j);
+                temp.currentJobType = null;
+                temp.installedFurnitureAltX = tile.GetX();
+                temp.installedFurnitureAltY = tile.GetY();
+
+            }
+        }
     }
 
     public void RemoveFurniture(TileOWW tile)
     {
-        string furnitureType = tile.GetInstalledFurniture().GetFurnitureType();
+        string furnitureType = tile.GetInstalledFurniture()?.GetFurnitureType();
         tile.RemoveInstalledFurniture();
 
+        // Multi-tile references 
+        for (int i = 0; i < furnitureTypes[furnitureType].sizeX; i++)
+        {
+            for (int j = 0; j < furnitureTypes[furnitureType].sizeY; j++)
+            {
+                TileOWW temp = WorldController.Instance.GetWorld().GetTileAt(tile.GetX() + i, tile.GetY() + j);
+                temp.installedFurnitureAltX = null;
+                temp.installedFurnitureAltY = null;
+
+            }
+        }
+
         // Remove from map of furnitureType TileOWW
-        furnitureTileOWWMap[furnitureType].Remove(tile);
+        Debug.Log(furnitureTileOWWMap[furnitureType].Contains(tile));
+        
+        while (furnitureTileOWWMap[furnitureType].Contains(tile))
+        {
+            furnitureTileOWWMap[furnitureType].Remove(tile);
+        }
+        Debug.Log(furnitureTileOWWMap[furnitureType].Contains(tile));
     }
 
     public void PlaceRoom(List<TileOWW> room_tiles, string roomType)

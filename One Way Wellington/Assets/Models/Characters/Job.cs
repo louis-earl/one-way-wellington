@@ -11,6 +11,10 @@ public class Job
     protected string jobType;
     protected Action action;
 
+    // If a job location is different from the actual tile being worked on
+    protected int jobPosX;
+    protected int jobPosY;
+
     public Job(Action action, TileOWW tileOWW, float jobTime, string jobType, Job prerequisiteJob = null)
     {
         this.action = action;
@@ -19,6 +23,10 @@ public class Job
         this.jobType = jobType;
         this.prerequisiteJob = prerequisiteJob;
         tileOWW.currentJobType = jobType;
+
+        // Set default job pos
+        jobPosX = tileOWW.GetX();
+        jobPosY = tileOWW.GetY();
     }
 
     // Constructor used when loading game, because actions can't be serialized 
@@ -55,7 +63,7 @@ public class Job
 
     public Vector3 GetLocation()
     {
-        return new Vector3(tileOWW.GetX() + 0.5f, tileOWW.GetY() + 0.5f, 0);
+        return new Vector3(jobPosX + 0.5f, jobPosY + 0.5f, 0);
     }
 
     public TileOWW GetTileOWW()
@@ -70,7 +78,7 @@ public class Job
         {
             // tileOWW.currentJob = null;
             JobSpriteController.Instance.UpdateJob(tileOWW);
-            action.Invoke();
+            action?.Invoke();
             tileOWW.currentJobType = null;
             return true;
         }
@@ -100,4 +108,22 @@ public class Job
         }
         return new JobSerializable(tileOWW, jobTime, jobType, p); 
     }
+
+    public void SetAltPosition(int x, int y)
+    {
+        jobPosX = x;
+        jobPosY = y;
+    }
+
+    public int GetJobPosX()
+    {
+        return jobPosX;
+
+    }
+
+    public int GetJobPosY()
+    {
+        return jobPosY;
+    }
+
 }

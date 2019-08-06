@@ -28,7 +28,6 @@ public class DistanceRing : MonoBehaviour
 
 
         float x;
-        float y;
         float z;
 
         float angle = 20f;
