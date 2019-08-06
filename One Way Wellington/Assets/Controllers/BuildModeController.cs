@@ -215,6 +215,11 @@ public class BuildModeController : MonoBehaviour
                     Debug.Log("Installed furniture check failed");
                     return false;
                 }
+                if (t.currentJobType != null)
+                {
+                    Debug.Log("Existing job check failed.");
+                    return false;
+                }
             }
         }
         
