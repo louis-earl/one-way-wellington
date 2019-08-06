@@ -242,10 +242,14 @@ public class JourneyController : MonoBehaviour
         {
             int payment = passengerGO.GetComponent<Passenger>().GetPassengerFare();
             CurrencyController.Instance.ChangeBankBalance(payment);
-            Destroy(passengerGO);
-
         }
-        
+        foreach (GameObject passengerGO in currentPassengers)
+        {
+            if (passengerGO != null)
+            {
+                Destroy(passengerGO);
+            }
+        }
     }
 
 }
