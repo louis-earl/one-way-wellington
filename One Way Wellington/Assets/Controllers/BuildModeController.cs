@@ -185,6 +185,44 @@ public class BuildModeController : MonoBehaviour
         else return wall_tiles;
     }
 
+
+    public bool CheckFurniturePreviewValid(TileOWW tile, FurnitureType furnitureType)
+    {    
+        if (furnitureType.cost > CurrencyController.Instance.GetBankBalance())
+        {
+            Debug.Log("Couldn't affoard.");
+            return false;
+        }
+
+        // Check all tiles of multi-tile furniture 
+        for (int i = 0; i < furnitureType.sizeX; i++)
+        {
+            for (int j = 0; j < furnitureType.sizeY; j++)
+            {
+                TileOWW t = WorldController.Instance.GetWorld().GetTileAt(tile.GetX() + i, tile.GetY() + j);
+                if ((t.GetTileType() == "Hull" && furnitureType.exteriorOnly) || (t.GetTileType() == "Empty" && !furnitureType.exteriorOnly))
+                {
+                    Debug.Log("Interior / exterior check failed.");
+                    return false;
+                }
+                if (t.installedFurnitureAltX != null || t.installedFurnitureAltY != null)
+                {
+                    Debug.Log("Multi-tile furniture check failed.");
+                    return false;
+                }
+                if (t.GetInstalledFurniture() != null)
+                {
+                    Debug.Log("Installed furniture check failed");
+                    return false;
+                }
+            }
+        }
+        
+        // All checks passed, furniture is valid.
+        return true;
+    }
+
+
     public List<TileOWW> PreviewFurniture(FurnitureType furnitureType, int start_x, int end_x, int start_y, int end_y)
     {
         List<TileOWW> furniture_tiles = new List<TileOWW>();
@@ -203,13 +241,7 @@ public class BuildModeController : MonoBehaviour
                 {
 
                     // Check valid 
-                    if (t.GetInstalledFurniture() == null && // nothing already installed 
-                         furnitureType.cost < CurrencyController.Instance.GetBankBalance() && // can affoard 
-                          t.installedFurnitureAltX == null && // not apart of a multi-tile furniture
-                          t.installedFurnitureAltY == null &&
-                          ((t.GetTileType() == "Hull" && !furnitureType.exteriorOnly) || // int. or ext. check
-                          (t.GetTileType() == "Empty" && furnitureType.exteriorOnly))
-                          )
+                    if (CheckFurniturePreviewValid(t, furnitureType))
                     {
                         furniture_tiles.Add(t);
                         CreatePreview(validPreviewPrefab, furnitureType.title, x, y);
@@ -256,13 +288,7 @@ public class BuildModeController : MonoBehaviour
         {
 
             // Check valid 
-            if (furnitureTile.GetInstalledFurniture() == null && // nothing already installed 
-                furnitureType.cost < CurrencyController.Instance.GetBankBalance() && // can affoard 
-                furnitureTile.installedFurnitureAltX == null && // not apart of a multi-tile furniture
-                furnitureTile.installedFurnitureAltY == null &&
-                ((furnitureTile.GetTileType() == "Hull" && !furnitureType.exteriorOnly) || // int. or ext. check
-                (furnitureTile.GetTileType() == "Empty" && furnitureType.exteriorOnly))
-                )
+            if (CheckFurniturePreviewValid(furnitureTile, furnitureType))
             {
                 CreatePreview(validPreviewPrefab, furnitureType.title, posX, posY);
                 furnitureTileReturn = furnitureTile;

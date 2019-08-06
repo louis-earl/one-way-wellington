@@ -50,7 +50,7 @@ public class Staff : Character
             // Enter a low power mode (staff never die from zero energy) 
             spriteRenderer.color = Color.red;
 
-            if (targetJob.GetJobType() != "UseChargingPad")
+            if (targetJob?.GetJobType() != "UseChargingPad")
             {
                 FindCharger();
             }
