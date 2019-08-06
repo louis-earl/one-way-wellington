@@ -159,8 +159,10 @@ public class PersistenceController : MonoBehaviour
 
 
             // SHIP SPEED
-            JourneyController.Instance.shipSpeedMax = BuildModeController.Instance.furnitureTileOWWMap["Engine"].Count * 5;
-
+            if (BuildModeController.Instance.furnitureTileOWWMap.ContainsKey("Engine"))
+            {
+                JourneyController.Instance.shipSpeedMax = BuildModeController.Instance.furnitureTileOWWMap["Engine"].Count * 5;
+            }
 
             fileStream.Close();
         }

@@ -20,13 +20,14 @@ public class FurnitureType
     public bool requireOxygen;
     public bool exteriorOnly;
     public bool multiSize;
+    public bool walkable;
    
 
 
     public FurnitureType(string title, string description, BuildCategory category, 
         int cost, int installTime, int sizeX = 1, int sizeY = 1, bool fixedRotation = false, 
         bool requireElectricity = false, bool requireFuel = false, bool requireOxygen = false, 
-        bool exteriorOnly = false, bool multiSize = false)
+        bool exteriorOnly = false, bool multiSize = false, bool walkable = true)
     {
         this.title = title;
         this.description = description;
@@ -41,6 +42,7 @@ public class FurnitureType
         this.requireOxygen = requireOxygen;
         this.exteriorOnly = exteriorOnly;
         this.multiSize = multiSize;
+        this.walkable = walkable;
     }
 
     public static Dictionary<string, FurnitureType> InstantiateFurnitureTypes()
@@ -57,14 +59,14 @@ public class FurnitureType
             requireElectricity: true
             ));
 
-        furnitureTypes.Add("Air Lock", new FurnitureType(
-            "Air Lock",
+        furnitureTypes.Add("Airlock", new FurnitureType(
+            "Airlock",
             "Airlocks act as doors for the ship. Oxygen does not flow through when the Airlock is closed. Passengers, staff and enemies can open the Airlock, unless locked closed by the player.",
             FurnitureType.BuildCategory.Utility,
             200,
             4,
-            sizeX: 2,
-            requireElectricity: true
+            requireElectricity: true,
+            walkable: false
             ));
 
         furnitureTypes.Add("Art Station", new FurnitureType(
@@ -82,7 +84,8 @@ public class FurnitureType
             200,
             3,
             fixedRotation: true,
-            multiSize: true
+            multiSize: true,
+            walkable: false
             ));
 
         furnitureTypes.Add("Bed", new FurnitureType(
@@ -144,7 +147,8 @@ public class FurnitureType
             fixedRotation: true,
             requireFuel: true,
             requireElectricity: true,
-            exteriorOnly: true
+            exteriorOnly: true,
+            walkable: false
             ));
 
         furnitureTypes.Add("Fuel Tank", new FurnitureType(
@@ -175,7 +179,8 @@ public class FurnitureType
             200,
             3,
             fixedRotation: true,
-            multiSize: true
+            multiSize: true,
+            walkable: false
             ));
 
         furnitureTypes.Add("Oxygen Vent", new FurnitureType(
@@ -289,7 +294,8 @@ public class FurnitureType
             100,
             3,
             fixedRotation: true,
-            multiSize: true
+            multiSize: true,
+            walkable: false
             ));
 
 
