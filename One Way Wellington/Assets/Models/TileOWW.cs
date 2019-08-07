@@ -20,6 +20,8 @@ public class TileOWW
 
     public string currentJobType;
 
+    public float oxygenLevel;
+
     public TileOWW(int x, int y, string tileType)
     {
         this.x = x;
@@ -54,11 +56,18 @@ public class TileOWW
     {
         if (this.installedFurniture != null) Debug.LogError("Warning: Trying to change installedFurniture without removing existing first.");
         this.installedFurniture = installedFurniture;
-        if (installedFurniture.GetFurnitureType() == "Wall")
+        if (BuildModeController.Instance.furnitureTypes.ContainsKey(installedFurniture.GetFurnitureType()))
         {
-            isWalkable = false;
-            roomType = null;
-            RoomSpriteController.Instance.UpdateRoom(this);
+            // If tile is not walkable 
+            if (BuildModeController.Instance.furnitureTypes[installedFurniture.GetFurnitureType()].walkable == false) {
+                isWalkable = false;
+                roomType = null;
+                RoomSpriteController.Instance.UpdateRoom(this);
+            }
+            else
+            {
+                isWalkable = true;
+            }
         }
         else
         {
