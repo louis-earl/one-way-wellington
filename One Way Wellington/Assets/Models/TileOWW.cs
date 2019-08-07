@@ -20,6 +20,8 @@ public class TileOWW
 
     public string currentJobType;
 
+    public float oxygenLevel;
+
     public TileOWW(int x, int y, string tileType)
     {
         this.x = x;

@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9d1514134bc4fbd41bb739b1b9a49231, type: 3}
-  m_Name: Airlock
+  m_Name: Oxygen Vent
   m_EditorClassIdentifier: 
   m_DefaultSprite: {fileID: -3373267612879319809, guid: 9c6ffaab976a19040a78e11789c870e4,
     type: 3}
@@ -19,7 +19,7 @@ MonoBehaviour:
   m_TilingRules:
   - m_Neighbors: 0000000000000000000000000000000000000000000000000000000000000000
     m_Sprites:
-    - {fileID: 21300000, guid: 28a6e72de25e78a45b95f07e27f760e3, type: 3}
+    - {fileID: 21300000, guid: 1518542cec37cb5458327dc89594f865, type: 3}
     m_GameObject: {fileID: 0}
     m_AnimationSpeed: 1
     m_PerlinScale: 0.5
