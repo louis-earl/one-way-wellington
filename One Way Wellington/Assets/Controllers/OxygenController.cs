@@ -40,7 +40,7 @@ public class OxygenController : MonoBehaviour
         }
 
         // Add oxygen 
-        // VentOxygen();
+        VentOxygen();
 
         // Put all tiles with oxygen into the queue tilesToCheck
         // And dictionary oxygenCurrent
@@ -120,7 +120,7 @@ public class OxygenController : MonoBehaviour
                 // Check oxygen vent tile first 
                 if (tile.oxygenLevel < 1)
                 {
-                    tile.oxygenLevel += 1;
+                    tile.oxygenLevel += 0.5f;
                     // TODO: Remove from oxygen tank supply 
                 }
             }
@@ -139,6 +139,7 @@ public class OxygenController : MonoBehaviour
      
 
         List<TileOWW> tileSpreads = new List<TileOWW>(); // Neighbour tiles that can accept oxygen.
+        tileSpreads.Add(tile);
         float oxygenTotal = oxygenLevels[tile]; // Total oxygen of this tile and of neughour tiles that can accept oxygen 
 
         TileOWW tileNorth = WorldController.Instance.GetWorld().GetTileAt(tile.GetX(), tile.GetY() + 1);
@@ -146,7 +147,7 @@ public class OxygenController : MonoBehaviour
         TileOWW tileSouth = WorldController.Instance.GetWorld().GetTileAt(tile.GetX(), tile.GetY() - 1);
         TileOWW tileWest = WorldController.Instance.GetWorld().GetTileAt(tile.GetX() - 1, tile.GetY());
 
-        
+        TileOWW emptiestTile = tile;
 
         if (tileNorth != null)
         {
@@ -158,6 +159,11 @@ public class OxygenController : MonoBehaviour
                     tileSpreads.Add(tileNorth);
                     oxygenTotal += oxygenLevels[tileNorth];
                     // Debug.Log("We can operate on north tile. Oxygen total is now: " + oxygenTotal);
+
+                    if (oxygenLevels[tileNorth] < emptiestTile.oxygenLevel)
+                    {
+                        emptiestTile = tileNorth;
+                    }
                 }
             }
             else
@@ -176,6 +182,10 @@ public class OxygenController : MonoBehaviour
                     oxygenTotal += oxygenLevels[tileEast];
                     // Debug.Log("We can operate on east tile. Oxygen total is now: " + oxygenTotal);
 
+                    if (oxygenLevels[tileEast] < emptiestTile.oxygenLevel)
+                    {
+                        emptiestTile = tileEast;
+                    }
                 }
             }
             else
@@ -195,6 +205,10 @@ public class OxygenController : MonoBehaviour
                     oxygenTotal += oxygenLevels[tileSouth];
                     // Debug.Log("We can operate on south tile. Oxygen total is now: " + oxygenTotal);
 
+                    if (oxygenLevels[tileSouth] < emptiestTile.oxygenLevel)
+                    {
+                        emptiestTile = tileSouth;
+                    }
                 }
             }
             else
@@ -213,6 +227,10 @@ public class OxygenController : MonoBehaviour
                     oxygenTotal += oxygenLevels[tileWest];
                     // Debug.Log("We can operate on west tile. Oxygen total is now: " + oxygenTotal);
 
+                    if (oxygenLevels[tileWest] < emptiestTile.oxygenLevel)
+                    {
+                        emptiestTile = tileWest;
+                    }
                 }
             }
             else
@@ -221,27 +239,27 @@ public class OxygenController : MonoBehaviour
                 tileSpreads.Add(tileWest);
             }
         }
-        float oxygenOutput = oxygenTotal / (tileSpreads.Count + 1); // New oxygen level of this tile and neighour tiles 
 
-        float tileOxygenDifference = oxygenOutput - oxygenLevels[tile];
+        //tileSpreads.Add(emptiestTile);
 
-        // Debug.Log("Oxygen output per tile is: " + oxygenOutput);
-
-        // Debug.Log("Old: " + oxygenLevels[tile] + " New: " + oxygenOutput + " Difference: " + tileOxygenDifference);
-
-        if (oxygenDifferences.ContainsKey(tile))
+        float oxygenOutput;
+        if (emptiestTile.oxygenLevel < 0.5)
         {
-            oxygenDifferences[tile] += tileOxygenDifference;
+            oxygenOutput = oxygenTotal / (tileSpreads.Count + 1); // New oxygen level of this tile and neighour tiles 
         }
         else
         {
-            oxygenDifferences.Add(tile, tileOxygenDifference);
+            oxygenOutput = oxygenTotal / (tileSpreads.Count);
         }
-
         foreach (TileOWW tileSpread in tileSpreads)
         {
 
             float tileSpreadOxygenDifference = oxygenOutput - oxygenLevels[tileSpread];
+
+            if (tileSpread == emptiestTile && emptiestTile.oxygenLevel < 0.5)
+            {
+                tileSpreadOxygenDifference += oxygenOutput ;
+            }
 
             if (oxygenDifferences.ContainsKey(tileSpread))
             {
@@ -251,7 +269,7 @@ public class OxygenController : MonoBehaviour
             {
                 oxygenDifferences.Add(tileSpread, tileSpreadOxygenDifference);
             }          
-        }      
+        }
     }
 
 
