@@ -10,11 +10,23 @@ public class OxygenController : MonoBehaviour
 
     Queue<TileOWW> oxygenTileQueue;
     HashSet<TileOWW> checkedTiles;
+    Queue<TileOWW> oxygenDecayQueue = new Queue<TileOWW>();
 
-    // TODO: Working recursion so Unity doesn't crash!
+
+
     public void FixedUpdate()
     {
         if (BuildModeController.Instance.furnitureTileOWWMap.ContainsKey("Oxygen Vent")) {
+            while (oxygenDecayQueue.Count > 0)
+            {
+                TileOWW decayTile = oxygenDecayQueue.Dequeue();
+                if (decayTile.GetTileType() != "Hull")
+                {
+                    decayTile.oxygenLevel = 0;
+                    UpdateOxygenSprite(decayTile);
+                }
+
+            }
             foreach (TileOWW tile in BuildModeController.Instance.furnitureTileOWWMap["Oxygen Vent"])
             {
                 oxygenTileQueue = new Queue<TileOWW>();
@@ -24,7 +36,7 @@ public class OxygenController : MonoBehaviour
                 if (tile.oxygenLevel < 1)
                 {
                     tile.oxygenLevel += 1;
-                    
+
                     // TODO: Remove from oxygen tank supply 
                 }
 
@@ -40,6 +52,8 @@ public class OxygenController : MonoBehaviour
                         TileOxygen(nextTile);
                     }
                 }
+
+
             }
         }
     }
@@ -95,6 +109,7 @@ public class OxygenController : MonoBehaviour
     private void TileOxygen(TileOWW tile)
     {
 
+
         if (tile.oxygenLevel < 0.01)
         {
             // Debug.Log("Cancelled because oxygen was less than 0.01");
@@ -102,6 +117,7 @@ public class OxygenController : MonoBehaviour
         }
 
         
+
 
         List<TileOWW> tileSpreads = new List<TileOWW>(); // Neighbour tiles that can accept oxygen.
         float oxygenTotal = tile.oxygenLevel; // Total oxygen of this tile and of neughour tiles that can accept oxygen 
@@ -167,13 +183,27 @@ public class OxygenController : MonoBehaviour
 
         foreach (TileOWW tileSpread in tileSpreads)
         {
-            tileSpread.oxygenLevel = oxygenOutput;
 
-            oxygenTileQueue.Enqueue(tileSpread);
+            tileSpread.oxygenLevel = oxygenOutput;
+            if (tileSpread.GetTileType() != "Hull")
+            {
+                UpdateOxygenSprite(tileSpread);
+                tileSpread.oxygenLevel = 0;
+                if (!oxygenDecayQueue.Contains(tileSpread))
+                {
+                    oxygenDecayQueue.Enqueue(tileSpread);
+                }
+            }
+            else
+            {
+                oxygenTileQueue.Enqueue(tileSpread);
+            }
         }
         // Debug.Log(tile.ToString() + "|| Input: " + tile.oxygenLevel + " Total: " + oxygenTotal + " Output: " + oxygenOutput);
         // GetOxygenCount();
         UpdateOxygenSprite(tile);
+
+        
     }
 
 
@@ -184,7 +214,15 @@ public class OxygenController : MonoBehaviour
         {
             // Create room graphics 
             t = Resources.Load<Tile>("TileSets/Rooms/Oxygen");
-            t.color = new Color(0.227451f, 0.7294118f, 0.9960784f, tileOWW.oxygenLevel);
+            if (tileOWW.GetTileType() == "Hull")
+            {
+                t.color = new Color(0.227451f, 0.7294118f, 0.9960784f, tileOWW.oxygenLevel);
+            }
+            else
+            {
+                t.color = new Color(0.9215686f, 0.5764706f, 0.1176471f);
+                // TODO: Notification 
+            }
 
             tilemap.SetTile(new Vector3Int(tileOWW.GetX(), tileOWW.GetY(), 0), t);
             tilemap.RefreshTile(new Vector3Int(tileOWW.GetX(), tileOWW.GetY(), 0));
