@@ -41,8 +41,25 @@ public class FurnitureSpriteController : MonoBehaviour
                 go.transform.position = new Vector3(tileOWW.GetX(), tileOWW.GetY(), 0);
                 NavMeshObstacle nma = go.AddComponent<NavMeshObstacle>();
                 nma.center = new Vector3(0.5f, 0.5f);
-                nma.size = new Vector3(0.5f, 0.5f, 1f);
-                nma.carving = true;
+                
+                // Set parameters depending on the furniture type 
+                if (tileOWW.GetInstalledFurniture().GetFurnitureType() == "Wall")
+                {
+                    nma.carving = true;
+                    nma.size = new Vector3(0.5f, 0.5f, 1f);
+                }
+                else if (tileOWW.GetInstalledFurniture().GetFurnitureType() == "Airlock")
+                {
+                    nma.size = new Vector3(1f, 1f, 1f);
+                    go.AddComponent<AirlockDoor>();
+                    BoxCollider boxCollider = go.AddComponent<BoxCollider>();
+                    boxCollider.center = new Vector3(0.5f, 0.5f);
+                    boxCollider.isTrigger = true;
+                    Rigidbody rigidbody = go.AddComponent<Rigidbody>();
+                    rigidbody.useGravity = false;
+                    rigidbody.constraints = RigidbodyConstraints.FreezeAll;
+
+                }
                 tileNavBlockMap.Add(tileOWW, go);
             }
 
