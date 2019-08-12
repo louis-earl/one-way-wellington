@@ -54,7 +54,7 @@ public class WorldController : MonoBehaviour
 
     private void UpdateAllTiles()
     {
-        foreach (TileOWW tile in world.GetTiles())
+        foreach (TileOWW tile in world.GetAllTiles())
         {
             TileSpriteController.Instance.UpdateTile(tile);
             FurnitureSpriteController.Instance.UpdateFurniture(tile);

@@ -754,7 +754,7 @@ public class BuildModeController : MonoBehaviour
 
     private void InstantiateGridTiles(World world)
     {
-        foreach (TileOWW tile in world.GetTiles())
+        foreach (TileOWW tile in world.GetAllTiles())
         {
             UnityEngine.Tilemaps.Tile t = ScriptableObject.CreateInstance<UnityEngine.Tilemaps.Tile>();
             t.sprite = TileType.Grid;

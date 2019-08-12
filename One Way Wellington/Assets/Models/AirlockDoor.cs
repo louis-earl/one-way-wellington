@@ -16,6 +16,9 @@ public class AirlockDoor : MonoBehaviour
             // Open door texure
             RuleTile t = Resources.Load<RuleTile>("TileSets/Furniture/Airlock_Open");
             FurnitureSpriteController.Instance.tilemap.SetTile(new Vector3Int((int) gameObject.transform.position.x, (int) gameObject.transform.position.y, 0), t);
+
+            // Allow oxygen flow 
+            WorldController.Instance.GetWorld().GetTileAt((int)gameObject.transform.position.x, (int)gameObject.transform.position.y).GetInstalledFurniture().SetFurnitureType("Airlock_Open");
         }
     }
 
@@ -29,6 +32,9 @@ public class AirlockDoor : MonoBehaviour
             // Close door texure
             RuleTile t = Resources.Load<RuleTile>("TileSets/Furniture/Airlock");
             FurnitureSpriteController.Instance.tilemap.SetTile(new Vector3Int((int)gameObject.transform.position.x, (int)gameObject.transform.position.y, 0), t);
+
+            // Block oxygen flow 
+            WorldController.Instance.GetWorld().GetTileAt((int)gameObject.transform.position.x, (int)gameObject.transform.position.y).GetInstalledFurniture().SetFurnitureType("Airlock");
         }
     }
 }
