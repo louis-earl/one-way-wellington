@@ -27,7 +27,7 @@ public class TileSpriteController : MonoBehaviour
 
     public void InstantiateTiles(World world)
     {
-        foreach (TileOWW tile in world.GetTiles())
+        foreach (TileOWW tile in world.GetAllTiles())
         {
             Tile t = ScriptableObject.CreateInstance<Tile>();
             t.sprite = TileType.Empty;
