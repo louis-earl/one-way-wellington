@@ -34,13 +34,13 @@ public class OxygenController : MonoBehaviour
             {
                 decayTile.oxygenLevel = 0;
                 UpdateOxygenSprite(decayTile, 0);
-                Debug.Log("Decayed this tile: " + decayTile.ToString());
+                Debug.Log("Oxygen escaped at this tile: " + decayTile.ToString());
             }
 
         }
 
-        // Add oxygen 
-        // VentOxygen();
+        // Add oxygen at each Oxygen Vent 
+        VentOxygen();
 
         // Put all tiles with oxygen into the queue tilesToCheck
         // And dictionary oxygenCurrent
@@ -85,7 +85,6 @@ public class OxygenController : MonoBehaviour
             // Check for oxygen escape! 
             if (currentTile.GetTileType() != "Hull")
             {
-                Debug.Log("Found a decay!");
                 currentTile.oxygenLevel = 0;
                 if (!oxygenDecayQueue.Contains(currentTile))
                 {
@@ -109,7 +108,6 @@ public class OxygenController : MonoBehaviour
         Debug.Log("Current oxygen level is: " + total);
     }
 
-    // DEBUG FUNCTION 
     public void VentOxygen()
     {
         if (BuildModeController.Instance.furnitureTileOWWMap.ContainsKey("Oxygen Vent"))
