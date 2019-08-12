@@ -681,14 +681,11 @@ public class BuildModeController : MonoBehaviour
             }
         }
 
-        // Remove from map of furnitureType TileOWW
-        Debug.Log(furnitureTileOWWMap[furnitureType].Contains(tile));
-        
+        // Remove from map of furnitureType TileOWW        
         while (furnitureTileOWWMap[furnitureType].Contains(tile))
         {
             furnitureTileOWWMap[furnitureType].Remove(tile);
         }
-        Debug.Log(furnitureTileOWWMap[furnitureType].Contains(tile));
     }
 
     public void PlaceRoom(List<TileOWW> room_tiles, string roomType)
