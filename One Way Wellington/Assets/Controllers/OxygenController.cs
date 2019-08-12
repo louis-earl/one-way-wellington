@@ -118,7 +118,7 @@ public class OxygenController : MonoBehaviour
                 // Check oxygen vent tile first 
                 if (tile.oxygenLevel < 1)
                 {
-                    tile.oxygenLevel += 1;
+                    tile.oxygenLevel += 0.25f;
                     // TODO: Remove from oxygen tank supply 
                 }
             }
