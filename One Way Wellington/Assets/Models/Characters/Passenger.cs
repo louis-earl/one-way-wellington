@@ -28,6 +28,9 @@ public class Passenger : Character
         base.Init();
 
         // Setup from here onwards!
+        jobQueue = JobQueueController.PassengersJobQueue;
+
+        // Default needs 
         energy = 100f;
         health = 100f;
         nourishment = 100f;
@@ -147,7 +150,7 @@ public class Passenger : Character
 
         if (targetJob == null)
         {
-            targetJob = JobQueueController.PassengersJobQueue.GetNextJob(new Vector2(currentX, currentY), failedJobs);
+            targetJob = jobQueue.GetNextJob(new Vector2(currentX, currentY), failedJobs);
             if (targetJob == null)
             {
                 // We are idle

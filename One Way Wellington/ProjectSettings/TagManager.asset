@@ -39,12 +39,12 @@ TagManager:
   - 
   - 
   m_SortingLayers:
-  - name: Default
-    uniqueID: 0
-    locked: 0
   - name: Background
     uniqueID: 3946839371
     locked: 0
   - name: Ship
     uniqueID: 3394876491
+    locked: 0
+  - name: Default
+    uniqueID: 0
     locked: 0

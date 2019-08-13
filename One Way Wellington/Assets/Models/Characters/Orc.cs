@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Builder : Staff
+public class Orc : Enemy
 {
     
     protected override void Init()
@@ -12,7 +12,7 @@ public class Builder : Staff
         base.Init();
 
         // Setup from here onwards
-        jobQueue = JobQueueController.BuildersJobQueue;
+        jobQueue = JobQueueController.OrcsJobQueue;
     }
 
     protected override void Refresh()
@@ -30,7 +30,7 @@ public class Builder : Staff
             if (targetJob == null)
             {
                 // We are idle
-                // Go to storage and enter low power mode 
+                
             }
         }
         

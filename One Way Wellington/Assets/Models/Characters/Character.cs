@@ -17,6 +17,8 @@ public class Character : MonoBehaviour
     protected NavMeshAgent navMeshAgent;
     protected SpriteRenderer spriteRenderer;
 
+    protected JobQueue jobQueue;
+
     private void Start()
     {
         Init();
@@ -33,7 +35,7 @@ public class Character : MonoBehaviour
         spriteRenderer.transform.localPosition = new Vector3(0f, 0f, 0.25f);
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         Refresh();
     }
@@ -62,7 +64,7 @@ public class Character : MonoBehaviour
             else
             {
                 failedJobs.Add(targetJob);
-                JobQueueController.BuildersJobQueue.AddJob(targetJob);
+                jobQueue.AddJob(targetJob);
                 targetJob = currentJob = null;
             }
         }
@@ -73,7 +75,7 @@ public class Character : MonoBehaviour
             if (Vector3.Distance(new Vector3(currentX, currentY), new Vector3(currentJob.GetJobPosX(), currentJob.GetJobPosY())) < 2)
             {
                 // Do job until finished 
-                if (currentJob.DoJob(Time.deltaTime))
+                if (currentJob.DoJob(Time.fixedDeltaTime))
                 {
                     if (currentJob == targetJob)
                     {

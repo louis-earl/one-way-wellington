@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Builder : Staff
+public class Guard : Staff
 {
     
     protected override void Init()
@@ -12,7 +12,7 @@ public class Builder : Staff
         base.Init();
 
         // Setup from here onwards
-        jobQueue = JobQueueController.BuildersJobQueue;
+        jobQueue = JobQueueController.GuardsJobQueue;
     }
 
     protected override void Refresh()
@@ -23,7 +23,11 @@ public class Builder : Staff
         // Program from here onwards
 
 
-        // Find and set a target/current jobs
+
+
+        /*
+         * Find and set a target/current jobs
+         * We don't want global jobs for Guards at this stage
         if (targetJob == null)
         {
             targetJob = jobQueue.GetNextJob(new Vector2(currentX, currentY), failedJobs);
@@ -33,6 +37,12 @@ public class Builder : Staff
                 // Go to storage and enter low power mode 
             }
         }
-        
+
+        */
+
+
+        // Find enemy 
+
+
     }
 }

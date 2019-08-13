@@ -73,7 +73,7 @@ public class Staff : Character
 
                         if (targetJob.GetJobType() != "UseChargingPad")
                         {
-                            JobQueueController.BuildersJobQueue.AddJob(targetJob);
+                            jobQueue.AddJob(targetJob);
                             targetJob = currentJob = null;
                         }
                         Action rechargeAction = delegate () { UseChargingPad(); };

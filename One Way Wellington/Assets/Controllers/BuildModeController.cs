@@ -190,7 +190,7 @@ public class BuildModeController : MonoBehaviour
     {    
         if (furnitureType.cost > CurrencyController.Instance.GetBankBalance())
         {
-            Debug.Log("Couldn't affoard.");
+            // Debug.Log("Couldn't affoard.");
             return false;
         }
 
@@ -202,22 +202,22 @@ public class BuildModeController : MonoBehaviour
                 TileOWW t = WorldController.Instance.GetWorld().GetTileAt(tile.GetX() + i, tile.GetY() + j);
                 if ((t.GetTileType() == "Hull" && furnitureType.exteriorOnly) || (t.GetTileType() == "Empty" && !furnitureType.exteriorOnly))
                 {
-                    Debug.Log("Interior / exterior check failed.");
+                    // Debug.Log("Interior / exterior check failed.");
                     return false;
                 }
                 if (t.installedFurnitureAltX != null || t.installedFurnitureAltY != null)
                 {
-                    Debug.Log("Multi-tile furniture check failed.");
+                    // Debug.Log("Multi-tile furniture check failed.");
                     return false;
                 }
                 if (t.GetInstalledFurniture() != null)
                 {
-                    Debug.Log("Installed furniture check failed");
+                    // Debug.Log("Installed furniture check failed");
                     return false;
                 }
                 if (t.currentJobType != null)
                 {
-                    Debug.Log("Existing job check failed.");
+                    // Debug.Log("Existing job check failed.");
                     return false;
                 }
             }
