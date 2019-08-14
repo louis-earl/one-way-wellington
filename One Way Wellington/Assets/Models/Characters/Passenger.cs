@@ -71,9 +71,35 @@ public class Passenger : Character
         hygiene = Mathf.Clamp(hygiene - (1 * Time.deltaTime), 0, 100);
         bladder = Mathf.Clamp(bladder - (1 * Time.deltaTime), 0, 100);
         nourishment = Mathf.Clamp(nourishment - (1 * Time.deltaTime), 0, 100);
-        oxygen = Mathf.Clamp(oxygen - (1 * Time.deltaTime), 0, 100);
+        oxygen = Mathf.Clamp(oxygen - (0.02f * Time.deltaTime), 0, 1);
+
+
+        // Restore oxygen
+        TileOWW currentTile = WorldController.Instance.GetWorld().GetTileAt((int) currentX, (int) currentY);
+        float oxygenDeficit = 1 - oxygen;
+        float maxRegen = currentTile.oxygenLevel / 10;
+
+        // Oxygen intake limited to 1/10th of a tiles oxygen level 
+        if (oxygenDeficit < maxRegen)
+        {
+            oxygen += oxygenDeficit;
+            currentTile.oxygenLevel -= oxygenDeficit;
+        }
+        else
+        {
+            oxygen += maxRegen;
+            currentTile.oxygenLevel -= maxRegen;
+        }
 
         // Order needs by priority
+
+
+        if (oxygen == 0)
+        {
+            Debug.Log("Oxygen 0");
+            health -= 1;
+        }
+
 
         if (bladder == 0)
         {

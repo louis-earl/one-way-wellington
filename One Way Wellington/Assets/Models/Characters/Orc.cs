@@ -62,7 +62,7 @@ public class Orc : Enemy
                     Debug.DrawRay(transform.position, (target.transform.position - transform.position), Color.red);
                     if (hit.transform.parent.TryGetComponent(characterType, out Component componentInSight))
                     {
-                        Action attackAction = delegate () { Debug.Log("Attack!!"); target.GetComponentInParent<Character>().TakeDamage(25); };
+                        Action attackAction = delegate () {target.GetComponentInParent<Character>().TakeDamage(25); };
                         targetJob = new Job(attackAction, target.GetComponentInParent<Character>(), 1f, "attack");
                     }
                 }
