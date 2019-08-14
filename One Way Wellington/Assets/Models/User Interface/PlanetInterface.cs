@@ -83,6 +83,8 @@ public class PlanetInterface : MonoBehaviour
             GameObject passengerGO = Instantiate(passengerPrefab, stairwellPos, Quaternion.identity);
             int distance = (int)Vector2.Distance(planet.GetPlanetCoordinates(), Vector2.zero);
 
+            passengerGO.transform.parent = JourneyController.Instance.passengerParent.transform;
+
             passengerGO.GetComponent<Passenger>().SetPassengerInformation(
                 potentialPassenger.GetPassengerFirstName() + " " + potentialPassenger.GetPassengerLastName() + ".",
                 potentialPassenger.GetPassengerOccupation(),
