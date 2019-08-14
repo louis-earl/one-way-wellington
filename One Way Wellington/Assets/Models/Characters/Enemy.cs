@@ -5,8 +5,7 @@ using UnityEngine;
 
 public class Enemy : Character
 {
-    // Staff needs 
-    protected float health;
+
 
     // Interface
     public static GameObject staffUIInstance;

@@ -17,7 +17,6 @@ public class Passenger : Character
     protected float bladder;
     protected float hygiene;
     protected float energy;
-    protected float health;
 
     // Interface
     public static GameObject passengerUIInstance;

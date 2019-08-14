@@ -7,7 +7,6 @@ public class Staff : Character
 {
     // Staff needs 
     protected float energy;
-    protected float health;
 
     // Interface
     public static GameObject staffUIInstance;

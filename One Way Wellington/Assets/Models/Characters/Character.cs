@@ -9,6 +9,8 @@ public class Character : MonoBehaviour
     protected float currentY;
     protected Sprite sprite;
 
+    protected float health;
+
     // Jobs 
     public Job targetJob; // The base job object
     public Job currentJob; // Any prerequisite jobs of the base object must be completed first 
@@ -72,24 +74,36 @@ public class Character : MonoBehaviour
         // Check if at job location
         if (currentJob != null)
         {
-            if (Vector3.Distance(new Vector3(currentX, currentY), new Vector3(currentJob.GetJobPosX(), currentJob.GetJobPosY())) < 2)
-            {
-                // Do job until finished 
-                if (currentJob.DoJob(Time.fixedDeltaTime))
+            // For tile based job
+            if (Vector3.Distance(new Vector3(currentX, currentY), new Vector3(currentJob.GetJobPosX(), currentJob.GetJobPosY())) < 1)
+            {               
+                DoJobTick();
+            }
+            // For character based job
+            if (currentJob.GetCharacter() != null) {
+                if (Vector3.Distance(transform.position, currentJob.GetCharacter().transform.position) < 1)
                 {
-                    if (currentJob == targetJob)
-                    {
-                        currentJob.GetTileOWW().currentJobType = null;
-                        JobSpriteController.Instance.UpdateJob(currentJob.GetTileOWW());
-                        currentJob = targetJob = null;
-                        navMeshAgent.SetDestination(new Vector3(currentX, currentY, 0));
-                        failedJobs.Clear();
-                    }
-                    else currentJob = null;
+                    DoJobTick();
                 }
             }
         }
+    }
 
+    // Do job until finished 
+    public void DoJobTick()
+    {
+        if (currentJob.DoJob(Time.fixedDeltaTime))
+        {
+            if (currentJob == targetJob)
+            {
+                currentJob.GetTileOWW().currentJobType = null;
+                JobSpriteController.Instance.UpdateJob(currentJob.GetTileOWW());
+                currentJob = targetJob = null;
+                navMeshAgent.SetDestination(new Vector3(currentX, currentY, 0));
+                failedJobs.Clear();
+            }
+            else currentJob = null;
+        }
     }
 
     public float GetXPos()
@@ -100,6 +114,19 @@ public class Character : MonoBehaviour
     public float GetYPos()
     {
         return currentY;
+    }
+
+    public void TakeDamage(float damage)
+    {
+
+        Debug.Log("Taking damage: " + damage);
+        health -= damage;
+
+        if (health < 0)
+        {
+            Debug.Log("Character died");
+            Destroy(gameObject);
+        }
     }
 
 }

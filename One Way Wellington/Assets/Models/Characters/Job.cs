@@ -7,6 +7,7 @@ public class Job
 {
     protected Job prerequisiteJob;
     protected TileOWW tileOWW;
+    protected Character character;
     protected float jobTime;
     protected string jobType;
     protected Action action;
@@ -28,6 +29,18 @@ public class Job
         jobPosX = tileOWW.GetX();
         jobPosY = tileOWW.GetY();
     }
+
+    // Chase jobs not restricted to a single tileOWW 
+    public Job(Action action, Character character, float jobTime, string jobType, Job prerequisiteJob = null)
+    {
+        this.action = action;
+        this.character = character;
+        this.jobTime = jobTime;
+        this.jobType = jobType;
+        this.prerequisiteJob = prerequisiteJob;
+
+    }
+
 
     // Constructor used when loading game, because actions can't be serialized 
     public Job(TileOWW tileOWW, float jobTime, string jobType, Job prerequisiteJob = null)
@@ -59,11 +72,18 @@ public class Job
         this.jobType = jobType;
         this.prerequisiteJob = prerequisiteJob;
         tileOWW.currentJobType = jobType;
-    } 
+    }
 
     public Vector3 GetLocation()
     {
-        return new Vector3(jobPosX + 0.5f, jobPosY + 0.5f, 0);
+        if (tileOWW != null)
+        {
+            return new Vector3(jobPosX + 0.5f, jobPosY + 0.5f, 0);
+        }
+        else
+        {
+            return character.transform.position;
+        }
     }
 
     public TileOWW GetTileOWW()
@@ -79,7 +99,10 @@ public class Job
             // tileOWW.currentJob = null;
             JobSpriteController.Instance.UpdateJob(tileOWW);
             action?.Invoke();
-            tileOWW.currentJobType = null;
+            if (tileOWW != null)
+            {
+                tileOWW.currentJobType = null;
+            }
             return true;
         }
         return false;
@@ -124,6 +147,11 @@ public class Job
     public int GetJobPosY()
     {
         return jobPosY;
+    }
+
+    public Character GetCharacter()
+    {
+        return character;
     }
 
 }

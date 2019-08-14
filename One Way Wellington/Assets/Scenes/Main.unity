@@ -8228,7 +8228,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Enemy Event
+  m_Text: Spawn Enemy
 --- !u!222 &1081990551
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -18724,7 +18724,7 @@ GameObject:
   - component: {fileID: 2118280818}
   - component: {fileID: 2118280817}
   m_Layer: 5
-  m_Name: DEBUG_EnemyEvent
+  m_Name: DEBUG_SpawnEnemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

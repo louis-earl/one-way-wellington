@@ -17,6 +17,8 @@ public class JobSpriteController : MonoBehaviour
 
     public void UpdateJob(TileOWW tileOWW)
     {
+        if (tileOWW == null) return;
+
         RuleTile t;
         if (tileOWW.currentJobType != null)
         {
