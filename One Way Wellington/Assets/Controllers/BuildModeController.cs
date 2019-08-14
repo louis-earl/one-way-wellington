@@ -681,14 +681,11 @@ public class BuildModeController : MonoBehaviour
             }
         }
 
-        // Remove from map of furnitureType TileOWW
-        Debug.Log(furnitureTileOWWMap[furnitureType].Contains(tile));
-        
+        // Remove from map of furnitureType TileOWW        
         while (furnitureTileOWWMap[furnitureType].Contains(tile))
         {
             furnitureTileOWWMap[furnitureType].Remove(tile);
         }
-        Debug.Log(furnitureTileOWWMap[furnitureType].Contains(tile));
     }
 
     public void PlaceRoom(List<TileOWW> room_tiles, string roomType)
@@ -757,7 +754,7 @@ public class BuildModeController : MonoBehaviour
 
     private void InstantiateGridTiles(World world)
     {
-        foreach (TileOWW tile in world.GetTiles())
+        foreach (TileOWW tile in world.GetAllTiles())
         {
             UnityEngine.Tilemaps.Tile t = ScriptableObject.CreateInstance<UnityEngine.Tilemaps.Tile>();
             t.sprite = TileType.Grid;

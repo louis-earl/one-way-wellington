@@ -35,7 +35,7 @@ public class World
         else return null;
     }
 
-    public TileOWW[,] GetTiles()
+    public TileOWW[,] GetAllTiles()
     {
         return tiles;
     }

@@ -8,183 +8,200 @@ public class OxygenController : MonoBehaviour
 {
     public Tilemap tilemap;
 
-    Queue<TileOWW> oxygenTileQueue;
-    HashSet<TileOWW> checkedTiles;
 
-    // TODO: Working recursion so Unity doesn't crash!
+
+    HashSet<TileOWW> uncheckedTiles;
+    Queue<TileOWW> tilesToCheck;
+    Dictionary<TileOWW, List<TileOWW>> oxygenTileGroups;
+
+    
+
+    private static readonly float VENT_FLOW = 0.5f; // Flow from Oxygen Vent per FixedUpdate 
+
+
     public void FixedUpdate()
     {
-        if (BuildModeController.Instance.furnitureTileOWWMap.ContainsKey("Oxygen Vent")) {
-            foreach (TileOWW tile in BuildModeController.Instance.furnitureTileOWWMap["Oxygen Vent"])
-            {
-                oxygenTileQueue = new Queue<TileOWW>();
-                checkedTiles = new HashSet<TileOWW>();
-
-                // Check oxygen vent tile first 
-                if (tile.oxygenLevel < 1)
-                {
-                    tile.oxygenLevel += 1;
-                    
-                    // TODO: Remove from oxygen tank supply 
-                }
-
-                TileOxygen(tile);
-
-                // Check other tiles added in queue 
-                while (oxygenTileQueue.Count > 0)
-                {
-                    TileOWW nextTile = oxygenTileQueue.Dequeue();
-                    // If tile not already checked 
-                    if (!checkedTiles.Contains(nextTile))
-                    {
-                        TileOxygen(nextTile);
-                    }
-                }
-            }
-        }
-    }
+        // Clear dictionaries
+        tilesToCheck = new Queue<TileOWW>();
+        oxygenTileGroups = new Dictionary<TileOWW, List<TileOWW>>();
+        uncheckedTiles = new HashSet<TileOWW>();
 
 
-    IEnumerator UpdateOxygen()
-    {
-        if (BuildModeController.Instance.furnitureTileOWWMap.ContainsKey("Oxygen Vent"))
+        // Put all tiles with oxygen into the queue tilesToCheck
+        foreach (TileOWW tileOWW in WorldController.Instance.GetWorld().GetAllTiles())
         {
-            foreach (TileOWW tile in BuildModeController.Instance.furnitureTileOWWMap["Oxygen Vent"])
+            if (tileOWW.GetTileType() == "Hull" && tileOWW.GetInstalledFurniture()?.GetFurnitureType() != "Wall" && tileOWW.GetInstalledFurniture()?.GetFurnitureType() != "Airlock") 
             {
-                oxygenTileQueue = new Queue<TileOWW>();
-                checkedTiles = new HashSet<TileOWW>();
+                tilesToCheck.Enqueue(tileOWW);
+             }
 
-                // Check oxygen vent tile first 
-                if (tile.oxygenLevel < 1)
+            // We still want to check empty tiles for oxygen loss
+            uncheckedTiles.Add(tileOWW);
+
+        }
+
+        // Add oxygen via Vents 
+        VentOxygen();
+
+        // Go through all tiles in tilesToCheck
+        while (tilesToCheck.Count > 0)
+        {
+            // Origin tile is used as a key in oxygenTileGroups
+            TileOWW originTile = tilesToCheck.Dequeue();
+            if (uncheckedTiles.Contains(originTile))
+            {
+                oxygenTileGroups.Add(originTile, new List<TileOWW>());
+                TileOxygen(originTile, originTile);
+            }
+
+        }
+
+        Debug.Log("Number of oxygen groups: " + oxygenTileGroups.Count);
+
+        // Go through all tile groups 
+        foreach(TileOWW originTile in oxygenTileGroups.Keys)
+        {
+            // Get total amount of oxygen in group 
+            float oxygenTotal = 0;
+            foreach(TileOWW tile in oxygenTileGroups[originTile])
+            {
+                if (tile.GetTileType() == "Empty")
                 {
-                    tile.oxygenLevel += 1;
-
-                    // TODO: Remove from oxygen tank supply 
+                    oxygenTotal = 0;
+                    break;
                 }
-
-                TileOxygen(tile);
-
-                // Check other tiles added in queue 
-                while (oxygenTileQueue.Count > 0)
+                else
                 {
-                    TileOWW nextTile = oxygenTileQueue.Dequeue();
-                    // If tile not already checked 
-                    if (!checkedTiles.Contains(nextTile))
-                    {
-                        TileOxygen(nextTile);
-                    }
-                    yield return null;
+                    oxygenTotal += tile.oxygenLevel;
                 }
             }
+
+            float oxygenOutput = oxygenTotal / oxygenTileGroups[originTile].Count;
+
+            // Set all tiles in group average oxygen value 
+
+            foreach (TileOWW tile in oxygenTileGroups[originTile])
+            {
+                tile.oxygenLevel = oxygenOutput;
+                UpdateOxygenSprite(tile, oxygenOutput);
+            }
+
         }
+
     }
 
 
-
-        // Gets the total amount of oxygen from every tile 
+    // DEBUG FUNCTION 
+    // Gets the total amount of oxygen from every tile 
     public void GetOxygenCount()
     {
         float total = 0;
-        foreach (TileOWW tileOWW in WorldController.Instance.GetWorld().GetTiles())
+        foreach (TileOWW tileOWW in WorldController.Instance.GetWorld().GetAllTiles())
         {
             total += tileOWW.oxygenLevel;
         }
         Debug.Log("Current oxygen level is: " + total);
     }
 
-    private void TileOxygen(TileOWW tile)
-    {
 
-        if (tile.oxygenLevel < 0.01)
+    public void VentOxygen()
+    {
+        if (BuildModeController.Instance.furnitureTileOWWMap.ContainsKey("Oxygen Vent"))
         {
-            // Debug.Log("Cancelled because oxygen was less than 0.01");
+
+            foreach (TileOWW tile in BuildModeController.Instance.furnitureTileOWWMap["Oxygen Vent"])
+            {
+                // Check oxygen vent tile first 
+                if (tile.oxygenLevel < 1)
+                {
+                    tile.oxygenLevel += VENT_FLOW;
+                    // TODO: Remove from oxygen tank supply 
+                }
+            }
+        }
+    }
+
+
+
+    private void TileOxygen(TileOWW originTile, TileOWW nextTile)
+    {
+        // Base case #1 
+        if (nextTile.GetInstalledFurniture()?.GetFurnitureType() == "Wall" || nextTile.GetInstalledFurniture()?.GetFurnitureType() == "Airlock")
+        {
             return;
         }
 
-        
+        // Base case #2 
+        if (!uncheckedTiles.Contains(nextTile))
+        {
+            return;
+        }
 
-        List<TileOWW> tileSpreads = new List<TileOWW>(); // Neighbour tiles that can accept oxygen.
-        float oxygenTotal = tile.oxygenLevel; // Total oxygen of this tile and of neughour tiles that can accept oxygen 
+        // Main
+        oxygenTileGroups[originTile].Add(nextTile);
+        if (uncheckedTiles.Contains(nextTile)) uncheckedTiles.Remove(nextTile);
 
-        TileOWW tileNorth = WorldController.Instance.GetWorld().GetTileAt(tile.GetX(), tile.GetY() + 1);
-        TileOWW tileEast = WorldController.Instance.GetWorld().GetTileAt(tile.GetX() + 1, tile.GetY());
-        TileOWW tileSouth = WorldController.Instance.GetWorld().GetTileAt(tile.GetX(), tile.GetY() - 1);
-        TileOWW tileWest = WorldController.Instance.GetWorld().GetTileAt(tile.GetX() - 1, tile.GetY());
+        // Base case #3 
+        // Note we still add this tile to the group without spreading to other tiles 
+        if (nextTile.GetTileType() == "Empty")
+        {
+            return;
+        }
 
-        
-
+        // Spread to next tiles 
+        TileOWW tileNorth = WorldController.Instance.GetWorld().GetTileAt(nextTile.GetX(), nextTile.GetY() + 1);
+        TileOWW tileEast = WorldController.Instance.GetWorld().GetTileAt(nextTile.GetX() + 1, nextTile.GetY());
+        TileOWW tileSouth = WorldController.Instance.GetWorld().GetTileAt(nextTile.GetX(), nextTile.GetY() - 1);
+        TileOWW tileWest = WorldController.Instance.GetWorld().GetTileAt(nextTile.GetX() - 1, nextTile.GetY());
+      
         if (tileNorth != null)
         {
-            if (tileNorth.oxygenLevel < tile.oxygenLevel && tileNorth.GetInstalledFurniture()?.GetFurnitureType() != "Wall" && tileNorth.GetInstalledFurniture()?.GetFurnitureType() != "Airlock")
             {
-                
-                tileSpreads.Add(tileNorth);
-                oxygenTotal += tileNorth.oxygenLevel;
-                // Debug.Log("We can operate on north tile. Oxygen total is now: " + oxygenTotal);
+                TileOxygen(originTile, tileNorth);
             }
         }
         if (tileEast != null)
         {
-            if (tileEast.oxygenLevel < tile.oxygenLevel && tileEast.GetInstalledFurniture()?.GetFurnitureType() != "Wall" && tileEast.GetInstalledFurniture()?.GetFurnitureType() != "Airlock")
             {
-                tileSpreads.Add(tileEast);
-                oxygenTotal += tileEast.oxygenLevel;
-                // Debug.Log("We can operate on east tile. Oxygen total is now: " + oxygenTotal);
-
+                TileOxygen(originTile, tileEast);
             }
         }
         if (tileSouth != null)
         {
-            if (tileSouth.oxygenLevel < tile.oxygenLevel && tileSouth.GetInstalledFurniture()?.GetFurnitureType() != "Wall" && tileSouth.GetInstalledFurniture()?.GetFurnitureType() != "Airlock")
             {
-                tileSpreads.Add(tileSouth);
-                oxygenTotal += tileSouth.oxygenLevel;
-                // Debug.Log("We can operate on south tile. Oxygen total is now: " + oxygenTotal);
-
+                TileOxygen(originTile, tileSouth);
             }
         }
         if (tileWest != null)
         {
-            if (tileWest.oxygenLevel < tile.oxygenLevel && tileWest.GetInstalledFurniture()?.GetFurnitureType() != "Wall" && tileWest.GetInstalledFurniture()?.GetFurnitureType() != "Airlock")
             {
-                tileSpreads.Add(tileWest);
-                oxygenTotal += tileWest.oxygenLevel;
-                // Debug.Log("We can operate on west tile. Oxygen total is now: " + oxygenTotal);
-
+                TileOxygen(originTile, tileWest);
             }
         }
-        float oxygenOutput = oxygenTotal / (tileSpreads.Count + 1); // New oxygen level of this tile and neighour tiles 
 
-        // Debug.Log("Oxygen output per tile is: " + oxygenOutput);
 
-        tile.oxygenLevel = oxygenOutput;
-        if (oxygenOutput > 1)
-        {
-            // Debug.LogWarning("Tiles oxygen level is > 1: " + tile.ToString());
-        }
-
-        checkedTiles.Add(tile);
-
-        foreach (TileOWW tileSpread in tileSpreads)
-        {
-            tileSpread.oxygenLevel = oxygenOutput;
-
-            oxygenTileQueue.Enqueue(tileSpread);
-        }
-        // Debug.Log(tile.ToString() + "|| Input: " + tile.oxygenLevel + " Total: " + oxygenTotal + " Output: " + oxygenOutput);
-        // GetOxygenCount();
-        UpdateOxygenSprite(tile);
+   
     }
 
 
-    private void UpdateOxygenSprite(TileOWW tileOWW)
+
+
+    private void UpdateOxygenSprite(TileOWW tileOWW, float oxygenLevel)
     {
         Tile t;
         if (tileOWW.oxygenLevel > 0)
         {
             // Create room graphics 
             t = Resources.Load<Tile>("TileSets/Rooms/Oxygen");
-            t.color = new Color(0.227451f, 0.7294118f, 0.9960784f, tileOWW.oxygenLevel);
+            if (tileOWW.GetTileType() == "Hull")
+            {
+                t.color = new Color(0.227451f, 0.7294118f, 0.9960784f, tileOWW.oxygenLevel);
+            }
+            else
+            {
+                t.color = new Color(0.9215686f, 0.5764706f, 0.1176471f);
+                // TODO: Notification 
+            }
 
             tilemap.SetTile(new Vector3Int(tileOWW.GetX(), tileOWW.GetY(), 0), t);
             tilemap.RefreshTile(new Vector3Int(tileOWW.GetX(), tileOWW.GetY(), 0));
