@@ -116,9 +116,13 @@ public class PersistenceController : MonoBehaviour
 
             // UNLOAD 
             JobQueueController.Instance.ClearAllJobs();
+
             WorldController.Instance.ClearAllStaff();
             WorldController.Instance.ClearAllPlanets();
+
             BuildModeController.Instance.furnitureTileOWWMap.Clear();
+            BuildModeController.Instance.hullTiles = new List<TileOWW>();
+
             JourneyController.Instance.shipCoordinates = Vector2.zero;
 
 
@@ -127,6 +131,15 @@ public class PersistenceController : MonoBehaviour
             TimeController.Instance.timeOWW = saveFile.timeOWW;
             WorldController.Instance.SetWorld(saveFile.world);
 
+            // Find all current hull tiles 
+            foreach (TileOWW tile in WorldController.Instance.GetWorld().GetAllTiles())
+            {
+                if (tile.GetTileType() == "Hull")
+                {
+                    BuildModeController.Instance.hullTiles.Add(tile);
+                }
+            }
+            
 
             // STAFF
             for (int i = 0; i < saveFile.staffTypes.Length; i++)

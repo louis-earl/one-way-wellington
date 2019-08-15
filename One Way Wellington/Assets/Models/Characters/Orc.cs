@@ -25,7 +25,7 @@ public class Orc : Enemy
 
 
         // Find and set a target/current jobs
-        if (targetJob == null)
+        if (targetJob == null || targetJob?.GetJobType() == "wander")
         {
             // Not required to use global job queue yet 
             // targetJob = jobQueue.GetNextJob(new Vector2(currentX, currentY), failedJobs);
@@ -34,8 +34,9 @@ public class Orc : Enemy
 
             if (targetJob == null)
             {
-                // We are idle
-                
+                // We are idle, wander the ship 
+                Action attackAction = delegate () { };
+                targetJob = new Job(attackAction, WorldController.Instance.GetWorld().GetRandomHullTile(), 1f, "wander");
             }
         }
         
@@ -62,7 +63,7 @@ public class Orc : Enemy
                     Debug.DrawRay(transform.position, (target.transform.position - transform.position), Color.red);
                     if (hit.transform.parent.TryGetComponent(characterType, out Component componentInSight))
                     {
-                        Action attackAction = delegate () { Debug.Log("Attack!!"); target.GetComponentInParent<Character>().TakeDamage(25); };
+                        Action attackAction = delegate () { target.GetComponentInParent<Character>().TakeDamage(25); };
                         targetJob = new Job(attackAction, target.GetComponentInParent<Character>(), 1f, "attack");
                     }
                 }

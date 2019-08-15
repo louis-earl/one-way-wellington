@@ -29,6 +29,8 @@ public class BuildModeController : MonoBehaviour
 
     public Dictionary<string, List<TileOWW>> roomsTileOWWMap;
 
+    public List<TileOWW> hullTiles;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -624,11 +626,13 @@ public class BuildModeController : MonoBehaviour
     public void PlaceHull(TileOWW tile)
     {
         tile.SetTileType("Hull");
+        hullTiles.Add(tile);
     }
 
     public void RemoveHull(TileOWW tile)
     {
         tile.SetTileType("Empty");
+        hullTiles.Remove(tile);
     }
 
     public void PlaceFurniture(TileOWW tile, string furnitureType)
