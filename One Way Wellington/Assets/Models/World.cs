@@ -42,7 +42,7 @@ public class World
 
     public TileOWW GetRandomHullTile()
     {
-        TileOWW randomTile = BuildModeController.Instance.hullTiles[Random.Range(0, BuildModeController.Instance.hullTiles.Count)];
+        TileOWW randomTile = BuildModeController.Instance.emptyHullTiles[Random.Range(0, BuildModeController.Instance.emptyHullTiles.Count)];
         if (randomTile == null)
         {
             Debug.LogError("Couldn't find any hull tiles!");

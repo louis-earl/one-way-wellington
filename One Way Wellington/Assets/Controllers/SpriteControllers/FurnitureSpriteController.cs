@@ -52,12 +52,11 @@ public class FurnitureSpriteController : MonoBehaviour
                 {
                     nma.size = new Vector3(1f, 1f, 1f);
                     go.AddComponent<AirlockDoor>();
-                    BoxCollider boxCollider = go.AddComponent<BoxCollider>();
-                    boxCollider.center = new Vector3(0.5f, 0.5f);
+                    BoxCollider2D boxCollider = go.AddComponent<BoxCollider2D>();
                     boxCollider.isTrigger = true;
-                    Rigidbody rigidbody = go.AddComponent<Rigidbody>();
-                    rigidbody.useGravity = false;
-                    rigidbody.constraints = RigidbodyConstraints.FreezeAll;
+                    boxCollider.offset = new Vector2(0.5f, 0.5f);
+                    Rigidbody2D rigidbody = go.AddComponent<Rigidbody2D>();
+                    rigidbody.constraints = RigidbodyConstraints2D.FreezeAll;
 
                 }
                 tileNavBlockMap.Add(tileOWW, go);

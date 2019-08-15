@@ -85,6 +85,16 @@ public class PersistenceController : MonoBehaviour
                     }
                 }
             }
+            else if (staffGO.name == "Guard")
+            {
+                if (staffGO.GetComponent<Guard>().targetJob != null)
+                {
+                    if (staffGO.GetComponent<Guard>().targetJob.ToJobSerializable() != null)
+                    {
+                        saveFile.buildersJobQueue.Add(staffGO.GetComponent<Guard>().targetJob.ToJobSerializable());
+                    }
+                }
+            }
             else
             {
                 Debug.LogError("Staff type not specified!!");
@@ -121,7 +131,7 @@ public class PersistenceController : MonoBehaviour
             WorldController.Instance.ClearAllPlanets();
 
             BuildModeController.Instance.furnitureTileOWWMap.Clear();
-            BuildModeController.Instance.hullTiles = new List<TileOWW>();
+            BuildModeController.Instance.emptyHullTiles = new List<TileOWW>();
 
             JourneyController.Instance.shipCoordinates = Vector2.zero;
 
@@ -136,7 +146,10 @@ public class PersistenceController : MonoBehaviour
             {
                 if (tile.GetTileType() == "Hull")
                 {
-                    BuildModeController.Instance.hullTiles.Add(tile);
+                    if (tile.GetInstalledFurniture() == null && tile.installedFurnitureAltX == null && tile.installedFurnitureAltY == null)
+                    {
+                        BuildModeController.Instance.emptyHullTiles.Add(tile);
+                    }
                 }
             }
             

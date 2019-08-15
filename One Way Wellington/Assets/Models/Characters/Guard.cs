@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
@@ -13,6 +14,8 @@ public class Guard : Staff
 
         // Setup from here onwards
         jobQueue = JobQueueController.GuardsJobQueue;
+
+
     }
 
     protected override void Refresh()
@@ -22,27 +25,21 @@ public class Guard : Staff
 
         // Program from here onwards
 
-
-
-
-        /*
-         * Find and set a target/current jobs
-         * We don't want global jobs for Guards at this stage
-        if (targetJob == null)
+        if (targetJob == null || targetJob?.GetJobType() == "wander")
         {
-            targetJob = jobQueue.GetNextJob(new Vector2(currentX, currentY), failedJobs);
+            // Not required to use global job queue yet 
+            // targetJob = jobQueue.GetNextJob(new Vector2(currentX, currentY), failedJobs);
+
+            DoJobAtVisibleCharacter("Enemy");
+
             if (targetJob == null)
             {
-                // We are idle
-                // Go to storage and enter low power mode 
+                // We are idle, wander the ship 
+                Action attackAction = delegate () { };
+                targetJob = new Job(attackAction, WorldController.Instance.GetWorld().GetRandomHullTile(), 1f, "wander");
             }
         }
 
-        */
-
-
-        // Find enemy 
-
-
     }
+
 }

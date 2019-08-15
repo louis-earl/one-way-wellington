@@ -29,7 +29,7 @@ public class BuildModeController : MonoBehaviour
 
     public Dictionary<string, List<TileOWW>> roomsTileOWWMap;
 
-    public List<TileOWW> hullTiles;
+    public List<TileOWW> emptyHullTiles;
 
     public GameObject staffParent;
 
@@ -628,13 +628,13 @@ public class BuildModeController : MonoBehaviour
     public void PlaceHull(TileOWW tile)
     {
         tile.SetTileType("Hull");
-        hullTiles.Add(tile);
+        emptyHullTiles.Add(tile);
     }
 
     public void RemoveHull(TileOWW tile)
     {
         tile.SetTileType("Empty");
-        hullTiles.Remove(tile);
+        emptyHullTiles.Remove(tile);
     }
 
     public void PlaceFurniture(TileOWW tile, string furnitureType)
@@ -665,9 +665,11 @@ public class BuildModeController : MonoBehaviour
                 temp.currentJobType = null;
                 temp.installedFurnitureAltX = tile.GetX();
                 temp.installedFurnitureAltY = tile.GetY();
-
+                emptyHullTiles.Remove(tile);
             }
         }
+
+        
     }
 
     public void RemoveFurniture(TileOWW tile)
@@ -683,7 +685,7 @@ public class BuildModeController : MonoBehaviour
                 TileOWW temp = WorldController.Instance.GetWorld().GetTileAt(tile.GetX() + i, tile.GetY() + j);
                 temp.installedFurnitureAltX = null;
                 temp.installedFurnitureAltY = null;
-
+                emptyHullTiles.Add(tile);
             }
         }
 
@@ -692,6 +694,8 @@ public class BuildModeController : MonoBehaviour
         {
             furnitureTileOWWMap[furnitureType].Remove(tile);
         }
+
+        
     }
 
     public void PlaceRoom(List<TileOWW> room_tiles, string roomType)
@@ -724,7 +728,12 @@ public class BuildModeController : MonoBehaviour
         if (CurrencyController.Instance.GetBankBalance() >= 500)
         {
             GameObject staffGO = Instantiate(staff, new Vector3(x, y, 0), Quaternion.identity);
-            staffGO.name = "Builder";
+
+            if (staffGO.name.Contains("Builder")) staffGO.name = "Builder";
+            if (staffGO.name.Contains("Guard")) staffGO.name = "Guard";
+            if (staffGO.name.Contains("Maid")) staffGO.name = "Maid";
+            if (staffGO.name.Contains("Cook")) staffGO.name = "Cook";
+
             staffGO.GetComponent<Staff>().SetEnergy(energy);
             staffGO.GetComponent<Staff>().SetHealth(health);
             staffGO.transform.parent = staffParent.transform;

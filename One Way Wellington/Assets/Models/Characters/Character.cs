@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
@@ -140,6 +141,37 @@ public class Character : MonoBehaviour
             Debug.Log("Character died");
             Destroy(gameObject);
         }
+    }
+
+    // Use 2D raycast to find character in view 
+    // TODO: Return a character?
+    protected void DoJobAtVisibleCharacter(params string[] characterTag)
+    {
+        // Get a list of potential targets 
+        Collider2D[] potentialTargets = Physics2D.OverlapCircleAll(transform.position, 10);
+
+
+        foreach (Collider2D target in potentialTargets)
+        {
+            // Type check
+            if (target.transform.parent != null)
+            {
+                // Debug.Log(string.Join("", characterTag) + " -> " + target.transform.parent.tag);
+                if (string.Join("", characterTag).Contains(target.transform.parent.tag))
+                {
+
+                    // Visibility check 
+                    RaycastHit2D hit = Physics2D.Raycast(transform.position, (target.transform.position - transform.position));
+                    Debug.DrawRay(transform.position, (target.transform.position - transform.position), Color.red);
+                    if (string.Join("", characterTag).Contains(target.transform.parent.tag))
+                    {
+                        Action attackAction = delegate () { target.GetComponentInParent<Character>().TakeDamage(25); };
+                        targetJob = new Job(attackAction, target.GetComponentInParent<Character>(), 1f, "attack");
+                    }
+                }
+            }
+        }
+
     }
 
 }
