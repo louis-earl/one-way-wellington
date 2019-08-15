@@ -53,6 +53,13 @@ public class Character : MonoBehaviour
             else currentJob = targetJob.GetPrerequisiteJob();
         }
 
+        // Check if another character finished a duplicate chase job
+        if (currentJob?.GetJobType() == "attack" && currentJob?.GetCharacter() == null)
+        {
+            targetJob = currentJob = null;
+        }
+
+
         // Set path 
         if (currentJob != null)
         {
@@ -78,6 +85,7 @@ public class Character : MonoBehaviour
             if (Vector3.Distance(new Vector3(currentX, currentY), new Vector3(currentJob.GetJobPosX(), currentJob.GetJobPosY())) < 1)
             {               
                 DoJobTick();
+                return;
             }
             // For character based job
             if (currentJob.GetCharacter() != null) {
@@ -85,6 +93,7 @@ public class Character : MonoBehaviour
                 {
 
                     DoJobTick();
+                    return;
                 }
             }
         }

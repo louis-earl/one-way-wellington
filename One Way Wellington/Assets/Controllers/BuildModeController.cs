@@ -31,6 +31,8 @@ public class BuildModeController : MonoBehaviour
 
     public List<TileOWW> hullTiles;
 
+    public GameObject staffParent;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -725,7 +727,7 @@ public class BuildModeController : MonoBehaviour
             staffGO.name = "Builder";
             staffGO.GetComponent<Staff>().SetEnergy(energy);
             staffGO.GetComponent<Staff>().SetHealth(health);
-
+            staffGO.transform.parent = staffParent.transform;
             WorldController.Instance.staff.Add(staffGO);
 
             // TODO: Invoice depend on staff type
