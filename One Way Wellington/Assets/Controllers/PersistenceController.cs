@@ -91,7 +91,7 @@ public class PersistenceController : MonoBehaviour
                 {
                     if (staffGO.GetComponent<Guard>().targetJob.ToJobSerializable() != null)
                     {
-                        saveFile.buildersJobQueue.Add(staffGO.GetComponent<Guard>().targetJob.ToJobSerializable());
+                        saveFile.guardsJobQueue.Add(staffGO.GetComponent<Guard>().targetJob.ToJobSerializable());
                     }
                 }
             }
@@ -164,9 +164,16 @@ public class PersistenceController : MonoBehaviour
                         saveFile.staffEnergy[i], saveFile.staffHealth[i]);
 
                 }
+                else if (saveFile.staffTypes[i] == "Guard")
+                {
+                    BuildModeController.Instance.PlaceStaff(saveFile.staffPosX[i],
+                        saveFile.staffPosY[i], GuardPrefab,
+                        saveFile.staffEnergy[i], saveFile.staffHealth[i]);
+
+                }
                 else
                 {
-                    Debug.LogWarning("Staff type not specified in PersistenceController!");
+                    Debug.LogWarning("Staff type (" + saveFile.staffTypes[i] + ") not specified in PersistenceController!");
                 }
 
 

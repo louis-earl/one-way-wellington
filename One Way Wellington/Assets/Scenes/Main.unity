@@ -333,6 +333,7 @@ MonoBehaviour:
   hullParent: {fileID: 1005037196}
   furnitureParent: {fileID: 40579512}
   utilityParent: {fileID: 854166980}
+  emptyHullTiles: []
   staffParent: {fileID: 1366393713}
 --- !u!1 &37023595
 GameObject:
@@ -5548,7 +5549,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BuilderPrefab: {fileID: 2822388052134463289, guid: 850d7186b725d4e44be3f660f79a5c12,
     type: 3}
-  GuardPrefab: {fileID: 0}
+  GuardPrefab: {fileID: 2822388052134463289, guid: 89d8ec9012d14124abfe4ce1265de0da,
+    type: 3}
   PassengerPrefab: {fileID: 0}
 --- !u!4 &767505023
 Transform:
