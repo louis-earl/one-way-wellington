@@ -24,7 +24,7 @@ public class AirlockDoor : MonoBehaviour
 
     void OnTriggerExit2D(Collider2D other)
     {
-        if (other.gameObject.tag == "Passenger" || other.gameObject.tag == "Staff")
+        if (other.gameObject.tag == "Passenger" || other.gameObject.tag == "Guard" || other.gameObject.tag == "Builder")
         {
             // Enable collision 
             gameObject.GetComponent<NavMeshObstacle>().enabled = true;

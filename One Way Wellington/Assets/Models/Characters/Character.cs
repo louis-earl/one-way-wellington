@@ -133,15 +133,30 @@ public class Character : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
-
+        float startHealth = health;
         Debug.Log("Taking damage: " + damage);
         health -= damage;
 
         if (health < 0)
         {
-            Debug.Log("Character died");
+            if (gameObject.CompareTag("Passenger") || gameObject.CompareTag("Builder") || gameObject.CompareTag("Guard"))
+            {
+                NotificationController.Instance.CreateNotification("Your " + gameObject.tag + ", '" + gameObject.name + "' has died!", UrgencyLevel.High, null);
+            }
             Destroy(gameObject);
         }
+        else if (health < 50 && startHealth > 50)
+        {
+            if (gameObject.CompareTag("Passenger") || gameObject.CompareTag("Builder") || gameObject.CompareTag("Guard"))
+            {
+                List<Action> actions = new List<Action>()
+                {
+                    delegate () { StartCoroutine(InputController.Instance.MoveCameraTo(currentX, currentY)); }
+                };
+                NotificationController.Instance.CreateNotification("Your " + gameObject.tag + ", '" + gameObject.name + "' is low on health!", UrgencyLevel.Medium, actions);
+            }
+        }
+        
     }
 
     // Use 2D raycast to find character in view 

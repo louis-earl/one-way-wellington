@@ -373,4 +373,18 @@ public class InputController : MonoBehaviour
         }
     }
 
+    public IEnumerator MoveCameraTo(float cameraPosX, float cameraPosY)
+    {
+        Vector3 newCameraPos = new Vector3(cameraPosX, cameraPosY, -10);
+    
+        while (Vector3.Distance(Camera.main.transform.position, newCameraPos) > 0.1f)
+        {
+            Camera.main.transform.position = Vector3.Lerp(newCameraPos, Camera.main.transform.position, 0.5f);
+            yield return new WaitForSeconds(Time.deltaTime);
+        }
+        
+    }
+
+
+    
 }
