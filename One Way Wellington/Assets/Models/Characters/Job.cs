@@ -11,19 +11,26 @@ public class Job
     protected float jobTime;
     protected string jobType;
     protected Action action;
+    public bool tileExcludeOtherJobs;
 
     // If a job location is different from the actual tile being worked on
     protected int jobPosX;
     protected int jobPosY;
 
-    public Job(Action action, TileOWW tileOWW, float jobTime, string jobType, Job prerequisiteJob = null)
+    public Job(Action action, TileOWW tileOWW, float jobTime, string jobType, Job prerequisiteJob = null, bool tileExcludeOtherJobs = true)
     {
         this.action = action;
         this.tileOWW = tileOWW;
         this.jobTime = jobTime;
         this.jobType = jobType;
         this.prerequisiteJob = prerequisiteJob;
-        tileOWW.currentJobType = jobType;
+        this.tileExcludeOtherJobs = tileExcludeOtherJobs;
+
+        // The tile won't hold a reference to this job. Likely because a character is wandering.
+        if (tileExcludeOtherJobs == true)
+        {
+            tileOWW.currentJobType = jobType;
+        }
 
         // Set default job pos
         jobPosX = tileOWW.GetX();
@@ -38,6 +45,8 @@ public class Job
         this.jobTime = jobTime;
         this.jobType = jobType;
         this.prerequisiteJob = prerequisiteJob;
+
+        tileExcludeOtherJobs = false;
 
     }
 

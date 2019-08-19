@@ -84,12 +84,13 @@ public class Character : MonoBehaviour
         {
             // For tile based job
             if (Vector3.Distance(new Vector3(currentX, currentY), new Vector3(currentJob.GetJobPosX(), currentJob.GetJobPosY())) < 1)
-            {               
+            {
                 DoJobTick();
                 return;
             }
             // For character based job
-            if (currentJob.GetCharacter() != null) {
+            if (currentJob.GetCharacter() != null)
+            {
                 if (Vector3.Distance(transform.position, currentJob.GetCharacter().transform.position) < 1)
                 {
 
@@ -145,7 +146,7 @@ public class Character : MonoBehaviour
 
     // Use 2D raycast to find character in view 
     // TODO: Return a character?
-    protected void DoJobAtVisibleCharacter(params string[] characterTag)
+    protected void DoJobAtVisibleCharacter(params string[] characterTags)
     {
         // Get a list of potential targets 
         Collider2D[] potentialTargets = Physics2D.OverlapCircleAll(transform.position, 10);
@@ -156,17 +157,21 @@ public class Character : MonoBehaviour
             // Type check
             if (target.transform.parent != null)
             {
-                // Debug.Log(string.Join("", characterTag) + " -> " + target.transform.parent.tag);
-                if (string.Join("", characterTag).Contains(target.transform.parent.tag))
+                // Params can be ordered by priority 
+                foreach (string characterTag in characterTags)
                 {
-
-                    // Visibility check 
-                    RaycastHit2D hit = Physics2D.Raycast(transform.position, (target.transform.position - transform.position));
-                    Debug.DrawRay(transform.position, (target.transform.position - transform.position), Color.red);
-                    if (string.Join("", characterTag).Contains(target.transform.parent.tag))
+                    // Debug.Log(string.Join("", characterTag) + " -> " + target.transform.parent.tag);
+                    if (characterTag.Equals(target.transform.parent.tag))
                     {
-                        Action attackAction = delegate () { target.GetComponentInParent<Character>().TakeDamage(25); };
-                        targetJob = new Job(attackAction, target.GetComponentInParent<Character>(), 1f, "attack");
+                        // Visibility check 
+                        RaycastHit2D hit = Physics2D.Raycast(transform.position, (target.transform.position - transform.position));
+                        // Debug.DrawRay(transform.position, (target.transform.position - transform.position), Color.red);
+                        if (characterTag.Equals(target.transform.parent.tag))
+                        {
+                            Action attackAction = delegate () { target.GetComponentInParent<Character>().TakeDamage(25); };
+                            targetJob = new Job(attackAction, target.GetComponentInParent<Character>(), 1f, "attack");
+                            return;
+                        }
                     }
                 }
             }

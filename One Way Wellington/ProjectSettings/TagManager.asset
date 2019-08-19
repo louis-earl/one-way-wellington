@@ -5,8 +5,10 @@ TagManager:
   serializedVersion: 2
   tags:
   - Passenger
-  - Staff
   - Enemy
+  - Builder
+  - Guard
+  - Staff
   layers:
   - Default
   - TransparentFX

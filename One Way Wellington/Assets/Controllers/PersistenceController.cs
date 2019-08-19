@@ -75,23 +75,26 @@ public class PersistenceController : MonoBehaviour
 
         foreach (GameObject staffGO in WorldController.Instance.staff)
         {
+            Job targetJob;
             if (staffGO.name == "Builder")
             {
-                if (staffGO.GetComponent<Builder>().targetJob != null)
+                targetJob = staffGO.GetComponent<Builder>().targetJob;
+                if (targetJob?.ToJobSerializable() != null)
                 {
-                    if (staffGO.GetComponent<Builder>().targetJob.ToJobSerializable() != null)
+                    if (targetJob.tileExcludeOtherJobs)
                     {
-                        saveFile.buildersJobQueue.Add(staffGO.GetComponent<Builder>().targetJob.ToJobSerializable());
+                        saveFile.buildersJobQueue.Add(targetJob.ToJobSerializable());
                     }
                 }
             }
             else if (staffGO.name == "Guard")
             {
-                if (staffGO.GetComponent<Guard>().targetJob != null)
+                targetJob = staffGO.GetComponent<Guard>().targetJob;
+                if (targetJob?.ToJobSerializable() != null)
                 {
-                    if (staffGO.GetComponent<Guard>().targetJob.ToJobSerializable() != null)
+                    if (targetJob.tileExcludeOtherJobs)
                     {
-                        saveFile.guardsJobQueue.Add(staffGO.GetComponent<Guard>().targetJob.ToJobSerializable());
+                        saveFile.guardsJobQueue.Add(targetJob.ToJobSerializable());
                     }
                 }
             }
@@ -99,7 +102,11 @@ public class PersistenceController : MonoBehaviour
             {
                 Debug.LogError("Staff type not specified!!");
             }
+
         }
+          
+            
+        
 
         // PLANETS
         saveFile.planets = new List<PlanetData>();

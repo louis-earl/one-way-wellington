@@ -46,7 +46,7 @@ public class FurnitureSpriteController : MonoBehaviour
                 if (tileOWW.GetInstalledFurniture().GetFurnitureType() == "Wall")
                 {
                     nma.carving = true;
-                    nma.size = new Vector3(0.5f, 0.5f, 1f);
+                    nma.size = new Vector3(0.7f, 0.7f, 1f);
                 }
                 else if (tileOWW.GetInstalledFurniture().GetFurnitureType() == "Airlock")
                 {

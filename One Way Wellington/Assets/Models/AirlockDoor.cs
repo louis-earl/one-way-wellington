@@ -8,7 +8,7 @@ public class AirlockDoor : MonoBehaviour
     void OnTriggerStay2D(Collider2D other)
     {
 
-        if (other.gameObject.tag == "Passenger" || other.gameObject.tag == "Staff")
+        if (other.gameObject.tag == "Passenger" || other.gameObject.tag == "Guard" || other.gameObject.tag == "Builder")
         {
             // Disable collision 
             gameObject.GetComponent<NavMeshObstacle>().enabled = false;

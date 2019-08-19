@@ -30,13 +30,13 @@ public class Orc : Enemy
             // Not required to use global job queue yet 
             // targetJob = jobQueue.GetNextJob(new Vector2(currentX, currentY), failedJobs);
 
-            DoJobAtVisibleCharacter("Staff", "Passenger");
+            DoJobAtVisibleCharacter("Guard", "Passenger", "Builder");
 
             if (targetJob == null)
             {
                 // We are idle, wander the ship 
                 Action attackAction = delegate () { };
-                targetJob = new Job(attackAction, WorldController.Instance.GetWorld().GetRandomHullTile(), 1f, "wander");
+                targetJob = new Job(attackAction, WorldController.Instance.GetWorld().GetRandomHullTile(), 1f, "wander", tileExcludeOtherJobs: false);
             }
         }
         
