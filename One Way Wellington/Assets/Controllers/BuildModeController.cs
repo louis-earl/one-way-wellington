@@ -29,6 +29,10 @@ public class BuildModeController : MonoBehaviour
 
     public Dictionary<string, List<TileOWW>> roomsTileOWWMap;
 
+    public List<TileOWW> emptyHullTiles;
+
+    public GameObject staffParent;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -190,7 +194,7 @@ public class BuildModeController : MonoBehaviour
     {    
         if (furnitureType.cost > CurrencyController.Instance.GetBankBalance())
         {
-            Debug.Log("Couldn't affoard.");
+            // Debug.Log("Couldn't affoard.");
             return false;
         }
 
@@ -202,22 +206,22 @@ public class BuildModeController : MonoBehaviour
                 TileOWW t = WorldController.Instance.GetWorld().GetTileAt(tile.GetX() + i, tile.GetY() + j);
                 if ((t.GetTileType() == "Hull" && furnitureType.exteriorOnly) || (t.GetTileType() == "Empty" && !furnitureType.exteriorOnly))
                 {
-                    Debug.Log("Interior / exterior check failed.");
+                    // Debug.Log("Interior / exterior check failed.");
                     return false;
                 }
                 if (t.installedFurnitureAltX != null || t.installedFurnitureAltY != null)
                 {
-                    Debug.Log("Multi-tile furniture check failed.");
+                    // Debug.Log("Multi-tile furniture check failed.");
                     return false;
                 }
                 if (t.GetInstalledFurniture() != null)
                 {
-                    Debug.Log("Installed furniture check failed");
+                    // Debug.Log("Installed furniture check failed");
                     return false;
                 }
                 if (t.currentJobType != null)
                 {
-                    Debug.Log("Existing job check failed.");
+                    // Debug.Log("Existing job check failed.");
                     return false;
                 }
             }
@@ -624,11 +628,13 @@ public class BuildModeController : MonoBehaviour
     public void PlaceHull(TileOWW tile)
     {
         tile.SetTileType("Hull");
+        emptyHullTiles.Add(tile);
     }
 
     public void RemoveHull(TileOWW tile)
     {
         tile.SetTileType("Empty");
+        emptyHullTiles.Remove(tile);
     }
 
     public void PlaceFurniture(TileOWW tile, string furnitureType)
@@ -659,9 +665,11 @@ public class BuildModeController : MonoBehaviour
                 temp.currentJobType = null;
                 temp.installedFurnitureAltX = tile.GetX();
                 temp.installedFurnitureAltY = tile.GetY();
-
+                emptyHullTiles.Remove(tile);
             }
         }
+
+        
     }
 
     public void RemoveFurniture(TileOWW tile)
@@ -677,7 +685,7 @@ public class BuildModeController : MonoBehaviour
                 TileOWW temp = WorldController.Instance.GetWorld().GetTileAt(tile.GetX() + i, tile.GetY() + j);
                 temp.installedFurnitureAltX = null;
                 temp.installedFurnitureAltY = null;
-
+                emptyHullTiles.Add(tile);
             }
         }
 
@@ -686,6 +694,8 @@ public class BuildModeController : MonoBehaviour
         {
             furnitureTileOWWMap[furnitureType].Remove(tile);
         }
+
+        
     }
 
     public void PlaceRoom(List<TileOWW> room_tiles, string roomType)
@@ -718,10 +728,15 @@ public class BuildModeController : MonoBehaviour
         if (CurrencyController.Instance.GetBankBalance() >= 500)
         {
             GameObject staffGO = Instantiate(staff, new Vector3(x, y, 0), Quaternion.identity);
-            staffGO.name = "Builder";
+
+            if (staffGO.name.Contains("Builder")) staffGO.name = "Builder";
+            if (staffGO.name.Contains("Guard")) staffGO.name = "Guard";
+            if (staffGO.name.Contains("Maid")) staffGO.name = "Maid";
+            if (staffGO.name.Contains("Cook")) staffGO.name = "Cook";
+
             staffGO.GetComponent<Staff>().SetEnergy(energy);
             staffGO.GetComponent<Staff>().SetHealth(health);
-
+            staffGO.transform.parent = staffParent.transform;
             WorldController.Instance.staff.Add(staffGO);
 
             // TODO: Invoice depend on staff type

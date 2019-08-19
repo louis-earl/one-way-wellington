@@ -17,7 +17,6 @@ public class Passenger : Character
     protected float bladder;
     protected float hygiene;
     protected float energy;
-    protected float health;
 
     // Interface
     public static GameObject passengerUIInstance;
@@ -28,6 +27,9 @@ public class Passenger : Character
         base.Init();
 
         // Setup from here onwards!
+        jobQueue = JobQueueController.PassengersJobQueue;
+
+        // Default needs 
         energy = 100f;
         health = 100f;
         nourishment = 100f;
@@ -69,85 +71,40 @@ public class Passenger : Character
         hygiene = Mathf.Clamp(hygiene - (1 * Time.deltaTime), 0, 100);
         bladder = Mathf.Clamp(bladder - (1 * Time.deltaTime), 0, 100);
         nourishment = Mathf.Clamp(nourishment - (1 * Time.deltaTime), 0, 100);
-        oxygen = Mathf.Clamp(oxygen - (1 * Time.deltaTime), 0, 100);
+        oxygen = Mathf.Clamp(oxygen - (0.02f * Time.deltaTime), 0, 1);
 
-        // Order needs by priority
 
-        if (bladder == 0)
+        // Restore oxygen
+        TileOWW currentTile = WorldController.Instance.GetWorld().GetTileAt((int)currentX, (int)currentY);
+        float oxygenDeficit = 1 - oxygen;
+        float maxRegen = currentTile.oxygenLevel / 10;
+
+        // Oxygen intake limited to 1/10th of a tiles oxygen level 
+        if (oxygenDeficit < maxRegen)
         {
-            Debug.Log("bladder 0");
-            if (BuildModeController.Instance.furnitureTileOWWMap.ContainsKey("Toilet Stall"))
-            {
-                // Loop through all 
-                for (int i = 0; i < BuildModeController.Instance.furnitureTileOWWMap["Toilet Stall"].Count; i++)
-                {
-                    TileOWW tileCharger = BuildModeController.Instance.furnitureTileOWWMap["Toilet Stall"][i];
-                    if (tileCharger.currentJobType == null)
-                    {
-                        if (targetJob != null)
-                        {
-
-                            if (targetJob.GetJobType() != "UseToiletStall")
-                            {
-                                JobQueueController.BuildersJobQueue.AddJob(targetJob);
-                                targetJob = currentJob = null;
-                            }
-                            Action rechargeAction = delegate () { UseToiletStall(); };
-                            targetJob = new Job(UseToiletStall, tileCharger, 5, "UseToiletStall");
-                            return;
-
-                        }
-                        else
-                        {
-                            Action rechargeAction = delegate () { UseToiletStall(); };
-                            targetJob = new Job(UseToiletStall, tileCharger, 5, "UseToiletStall");
-                            return;
-                        }
-                    }
-                }
-            }
+            oxygen += oxygenDeficit;
+            currentTile.oxygenLevel -= oxygenDeficit;
+        }
+        else
+        {
+            oxygen += maxRegen;
+            currentTile.oxygenLevel -= maxRegen;
         }
 
-        else if (hygiene == 0)
+        SolveNeeds();
+
+        // Take oxygen damage 
+        if (oxygen < 0.5f)
         {
-            Debug.Log("hygiene 0");
-            if (BuildModeController.Instance.furnitureTileOWWMap.ContainsKey("Shower Stall"))
-            {
-                // Loop through all 
-                for (int i = 0; i < BuildModeController.Instance.furnitureTileOWWMap["Shower Stall"].Count; i++)
-                {
-                    TileOWW tileCharger = BuildModeController.Instance.furnitureTileOWWMap["Shower Stall"][i];
-                    if (tileCharger.currentJobType == null)
-                    {
-                        if (targetJob != null)
-                        {
-
-                            if (targetJob.GetJobType() != "UseShowerStall")
-                            {
-                                JobQueueController.BuildersJobQueue.AddJob(targetJob);
-                                targetJob = currentJob = null;
-                            }
-                            Action rechargeAction = delegate () { UseShowerStall(); };
-                            targetJob = new Job(UseShowerStall, tileCharger, 5, "UseShowerStall");
-                            return;
-
-                        }
-                        else
-                        {
-                            Action rechargeAction = delegate () { UseShowerStall(); };
-                            targetJob = new Job(UseShowerStall, tileCharger, 5, "UseShowerStall");
-                            return;
-                        }
-                    }
-                }
-            }
+            Debug.Log("Oxygen 0");
+            health -= (-2 * oxygen) + 1;
         }
 
 
-
+        // Idle 
         if (targetJob == null)
         {
-            targetJob = JobQueueController.PassengersJobQueue.GetNextJob(new Vector2(currentX, currentY), failedJobs);
+            targetJob = jobQueue.GetNextJob(new Vector2(currentX, currentY), failedJobs);
             if (targetJob == null)
             {
                 // We are idle
@@ -158,9 +115,45 @@ public class Passenger : Character
     }
 
 
+
+
+    
+    protected void SolveNeeds()
+    {
+        // Ordered needs by priority
+
+        // TODO: Find room with oxygen?
+        
+        if (bladder == 0)
+        {
+            if (SetJobAtFurnitureTile("Toilet Stall", "UseToiletStall", 5, delegate () { UseToiletStall(); })) return;
+        }
+
+        if (nourishment == 0)
+        {
+            if (SetJobAtFurnitureTile("Cafe", "UseCafe", 5, delegate () { UseCafe(); })) return;
+        }
+
+        if (hygiene == 0)
+        {
+            if (SetJobAtFurnitureTile("Shower Stall", "UseShowerStall", 10, delegate () { UseShowerStall(); })) return;
+        }
+
+        if (energy == 0)
+        {
+            if (SetJobAtFurnitureTile("Bed", "UseBed", 20, delegate () { UseBed(); })) return;
+        }
+    }
+    
+
     public void UseToiletStall()
     {
         bladder = 100;
+    }
+
+    public void UseCafe()
+    {
+        nourishment = 100;
     }
 
     public void UseShowerStall()
@@ -168,8 +161,40 @@ public class Passenger : Character
         hygiene = 100;
     }
 
+    public void UseBed()
+    {
+        energy = 100;
+    }
+
     public int GetPassengerFare()
     {
         return fare;
     }
+
+
+    protected bool SetJobAtFurnitureTile(string furnitureType, string jobType, float jobTime, Action action)
+    {
+        if (BuildModeController.Instance.furnitureTileOWWMap.ContainsKey(furnitureType))
+        {
+            // Loop through all 
+            for (int i = 0; i < BuildModeController.Instance.furnitureTileOWWMap[furnitureType].Count; i++)
+            {
+                TileOWW tileCharger = BuildModeController.Instance.furnitureTileOWWMap[furnitureType][i];
+                if (tileCharger.currentJobType == null)
+                {
+
+                    // Clear existing job
+                    if (targetJob?.GetJobType() != jobType)
+                    {
+                        targetJob = currentJob = null;
+                    }
+
+                    targetJob = new Job(action, tileCharger, jobTime, jobType);
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
 }

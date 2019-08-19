@@ -57,7 +57,10 @@ public class JobQueue
         List<JobSerializable> serializedJobs = new List<JobSerializable>();
         foreach (Job j in jobs)
         {
-            serializedJobs.Add(j.ToJobSerializable());
+            if (j.tileExcludeOtherJobs)
+            {
+                serializedJobs.Add(j.ToJobSerializable());
+            }
         }
         return serializedJobs;
     }

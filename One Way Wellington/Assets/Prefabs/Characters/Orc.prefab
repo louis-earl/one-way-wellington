@@ -9,11 +9,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2822388052134463293}
-  - component: {fileID: 2822388052134463295}
   - component: {fileID: 2822388052134463288}
+  - component: {fileID: 6737851468449999064}
   m_Layer: 0
-  m_Name: Builder
-  m_TagString: Builder
+  m_Name: Orc
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -33,18 +33,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2822388052134463295
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2822388052134463289}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6701ea471bafba848bf081e2edd64ca3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!195 &2822388052134463288
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -67,6 +55,18 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &6737851468449999064
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2822388052134463289}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 53b62d22a925b96499b10983efcfa0f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2822388052792147926
 GameObject:
   m_ObjectHideFlags: 0
@@ -77,10 +77,10 @@ GameObject:
   m_Component:
   - component: {fileID: 2822388052792147925}
   - component: {fileID: 2822388052792147924}
-  - component: {fileID: 4159274006753271483}
+  - component: {fileID: 6045174056281659834}
   m_Layer: 0
   m_Name: Sprite
-  m_TagString: Builder
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -137,7 +137,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 25
-  m_Sprite: {fileID: 21300000, guid: 6fcb6800bd6a8bc4887a69069826e630, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 75158eb641e086947a93df32dd685cdb, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -148,7 +148,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!61 &4159274006753271483
+--- !u!61 &6045174056281659834
 BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

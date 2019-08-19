@@ -75,13 +75,26 @@ public class PersistenceController : MonoBehaviour
 
         foreach (GameObject staffGO in WorldController.Instance.staff)
         {
+            Job targetJob;
             if (staffGO.name == "Builder")
             {
-                if (staffGO.GetComponent<Builder>().targetJob != null)
+                targetJob = staffGO.GetComponent<Builder>().targetJob;
+                if (targetJob?.ToJobSerializable() != null)
                 {
-                    if (staffGO.GetComponent<Builder>().targetJob.ToJobSerializable() != null)
+                    if (targetJob.tileExcludeOtherJobs)
                     {
-                        saveFile.buildersJobQueue.Add(staffGO.GetComponent<Builder>().targetJob.ToJobSerializable());
+                        saveFile.buildersJobQueue.Add(targetJob.ToJobSerializable());
+                    }
+                }
+            }
+            else if (staffGO.name == "Guard")
+            {
+                targetJob = staffGO.GetComponent<Guard>().targetJob;
+                if (targetJob?.ToJobSerializable() != null)
+                {
+                    if (targetJob.tileExcludeOtherJobs)
+                    {
+                        saveFile.guardsJobQueue.Add(targetJob.ToJobSerializable());
                     }
                 }
             }
@@ -89,7 +102,11 @@ public class PersistenceController : MonoBehaviour
             {
                 Debug.LogError("Staff type not specified!!");
             }
+
         }
+          
+            
+        
 
         // PLANETS
         saveFile.planets = new List<PlanetData>();
@@ -116,9 +133,13 @@ public class PersistenceController : MonoBehaviour
 
             // UNLOAD 
             JobQueueController.Instance.ClearAllJobs();
+
             WorldController.Instance.ClearAllStaff();
             WorldController.Instance.ClearAllPlanets();
+
             BuildModeController.Instance.furnitureTileOWWMap.Clear();
+            BuildModeController.Instance.emptyHullTiles = new List<TileOWW>();
+
             JourneyController.Instance.shipCoordinates = Vector2.zero;
 
 
@@ -127,6 +148,18 @@ public class PersistenceController : MonoBehaviour
             TimeController.Instance.timeOWW = saveFile.timeOWW;
             WorldController.Instance.SetWorld(saveFile.world);
 
+            // Find all current hull tiles 
+            foreach (TileOWW tile in WorldController.Instance.GetWorld().GetAllTiles())
+            {
+                if (tile.GetTileType() == "Hull")
+                {
+                    if (tile.GetInstalledFurniture() == null && tile.installedFurnitureAltX == null && tile.installedFurnitureAltY == null)
+                    {
+                        BuildModeController.Instance.emptyHullTiles.Add(tile);
+                    }
+                }
+            }
+            
 
             // STAFF
             for (int i = 0; i < saveFile.staffTypes.Length; i++)
@@ -138,9 +171,16 @@ public class PersistenceController : MonoBehaviour
                         saveFile.staffEnergy[i], saveFile.staffHealth[i]);
 
                 }
+                else if (saveFile.staffTypes[i] == "Guard")
+                {
+                    BuildModeController.Instance.PlaceStaff(saveFile.staffPosX[i],
+                        saveFile.staffPosY[i], GuardPrefab,
+                        saveFile.staffEnergy[i], saveFile.staffHealth[i]);
+
+                }
                 else
                 {
-                    Debug.LogWarning("Staff type not specified in PersistenceController!");
+                    Debug.LogWarning("Staff type (" + saveFile.staffTypes[i] + ") not specified in PersistenceController!");
                 }
 
 

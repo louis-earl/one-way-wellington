@@ -13,7 +13,7 @@ public class JourneyController : MonoBehaviour
     public Planet currentPlanetVisit;
     public bool isAtOriginPlanet;
     public Vector2 shipCoordinates = Vector2.zero;
-    public float shipSpeedMax = 0; 
+    public float shipSpeedMax; 
     public float shipSpeedCurrent;
     public bool isJourneyEditMode; // TODO: set ONLY after Wellington arrival
 
@@ -27,6 +27,8 @@ public class JourneyController : MonoBehaviour
     public List<GameObject> currentPassengers;
 
     public float fuelRemaining;
+
+    public GameObject passengerParent;
 
     // Start is called before the first frame update
     void Start()

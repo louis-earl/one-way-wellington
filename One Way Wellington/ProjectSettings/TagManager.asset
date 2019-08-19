@@ -4,7 +4,11 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Character
+  - Passenger
+  - Enemy
+  - Builder
+  - Guard
+  - Staff
   layers:
   - Default
   - TransparentFX
@@ -39,6 +43,15 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Background
+    uniqueID: 3946839371
+    locked: 0
+  - name: Planet
+    uniqueID: 278408897
+    locked: 0
+  - name: Ship
+    uniqueID: 3394876491
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0

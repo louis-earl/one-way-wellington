@@ -7,27 +7,49 @@ public class Job
 {
     protected Job prerequisiteJob;
     protected TileOWW tileOWW;
+    protected Character character;
     protected float jobTime;
     protected string jobType;
     protected Action action;
+    public bool tileExcludeOtherJobs;
 
     // If a job location is different from the actual tile being worked on
     protected int jobPosX;
     protected int jobPosY;
 
-    public Job(Action action, TileOWW tileOWW, float jobTime, string jobType, Job prerequisiteJob = null)
+    public Job(Action action, TileOWW tileOWW, float jobTime, string jobType, Job prerequisiteJob = null, bool tileExcludeOtherJobs = true)
     {
         this.action = action;
         this.tileOWW = tileOWW;
         this.jobTime = jobTime;
         this.jobType = jobType;
         this.prerequisiteJob = prerequisiteJob;
-        tileOWW.currentJobType = jobType;
+        this.tileExcludeOtherJobs = tileExcludeOtherJobs;
+
+        // The tile won't hold a reference to this job. Likely because a character is wandering.
+        if (tileExcludeOtherJobs == true)
+        {
+            tileOWW.currentJobType = jobType;
+        }
 
         // Set default job pos
         jobPosX = tileOWW.GetX();
         jobPosY = tileOWW.GetY();
     }
+
+    // Chase jobs not restricted to a single tileOWW 
+    public Job(Action action, Character character, float jobTime, string jobType, Job prerequisiteJob = null)
+    {
+        this.action = action;
+        this.character = character;
+        this.jobTime = jobTime;
+        this.jobType = jobType;
+        this.prerequisiteJob = prerequisiteJob;
+
+        tileExcludeOtherJobs = false;
+
+    }
+
 
     // Constructor used when loading game, because actions can't be serialized 
     public Job(TileOWW tileOWW, float jobTime, string jobType, Job prerequisiteJob = null)
@@ -59,11 +81,18 @@ public class Job
         this.jobType = jobType;
         this.prerequisiteJob = prerequisiteJob;
         tileOWW.currentJobType = jobType;
-    } 
+    }
 
     public Vector3 GetLocation()
     {
-        return new Vector3(jobPosX + 0.5f, jobPosY + 0.5f, 0);
+        if (tileOWW != null)
+        {
+            return new Vector3(jobPosX + 0.5f, jobPosY + 0.5f, 0);
+        }
+        else
+        {
+            return character.transform.position;
+        }
     }
 
     public TileOWW GetTileOWW()
@@ -79,7 +108,10 @@ public class Job
             // tileOWW.currentJob = null;
             JobSpriteController.Instance.UpdateJob(tileOWW);
             action?.Invoke();
-            tileOWW.currentJobType = null;
+            if (tileOWW != null)
+            {
+                tileOWW.currentJobType = null;
+            }
             return true;
         }
         return false;
@@ -124,6 +156,11 @@ public class Job
     public int GetJobPosY()
     {
         return jobPosY;
+    }
+
+    public Character GetCharacter()
+    {
+        return character;
     }
 
 }

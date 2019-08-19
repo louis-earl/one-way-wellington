@@ -9,6 +9,7 @@ public class JobQueueController : MonoBehaviour
     public static JobQueue BuildersJobQueue;
     public static JobQueue GuardsJobQueue;
     public static JobQueue PassengersJobQueue;
+    public static JobQueue OrcsJobQueue;
 
     private void Start()
     {
@@ -16,6 +17,7 @@ public class JobQueueController : MonoBehaviour
         if (BuildersJobQueue == null) BuildersJobQueue = new JobQueue();
         if (GuardsJobQueue == null) GuardsJobQueue = new JobQueue();
         if (PassengersJobQueue == null) PassengersJobQueue = new JobQueue();
+        if (OrcsJobQueue == null) OrcsJobQueue = new JobQueue();
     }
 
     public void ClearAllJobs()
@@ -23,5 +25,6 @@ public class JobQueueController : MonoBehaviour
         BuildersJobQueue = new JobQueue();
         GuardsJobQueue = new JobQueue();
         PassengersJobQueue = new JobQueue();
+        OrcsJobQueue = new JobQueue();
     }
 }
