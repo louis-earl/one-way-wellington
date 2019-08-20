@@ -30,6 +30,7 @@ public class BuildModeController : MonoBehaviour
     public Dictionary<string, List<TileOWW>> roomsTileOWWMap;
 
     public List<TileOWW> emptyHullTiles;
+    public List<TileOWW> allHullTiles;
 
     public GameObject staffParent;
 
@@ -629,12 +630,15 @@ public class BuildModeController : MonoBehaviour
     {
         tile.SetTileType("Hull");
         emptyHullTiles.Add(tile);
+        allHullTiles.Add(tile);
     }
 
     public void RemoveHull(TileOWW tile)
     {
         tile.SetTileType("Empty");
         emptyHullTiles.Remove(tile);
+        allHullTiles.Add(tile);
+
     }
 
     public void PlaceFurniture(TileOWW tile, string furnitureType)

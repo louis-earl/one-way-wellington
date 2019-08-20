@@ -144,6 +144,7 @@ public class PersistenceController : MonoBehaviour
 
             BuildModeController.Instance.furnitureTileOWWMap.Clear();
             BuildModeController.Instance.emptyHullTiles = new List<TileOWW>();
+            BuildModeController.Instance.allHullTiles = new List<TileOWW>();
 
             JourneyController.Instance.shipCoordinates = Vector2.zero;
 
@@ -158,6 +159,8 @@ public class PersistenceController : MonoBehaviour
             {
                 if (tile.GetTileType() == "Hull")
                 {
+                    BuildModeController.Instance.allHullTiles.Add(tile);
+
                     if (tile.GetInstalledFurniture() == null && tile.installedFurnitureAltX == null && tile.installedFurnitureAltY == null)
                     {
                         BuildModeController.Instance.emptyHullTiles.Add(tile);
