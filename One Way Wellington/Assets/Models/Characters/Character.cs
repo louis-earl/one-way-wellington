@@ -139,14 +139,26 @@ public class Character : MonoBehaviour
 
         if (health < 0)
         {
+           
+            
             if (gameObject.CompareTag("Passenger") || gameObject.CompareTag("Builder") || gameObject.CompareTag("Guard"))
             {
+                // Clear previous notification 
+                GameObject previousNotificationGO = NotificationController.Instance.FindNotificationGO(("Your " + gameObject.tag + ", '" + gameObject.name + "' is low on health!"));
+                if (previousNotificationGO != null)
+                {
+                    NotificationController.Instance.CloseNotification(previousNotificationGO);
+                }
+
+                // Create new notification
                 NotificationController.Instance.CreateNotification("Your " + gameObject.tag + ", '" + gameObject.name + "' has died!", UrgencyLevel.High, null);
             }
+            // Remove this character
             Destroy(gameObject);
         }
-        else if (health < 50 && startHealth > 50)
+        else if (health < 50 && startHealth >= 50)
         {
+            // Create new notification 
             if (gameObject.CompareTag("Passenger") || gameObject.CompareTag("Builder") || gameObject.CompareTag("Guard"))
             {
                 List<Action> actions = new List<Action>()

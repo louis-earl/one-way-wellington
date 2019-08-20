@@ -20,12 +20,17 @@ public class NotificationController : MonoBehaviour
 
     public static NotificationController Instance;
 
-    //private List<GameObject> notifications;
+    private List<GameObject> notifications;
 
     // Start is called before the first frame update
     void Start()
     { 
         if (Instance == null) Instance = this;
+
+        notifications = new List<GameObject>();
+
+        // DEBUG
+        CreateNotification("Test notification", UrgencyLevel.Medium, null);
     }
 
     public void CreateNotification(string description, UrgencyLevel urgencyLevel, List<Action> buttonActions)
@@ -33,7 +38,7 @@ public class NotificationController : MonoBehaviour
 
         GameObject notificationGO = Instantiate(notificationPrefab);
 
-        //notifications.Add(notificationGO);
+        notifications.Add(notificationGO);
 
         notificationGO.transform.SetParent(notificationParent.transform);
         notificationGO.transform.SetSiblingIndex(0);
@@ -48,6 +53,26 @@ public class NotificationController : MonoBehaviour
                 buttonGO.GetComponent<Button>().onClick.AddListener(() => action.Invoke());
             }
         }
+
+        notification.buttonClose.onClick.AddListener(delegate () { CloseNotification(notificationGO); });
+    }
+
+    public void CloseNotification(GameObject notificationGO)
+    {
+        notifications.Remove(notificationGO);
+        Destroy(notificationGO);
+    }
+
+    public GameObject FindNotificationGO(string notificationDescription)
+    {
+        foreach (GameObject notificationGO in notifications)
+        {
+            if (notificationGO.GetComponent<Notification>().descriptionGO.text.Equals(notificationDescription))
+            {
+                return notificationGO;
+            }
+        }
+        return null;
     }
 
 
