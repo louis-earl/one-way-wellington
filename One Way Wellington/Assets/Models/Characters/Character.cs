@@ -153,6 +153,17 @@ public class Character : MonoBehaviour
                 // Create new notification
                 NotificationController.Instance.CreateNotification("Your " + gameObject.tag + ", '" + gameObject.name + "' has died!", UrgencyLevel.High, null);
             }
+
+            // Remove other references 
+            if (gameObject.CompareTag("Builder") || gameObject.CompareTag("Guard"))
+            {
+                WorldController.Instance.staff.Remove(gameObject);
+            }
+            else if (gameObject.CompareTag("Passenger"))
+            {
+                JourneyController.Instance.currentPassengers.Remove(gameObject);
+            }
+
             // Remove this character
             Destroy(gameObject);
         }

@@ -334,7 +334,30 @@ public class InputController : MonoBehaviour
             }
             else if (isMode_Staff)
             {
-                BuildModeController.Instance.PlaceStaff((int)currFramePosition.x, (int)currFramePosition.y, staff);
+                // Generate an unused staff name 
+                int staffNumber = 0;
+                bool staffNumberCollides = true;
+                while (staffNumberCollides == true)
+                {
+                    staffNumber = UnityEngine.Random.Range(1, 999);
+                    if (WorldController.Instance.staff.Count == 0)
+                    {
+                        staffNumberCollides = false;
+                    }
+                    foreach (GameObject staffGO in WorldController.Instance.staff)
+                    {
+                        if (staffGO.name.Contains(staffNumber.ToString())) 
+                        {
+                            staffNumberCollides = true;
+                            break;
+                        }
+                        staffNumberCollides = false;
+                    }
+                }
+
+                string staffName = staff.tag + staffNumber.ToString();
+
+                BuildModeController.Instance.PlaceStaff((int)currFramePosition.x, (int)currFramePosition.y, staff, staffName);
             }
             else if (isMode_Furniture)
             {

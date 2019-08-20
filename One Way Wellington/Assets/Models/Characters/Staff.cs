@@ -76,14 +76,14 @@ public class Staff : Character
                             targetJob = currentJob = null;
                         }
                         Action rechargeAction = delegate () { UseChargingPad(); };
-                        targetJob = new Job(UseChargingPad, tileCharger, 5, "UseChargingPad");
+                        targetJob = new Job(rechargeAction, tileCharger, 5, "UseChargingPad");
                         return;
 
                     }
                     else
                     {
                         Action rechargeAction = delegate () { UseChargingPad(); };
-                        targetJob = new Job(UseChargingPad, tileCharger, 5, "UseChargingPad");
+                        targetJob = new Job(rechargeAction, tileCharger, 5, "UseChargingPad");
                         return;
                     }
                 }

@@ -723,17 +723,13 @@ public class BuildModeController : MonoBehaviour
         RoomController.Instance.DoRoomChecks();
     }
 
-    public void PlaceStaff(float x, float y, GameObject staff, float energy = 100, float health = 100)
+    public void PlaceStaff(float x, float y, GameObject staff, string staffName, float energy = 100, float health = 100)
     {
         if (CurrencyController.Instance.GetBankBalance() >= 500)
         {
             GameObject staffGO = Instantiate(staff, new Vector3(x, y, 0), Quaternion.identity);
 
-            if (staffGO.name.Contains("Builder")) staffGO.name = "Builder";
-            if (staffGO.name.Contains("Guard")) staffGO.name = "Guard";
-            if (staffGO.name.Contains("Maid")) staffGO.name = "Maid";
-            if (staffGO.name.Contains("Cook")) staffGO.name = "Cook";
-
+            staffGO.name = staffName;
             staffGO.GetComponent<Staff>().SetEnergy(energy);
             staffGO.GetComponent<Staff>().SetHealth(health);
             staffGO.transform.parent = staffParent.transform;
