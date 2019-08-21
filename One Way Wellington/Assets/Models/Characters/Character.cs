@@ -217,4 +217,34 @@ public class Character : MonoBehaviour
 
     }
 
+    protected void DoJobAtFurnitureTile(string furnitureType, string jobType, Action action, float jobTime)
+    {
+        // Does a charger exist?
+        if (BuildModeController.Instance.furnitureTileOWWMap.ContainsKey(furnitureType))
+        {
+            // Loop through all chargers
+            for (int i = 0; i < BuildModeController.Instance.furnitureTileOWWMap[furnitureType].Count; i++)
+            {
+                TileOWW tileOWW = BuildModeController.Instance.furnitureTileOWWMap[furnitureType][i];
+                if (tileOWW.currentJobType == null)
+                {
+                    if (targetJob != null)
+                    {
+
+                        if (targetJob.GetJobType() != jobType)
+                        {
+                            jobQueue.AddJob(targetJob);
+                            targetJob = currentJob = null;
+                        }
+
+                    }
+
+                    targetJob = new Job(action, tileOWW, 5, jobType);
+                    return;
+
+                }
+            }
+        }
+    }
+
 }
