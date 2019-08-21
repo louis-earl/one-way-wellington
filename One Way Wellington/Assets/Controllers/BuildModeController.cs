@@ -631,6 +631,7 @@ public class BuildModeController : MonoBehaviour
         tile.SetTileType("Hull");
         emptyHullTiles.Add(tile);
         allHullTiles.Add(tile);
+        ObjectiveController.Instance.CheckObjectives();
     }
 
     public void RemoveHull(TileOWW tile)
@@ -638,6 +639,7 @@ public class BuildModeController : MonoBehaviour
         tile.SetTileType("Empty");
         emptyHullTiles.Remove(tile);
         allHullTiles.Add(tile);
+        ObjectiveController.Instance.CheckObjectives();
 
     }
 
@@ -673,7 +675,7 @@ public class BuildModeController : MonoBehaviour
             }
         }
 
-        
+        ObjectiveController.Instance.CheckObjectives();
     }
 
     public void RemoveFurniture(TileOWW tile)
@@ -699,7 +701,7 @@ public class BuildModeController : MonoBehaviour
             furnitureTileOWWMap[furnitureType].Remove(tile);
         }
 
-        
+        ObjectiveController.Instance.CheckObjectives();
     }
 
     public void PlaceRoom(List<TileOWW> room_tiles, string roomType)
@@ -725,6 +727,8 @@ public class BuildModeController : MonoBehaviour
         }
 
         RoomController.Instance.DoRoomChecks();
+
+        ObjectiveController.Instance.CheckObjectives();
     }
 
     public void PlaceStaff(float x, float y, GameObject staff, string staffName, float energy = 100, float health = 100)
@@ -742,6 +746,8 @@ public class BuildModeController : MonoBehaviour
             // TODO: Invoice depend on staff type
             CurrencyController.Instance.ChangeBankBalance(-500);
         }
+
+        ObjectiveController.Instance.CheckObjectives();
     }
 
     private void CreatePreview(GameObject prefab, string preview, int x, int y)

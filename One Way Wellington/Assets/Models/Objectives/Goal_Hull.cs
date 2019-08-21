@@ -13,7 +13,7 @@ public class Goal_Hull : Goal
 
     public override bool CheckComplete()
     {
-        if (BuildModeController.Instance.emptyHullTiles.Count >= goalAmount)
+        if (BuildModeController.Instance.allHullTiles.Count >= goalAmount)
         {
             return true;
         }

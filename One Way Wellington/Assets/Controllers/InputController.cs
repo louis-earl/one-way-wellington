@@ -381,7 +381,6 @@ public class InputController : MonoBehaviour
             }
 
             BuildModeController.Instance.ClearPreviews();
-
         }
     }
 
