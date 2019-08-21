@@ -108,11 +108,6 @@ public class Character : MonoBehaviour
         {
             if (currentJob == targetJob)
             {
-                if (currentJob.GetTileOWW() != null)
-                {
-                    currentJob.GetTileOWW().currentJobType = null;
-                }
-                JobSpriteController.Instance.UpdateJob(currentJob.GetTileOWW());
                 currentJob = targetJob = null;
                 navMeshAgent.SetDestination(new Vector3(currentX, currentY, 0));
                 failedJobs.Clear();

@@ -105,13 +105,28 @@ public class Job
         jobTime -= deltaTime;
         if (jobTime <= 0)
         {
-            // tileOWW.currentJob = null;
-            JobSpriteController.Instance.UpdateJob(tileOWW);
+        
             action?.Invoke();
-            if (tileOWW != null)
+
+            // Prevent wander jobs removing build jobs 
+            if (tileExcludeOtherJobs)
             {
-                tileOWW.currentJobType = null;
+                
+                if (tileOWW != null)
+                {
+                    if (tileOWW.currentJobType != null)
+                    {
+                        // Prevent opening the tile to other jobs if the prerequisite job was completed, 
+                        // there's still more jobs scheduled for this tile! 
+                        if (tileOWW.currentJobType.Equals(jobType))
+                        {
+                            tileOWW.currentJobType = null;
+                        }
+                    }
+                }
             }
+            // Update the job sprite 
+            JobSpriteController.Instance.UpdateJob(tileOWW);
             return true;
         }
         return false;
