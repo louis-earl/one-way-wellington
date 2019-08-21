@@ -40,7 +40,12 @@ public class PersistenceController : MonoBehaviour
         saveFile.staffTypes = new string[numberOfStaff];
         for (int i = 0; i < numberOfStaff; i++)
         {
-            saveFile.staffTypes[i] = WorldController.Instance.staff[i].name;
+            saveFile.staffTypes[i] = WorldController.Instance.staff[i].tag;
+        }
+
+        for (int i = 0; i < numberOfStaff; i++)
+        {
+            saveFile.staffNames[i] = WorldController.Instance.staff[i].name;
         }
 
         saveFile.staffPosX = new float[numberOfStaff];
@@ -139,6 +144,7 @@ public class PersistenceController : MonoBehaviour
 
             BuildModeController.Instance.furnitureTileOWWMap.Clear();
             BuildModeController.Instance.emptyHullTiles = new List<TileOWW>();
+            BuildModeController.Instance.allHullTiles = new List<TileOWW>();
 
             JourneyController.Instance.shipCoordinates = Vector2.zero;
 
@@ -153,6 +159,8 @@ public class PersistenceController : MonoBehaviour
             {
                 if (tile.GetTileType() == "Hull")
                 {
+                    BuildModeController.Instance.allHullTiles.Add(tile);
+
                     if (tile.GetInstalledFurniture() == null && tile.installedFurnitureAltX == null && tile.installedFurnitureAltY == null)
                     {
                         BuildModeController.Instance.emptyHullTiles.Add(tile);
@@ -167,14 +175,14 @@ public class PersistenceController : MonoBehaviour
                 if (saveFile.staffTypes[i] == "Builder")
                 {
                     BuildModeController.Instance.PlaceStaff(saveFile.staffPosX[i],
-                        saveFile.staffPosY[i], BuilderPrefab,
+                        saveFile.staffPosY[i], BuilderPrefab, saveFile.staffNames[i],
                         saveFile.staffEnergy[i], saveFile.staffHealth[i]);
 
                 }
                 else if (saveFile.staffTypes[i] == "Guard")
                 {
                     BuildModeController.Instance.PlaceStaff(saveFile.staffPosX[i],
-                        saveFile.staffPosY[i], GuardPrefab,
+                        saveFile.staffPosY[i], GuardPrefab, saveFile.staffNames[i],
                         saveFile.staffEnergy[i], saveFile.staffHealth[i]);
 
                 }

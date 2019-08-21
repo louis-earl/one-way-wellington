@@ -42,6 +42,10 @@ public class World
 
     public TileOWW GetRandomHullTile()
     {
+        if (BuildModeController.Instance.emptyHullTiles.Count == 0)
+        {
+            return null;
+        }
         TileOWW randomTile = BuildModeController.Instance.emptyHullTiles[Random.Range(0, BuildModeController.Instance.emptyHullTiles.Count)];
         if (randomTile == null)
         {

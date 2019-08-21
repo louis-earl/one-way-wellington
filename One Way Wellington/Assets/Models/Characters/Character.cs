@@ -133,15 +133,53 @@ public class Character : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
-
+        float startHealth = health;
         Debug.Log("Taking damage: " + damage);
         health -= damage;
 
         if (health < 0)
         {
-            Debug.Log("Character died");
+           
+            
+            if (gameObject.CompareTag("Passenger") || gameObject.CompareTag("Builder") || gameObject.CompareTag("Guard"))
+            {
+                // Clear previous notification 
+                GameObject previousNotificationGO = NotificationController.Instance.FindNotificationGO(("Your " + gameObject.tag + ", '" + gameObject.name + "' is low on health!"));
+                if (previousNotificationGO != null)
+                {
+                    NotificationController.Instance.CloseNotification(previousNotificationGO);
+                }
+
+                // Create new notification
+                NotificationController.Instance.CreateNotification("Your " + gameObject.tag + ", '" + gameObject.name + "' has died!", UrgencyLevel.High, null);
+            }
+
+            // Remove other references 
+            if (gameObject.CompareTag("Builder") || gameObject.CompareTag("Guard"))
+            {
+                WorldController.Instance.staff.Remove(gameObject);
+            }
+            else if (gameObject.CompareTag("Passenger"))
+            {
+                JourneyController.Instance.currentPassengers.Remove(gameObject);
+            }
+
+            // Remove this character
             Destroy(gameObject);
         }
+        else if (health < 50 && startHealth >= 50)
+        {
+            // Create new notification 
+            if (gameObject.CompareTag("Passenger") || gameObject.CompareTag("Builder") || gameObject.CompareTag("Guard"))
+            {
+                List<Action> actions = new List<Action>()
+                {
+                    delegate () { StartCoroutine(InputController.Instance.MoveCameraTo(currentX, currentY)); }
+                };
+                NotificationController.Instance.CreateNotification("Your " + gameObject.tag + ", '" + gameObject.name + "' is low on health!", UrgencyLevel.Medium, actions);
+            }
+        }
+        
     }
 
     // Use 2D raycast to find character in view 
