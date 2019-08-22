@@ -567,6 +567,8 @@ public class BuildModeController : MonoBehaviour
                 {
                     TileOWW temp = WorldController.Instance.GetWorld().GetTileAt(furniture_tile.GetX() + i, furniture_tile.GetY() + j);
                     temp.currentJobType = furniture_tile.currentJobType;
+                    temp.installedFurnitureAltX = furniture_tile.GetX();
+                    temp.installedFurnitureAltY = furniture_tile.GetY();
                 }
             }
         }
