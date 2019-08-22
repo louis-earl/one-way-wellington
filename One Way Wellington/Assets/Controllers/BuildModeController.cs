@@ -213,7 +213,7 @@ public class BuildModeController : MonoBehaviour
                 if (t.installedFurnitureAltX != null || t.installedFurnitureAltY != null)
                 {
                     //Allow certain furniture to overwrite others 
-                    if (t.GetInstalledFurniture().GetFurnitureType() == "Wall" && furnitureType.title == "Airlock")
+                    if (t.GetInstalledFurniture()?.GetFurnitureType() == "Wall" && furnitureType.title == "Airlock")
                     {
                         return true;
                     }
@@ -544,7 +544,7 @@ public class BuildModeController : MonoBehaviour
             Job job;
 
             // Allow certain furniture to overwrite others by creating a prerequisite removal job
-            if (furniture_tile.GetInstalledFurniture().GetFurnitureType() == "Wall" && furnitureType.title == "Airlock")
+            if (furniture_tile.GetInstalledFurniture()?.GetFurnitureType() == "Wall" && furnitureType.title == "Airlock")
             {
                 Action removeExistingFurnitureAction = delegate () { RemoveFurniture(furniture_tile); };
                 Job prerequisiteJob = new Job(removeExistingFurnitureAction, furniture_tile, 2, "removeFurniture");
