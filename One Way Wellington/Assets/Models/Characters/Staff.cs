@@ -23,8 +23,9 @@ public class Staff : Character
 
     }
 
-    public void OnMouseDown()
+    public void OnMouseUpAsButton()
     {
+        Debug.Log("Click on staff member");
         if (Passenger.passengerUIInstance != null) Destroy(Passenger.passengerUIInstance);
         if (staffUIInstance != null) Destroy(staffUIInstance);
 
