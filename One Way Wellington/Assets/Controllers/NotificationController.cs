@@ -31,6 +31,21 @@ public class NotificationController : MonoBehaviour
 
         // DEBUG
         CreateNotification("Test notification", UrgencyLevel.Medium, null);
+        CreateNotification("Test notification with 1 action", UrgencyLevel.Medium, new List<Action>()
+        {
+            null
+        });
+        CreateNotification("Test notification with 2 actions", UrgencyLevel.Medium, new List<Action>()
+        {
+            null,
+            null
+        });
+        CreateNotification("Test notification with 3 actions", UrgencyLevel.Medium, new List<Action>()
+        {
+            null,
+            null,
+            null
+        });
     }
 
     public void CreateNotification(string description, UrgencyLevel urgencyLevel, List<Action> buttonActions)
