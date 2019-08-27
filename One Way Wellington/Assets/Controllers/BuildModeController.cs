@@ -212,11 +212,21 @@ public class BuildModeController : MonoBehaviour
                 }
                 if (t.installedFurnitureAltX != null || t.installedFurnitureAltY != null)
                 {
+                    //Allow certain furniture to overwrite others 
+                    if (t.GetInstalledFurniture()?.GetFurnitureType() == "Wall" && furnitureType.title == "Airlock")
+                    {
+                        return true;
+                    }
                     // Debug.Log("Multi-tile furniture check failed.");
                     return false;
                 }
                 if (t.GetInstalledFurniture() != null)
                 {
+                    //Allow certain furniture to overwrite others 
+                    if (t.GetInstalledFurniture().GetFurnitureType() == "Wall" && furnitureType.title == "Airlock")
+                    {
+                        return true;
+                    }
                     // Debug.Log("Installed furniture check failed");
                     return false;
                 }
@@ -531,7 +541,20 @@ public class BuildModeController : MonoBehaviour
             }
 
             Action placeFurnitureAction = delegate () { PlaceFurniture(furniture_tile, furnitureType.title); };
-            Job job = new Job(placeFurnitureAction, furniture_tile, furnitureType.installTime, furnitureType.title);
+            Job job;
+
+            // Allow certain furniture to overwrite others by creating a prerequisite removal job
+            if (furniture_tile.GetInstalledFurniture()?.GetFurnitureType() == "Wall" && furnitureType.title == "Airlock")
+            {
+                Action removeExistingFurnitureAction = delegate () { RemoveFurniture(furniture_tile); };
+                Job prerequisiteJob = new Job(removeExistingFurnitureAction, furniture_tile, 2, "removeFurniture");
+                job = new Job(placeFurnitureAction, furniture_tile, furnitureType.installTime, furnitureType.title, prerequisiteJob);
+            }
+            else
+            {
+                job = new Job(placeFurnitureAction, furniture_tile, furnitureType.installTime, furnitureType.title);
+            }
+            
             furniture_tile.currentJobType = job.GetJobType();
             JobQueueController.BuildersJobQueue.AddJob(job);
 
@@ -544,6 +567,8 @@ public class BuildModeController : MonoBehaviour
                 {
                     TileOWW temp = WorldController.Instance.GetWorld().GetTileAt(furniture_tile.GetX() + i, furniture_tile.GetY() + j);
                     temp.currentJobType = furniture_tile.currentJobType;
+                    temp.installedFurnitureAltX = furniture_tile.GetX();
+                    temp.installedFurnitureAltY = furniture_tile.GetY();
                 }
             }
         }

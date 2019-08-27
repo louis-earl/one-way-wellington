@@ -169,6 +169,125 @@ public class ObjectiveController : MonoBehaviour
          ));
 
 
+        allObjectives.Add("Wellingtonian I",
+           new Objective(
+               "Wellingtonian I",
+               new List<Goal>
+               {
+                    new Goal_VIP("Get musician, Grayson Gilmour to Wellington", "Grayson Gilmour"),
+               },
+               5000,
+               new List<string>
+               {
+                    "Wellingtonian II"
+               }
+        ));
+
+        allObjectives.Add("Passenger Needs",
+           new Objective(
+               "Passenger Needs",
+               new List<Goal>
+               {
+                    new Goal_Room("Have a working bathroom", 1, "Bathroom"),
+                    new Goal_Room("Have a working canteen", 1, "Canteen"),
+                    new Goal_Room("Have 10 living quarters", 10, "Living Quarters"),
+               },
+               3000,
+               new List<string>
+               {
+                    "Passenger Leisure"
+               }
+        ));
+
+        allObjectives.Add("Milestone I",
+           new Objective(
+               "Milestone I",
+               new List<Goal>
+               {
+                    new Goal_Passenger("Transport 10 passengers to Wellington in one journey", 10),
+               },
+               1000,
+               new List<string>
+               {
+                    "Milestone II"
+               }
+        ));
+
+
+
+       allObjectives.Add("Passenger Leisure",
+           new Objective(
+               "Passenger Leisure",
+               new List<Goal>
+               {
+                    new Goal_Room("Have a working art studio", 1, "Art Studio"),
+                    new Goal_Room("Have a working leisure room", 1, "Leisure Room"),
+               },
+               4000,
+               new List<string>
+               {
+                    "Faster Than Light"
+               }
+        ));
+
+        allObjectives.Add("Milestone II",
+           new Objective(
+               "Milestone II",
+               new List<Goal>
+               {
+                    new Goal_Passenger("Transport 25 passengers to Wellington in one journey", 25),
+               },
+               2500,
+               new List<string>
+               {
+                    "Milestone III"
+               }
+        ));
+
+        allObjectives.Add("Faster Than Light",
+           new Objective(
+               "Faster Than Light",
+               new List<Goal>
+               {
+                    new Goal_Speed("Achieve a ship speed of 100", 100),
+               },
+               4000,
+               new List<string>
+               {
+                    
+               }
+        ));
+
+        allObjectives.Add("Milestone III",
+           new Objective(
+               "Milestone III",
+               new List<Goal>
+               {
+                    new Goal_Passenger("Transport 50 passengers to Wellington in one journey", 50),
+               },
+               5000,
+               new List<string>
+               {
+                    "Milestone IV"
+               }
+        ));
+
+
+        allObjectives.Add("Milestone IV",
+           new Objective(
+               "Milestone IV",
+               new List<Goal>
+               {
+                    new Goal_Passenger("Transport 100 passengers to Wellington in one journey", 100),
+               },
+               5000,
+               new List<string>
+               {
+
+               }
+        ));
+
+
 
         // DEBUG
         AddObjective(allObjectives["The Hull"]);

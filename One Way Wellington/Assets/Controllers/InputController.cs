@@ -119,8 +119,12 @@ public class InputController : MonoBehaviour
 
         if (cameraZoomEnabled)
         {
+            // If mouse is NOT over UI element 
+            if (!EventSystem.current.IsPointerOverGameObject())
+            {
+                desiredCameraZoom -= desiredCameraZoom * Input.GetAxis("Mouse ScrollWheel");
+            }
             
-            desiredCameraZoom -= desiredCameraZoom * Input.GetAxis("Mouse ScrollWheel");
         }
         desiredCameraZoom = Mathf.Clamp(desiredCameraZoom, cameraSizeMin, cameraSizeMax);
         Camera.main.orthographicSize = Mathf.Lerp(desiredCameraZoom, currentCameraZoom, 0.5f);
@@ -257,6 +261,11 @@ public class InputController : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             dragStartPosition = currFramePosition;
+
+            // Clear UI 
+            if (Passenger.passengerUIInstance != null) Destroy(Passenger.passengerUIInstance);
+            if (Staff.staffUIInstance != null) Destroy(Staff.staffUIInstance);
+            if (Planet.planetUI != null) Destroy(Planet.planetUI);
         }
 
         int start_x = Mathf.FloorToInt(dragStartPosition.x);

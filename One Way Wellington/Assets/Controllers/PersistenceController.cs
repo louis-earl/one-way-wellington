@@ -43,6 +43,7 @@ public class PersistenceController : MonoBehaviour
             saveFile.staffTypes[i] = WorldController.Instance.staff[i].tag;
         }
 
+        saveFile.staffNames = new string[numberOfStaff];
         for (int i = 0; i < numberOfStaff; i++)
         {
             saveFile.staffNames[i] = WorldController.Instance.staff[i].name;
@@ -81,7 +82,7 @@ public class PersistenceController : MonoBehaviour
         foreach (GameObject staffGO in WorldController.Instance.staff)
         {
             Job targetJob;
-            if (staffGO.name == "Builder")
+            if (staffGO.tag == "Builder")
             {
                 targetJob = staffGO.GetComponent<Builder>().targetJob;
                 if (targetJob?.ToJobSerializable() != null)
@@ -92,7 +93,7 @@ public class PersistenceController : MonoBehaviour
                     }
                 }
             }
-            else if (staffGO.name == "Guard")
+            else if (staffGO.tag == "Guard")
             {
                 targetJob = staffGO.GetComponent<Guard>().targetJob;
                 if (targetJob?.ToJobSerializable() != null)
@@ -102,6 +103,10 @@ public class PersistenceController : MonoBehaviour
                         saveFile.guardsJobQueue.Add(targetJob.ToJobSerializable());
                     }
                 }
+            }
+            else if (staffGO.tag == "Captain")
+            {
+                // Do nothing 
             }
             else
             {

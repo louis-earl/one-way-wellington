@@ -7,8 +7,10 @@ TagManager:
   - Passenger
   - Enemy
   - Builder
-  - Guard
   - Staff
+  - Undefined
+  - Guard
+  - Captain
   layers:
   - Default
   - TransparentFX
