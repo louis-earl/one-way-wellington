@@ -22,6 +22,8 @@ public class TileOWW
 
     public float oxygenLevel;
 
+    public LooseItem looseItem;
+
     public TileOWW(int x, int y, string tileType)
     {
         this.x = x;

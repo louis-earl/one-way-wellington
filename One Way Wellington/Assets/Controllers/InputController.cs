@@ -49,6 +49,10 @@ public class InputController : MonoBehaviour
     public float cameraBoundMin;
     public float cameraBoundMax;
 
+    // Tile Interface
+    public GameObject tileInterfacePrefab;
+    public static GameObject tileInterfaceGO;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -83,16 +87,43 @@ public class InputController : MonoBehaviour
             SetMode_None();
 
             // Clear pop-up interfaces 
-            if (Passenger.passengerUIInstance != null) Destroy(Passenger.passengerUIInstance);
-            if (Staff.staffUIInstance != null) Destroy(Staff.staffUIInstance);
-            if (Planet.planetUI != null) Destroy(Planet.planetUI);
+            ClearUI();
+        }
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            ClearUI();
         }
 
         UpdateDragging();
+
         UpdateCameraMovement();
+
+        // Check tile interfaces 
+        if (Input.GetMouseButtonDown(0)) // LMB
+        {
+            Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+            TileOWW mousePosTile = WorldController.Instance.GetWorld().GetTileAt((int)mousePos.x, (int)mousePos.y);
+
+
+            if (mousePosTile?.looseItem != null)
+            {
+                tileInterfaceGO = Instantiate(tileInterfacePrefab);
+                tileInterfaceGO.GetComponent<TileInterface>().tile = mousePosTile;
+                tileInterfaceGO.GetComponent<TileInterface>().cargoType.text = mousePosTile.looseItem.itemType;
+                tileInterfaceGO.GetComponent<TileInterface>().quantity.text = mousePosTile.looseItem.quantity.ToString();
+            }
+
+            // TODO: Display other features of the tile 
+
+
+        }
 
         lastFramePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         lastFramePosition.z = 0;
+
+
     }
 
     void UpdateCameraMovement()
@@ -249,6 +280,14 @@ public class InputController : MonoBehaviour
         BuildModeController.Instance.SetGridVisible(true);
     }
 
+    void ClearUI()
+    {
+        if (Passenger.passengerUIInstance != null) Destroy(Passenger.passengerUIInstance);
+        if (Staff.staffUIInstance != null) Destroy(Staff.staffUIInstance);
+        if (Planet.planetUI != null) Destroy(Planet.planetUI);
+        if (tileInterfaceGO != null) Destroy(tileInterfaceGO);
+    }
+
     void UpdateDragging()
     {
         // If we're over a UI element, then bail out from this.
@@ -260,12 +299,7 @@ public class InputController : MonoBehaviour
         // Start Drag
         if (Input.GetMouseButtonDown(0))
         {
-            dragStartPosition = currFramePosition;
-
-            // Clear UI 
-            if (Passenger.passengerUIInstance != null) Destroy(Passenger.passengerUIInstance);
-            if (Staff.staffUIInstance != null) Destroy(Staff.staffUIInstance);
-            if (Planet.planetUI != null) Destroy(Planet.planetUI);
+            dragStartPosition = currFramePosition;          
         }
 
         int start_x = Mathf.FloorToInt(dragStartPosition.x);

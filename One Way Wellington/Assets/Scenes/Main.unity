@@ -7169,6 +7169,8 @@ MonoBehaviour:
   cameraPosZ: 0
   cameraBoundMin: 0
   cameraBoundMax: 0
+  tileInterfacePrefab: {fileID: 4408079604442949160, guid: d6c569d600b83a24892bb399a9593638,
+    type: 3}
 --- !u!1 &1002876743
 GameObject:
   m_ObjectHideFlags: 0

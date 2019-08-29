@@ -61,7 +61,7 @@ public class CargoController : MonoBehaviour
 
             TileOWW dropTile = WorldController.Instance.GetWorld().GetRandomHullTile();
 
-            Job dropJob = new Job(delegate () { DropCargo(dropTile, keyValuePair.Key); }, dropTile, 0.5f, "dropCargo", collectJob, tileExcludeOtherJobs: false);
+            Job dropJob = new Job(delegate () { DropCargo(dropTile, keyValuePair.Key, keyValuePair.Value); }, dropTile, 0.5f, "dropCargo", collectJob, tileExcludeOtherJobs: false);
 
 
             JobQueueController.BuildersJobQueue.AddJob(dropJob);
@@ -78,10 +78,11 @@ public class CargoController : MonoBehaviour
         Debug.Log("Cargo collected!");
     }
 
-    public void DropCargo(TileOWW tile, string cargoType)
+    public void DropCargo(TileOWW tile, string cargoType, int quantity)
     {
         Debug.Log("Cargo dropped: " + cargoType);
         BuildModeController.Instance.PlaceFurniture(tile, "Cargo");
+        tile.looseItem = new LooseItem(cargoType, quantity);
     }
 
     // Assumes the payment has already been made !
