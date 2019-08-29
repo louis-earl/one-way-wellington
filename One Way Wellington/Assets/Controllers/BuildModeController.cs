@@ -34,6 +34,11 @@ public class BuildModeController : MonoBehaviour
 
     public GameObject staffParent;
 
+    // Static values 
+    private static readonly int HULL_COST = 200;
+    private static readonly int WALL_COST = 250;
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -83,7 +88,7 @@ public class BuildModeController : MonoBehaviour
                         {
                             wall_tiles.Add(t);
                             CreatePreview(validPreviewPrefab, "Wall", x, y);
-                            estimatedCost += 250;
+                            estimatedCost += WALL_COST;
                         }
                         else CreatePreview(invalidPreviewPrefab, "Wall", x, y);
                     }
@@ -93,7 +98,7 @@ public class BuildModeController : MonoBehaviour
                         {
                             floor_tiles.Add(t);
                             CreatePreview(validPreviewPrefab, "Hull", x, y);
-                            estimatedCost += 200;
+                            estimatedCost += HULL_COST;
                         }
                         else CreatePreview(invalidPreviewPrefab, "Hull", x, y);
                     }
@@ -101,6 +106,17 @@ public class BuildModeController : MonoBehaviour
                 }
             }
         }
+
+        // Consider materials already in stock 
+        if (CargoController.Instance.stocktake.ContainsKey("Hull")) {
+            estimatedCost -= (CargoController.Instance.stocktake["Hull"] * HULL_COST);
+        }
+
+        if (CargoController.Instance.stocktake.ContainsKey("Wall"))
+        {
+            estimatedCost -= (CargoController.Instance.stocktake["Wall"] * WALL_COST);
+        }
+
         // Check funds 
         if (estimatedCost > CurrencyController.Instance.GetBankBalance())
         {
@@ -477,6 +493,9 @@ public class BuildModeController : MonoBehaviour
 
     public void PlanHull(List<TileOWW> hull_tiles, List<TileOWW> furniture_tiles, List<TileOWW> floor_tiles)
     {
+        int hullOrder = 0;
+        int wallOrder = 0;
+
         foreach (TileOWW tile in floor_tiles)
         {
             // We only want to plan a hull tile if nothing else is already planned 
@@ -487,11 +506,12 @@ public class BuildModeController : MonoBehaviour
                 tile.currentJobType = j.GetJobType();
                 JobQueueController.BuildersJobQueue.AddJob(j);
 
-                // Invoice 
-                CurrencyController.Instance.ChangeBankBalance(-200);
+                hullOrder ++;
             }
             else Debug.Log("There's already a job here! Remove it first. " + tile.ToString());
         }
+
+
         foreach (TileOWW tile in furniture_tiles)
         {
             if (tile.currentJobType == null)
@@ -504,12 +524,33 @@ public class BuildModeController : MonoBehaviour
                 tile.currentJobType = j.GetJobType();
                 JobQueueController.BuildersJobQueue.AddJob(j);
 
-                // Invoice 
-                CurrencyController.Instance.ChangeBankBalance(-250);
+                wallOrder ++;
 
             }
             else Debug.Log("There's already a job here! Remove it first. " + tile.ToString());
         }
+
+        // Consider materials already in stock 
+        if (CargoController.Instance.stocktake.ContainsKey("Hull"))
+        {
+            hullOrder -= (CargoController.Instance.stocktake["Hull"]);
+        }
+
+        if (CargoController.Instance.stocktake.ContainsKey("Wall"))
+        {
+            wallOrder -= (CargoController.Instance.stocktake["Wall"]);
+        }
+
+
+        // Invoice 
+        CurrencyController.Instance.DeductBankBalance(hullOrder * HULL_COST);
+        CurrencyController.Instance.DeductBankBalance(wallOrder * WALL_COST);
+
+
+        // Order stock
+        CargoController.Instance.PlaceOrder("Hull", hullOrder);
+        CargoController.Instance.PlaceOrder("Wall", wallOrder);
+
     }
 
     // Overloaded method for planing multiple furniture jobs at once (e.g. walls, tanks, batteries, etc.)

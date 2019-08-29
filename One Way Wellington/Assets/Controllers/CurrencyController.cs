@@ -44,5 +44,10 @@ public class CurrencyController : MonoBehaviour
         text_BankBalance.text = string.Format("{0:C}", bankBalance);
     }
 
+    public void DeductBankBalance(int amount)
+    {
+        bankBalance -= amount;
+        text_BankBalance.text = string.Format("{0:C}", bankBalance);
+    }
 
 }
