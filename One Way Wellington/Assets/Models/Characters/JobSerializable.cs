@@ -8,15 +8,20 @@ using UnityEngine;
 public class JobSerializable
 {
     protected JobSerializable prerequisiteJob;
-    protected int posX;
-    protected int posY;
+    protected int tilePosX;
+    protected int tilePosY;
     protected float jobTime;
     protected string jobType;
+    protected bool tileExcludeOtherJobs;
+    protected int jobPosX;
+    protected int jobPosY;
 
-    public JobSerializable(TileOWW tileOWW, float jobTime, string jobType, JobSerializable prerequisiteJob = null)
+    public JobSerializable(TileOWW tileOWW, int jobPosX, int jobPosY, float jobTime, string jobType, JobSerializable prerequisiteJob = null)
     {
-        this.posX = tileOWW.GetX();
-        this.posY = tileOWW.GetY();
+        this.tilePosX = tileOWW.GetX();
+        this.tilePosY = tileOWW.GetY();
+        this.jobPosX = jobPosX;
+        this.jobPosY = jobPosY;
         this.jobTime = jobTime;
         this.jobType = jobType;
         this.prerequisiteJob = prerequisiteJob;
@@ -30,7 +35,10 @@ public class JobSerializable
             p = prerequisiteJob.ToJob();
         }
 
-        return new Job(WorldController.Instance.GetWorld().GetTileAt(posX, posY), jobTime, jobType, p);
+        Job job = new Job(WorldController.Instance.GetWorld().GetTileAt(tilePosX, tilePosY), jobTime, jobType, p);
+        job.SetAltPosition(jobPosX, jobPosY);
+
+        return job;
     }
 
    

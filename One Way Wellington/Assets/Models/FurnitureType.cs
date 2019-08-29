@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class FurnitureType
 {
-    public enum BuildCategory {Hull, Wall, Utility, Furniture, Staff};
+    public enum BuildCategory {Hull, Wall, Utility, Furniture, Staff, Loose};
 
     public string title;
     public string description;
@@ -296,6 +296,21 @@ public class FurnitureType
             walkable: false
             ));
 
+
+
+
+
+
+
+        // LOOSE ITEMS 
+        furnitureTypes.Add("Cargo", new FurnitureType(
+            "Cargo",
+            "If you can read this, something isn't right",
+            FurnitureType.BuildCategory.Loose,
+            0,
+            0,
+            fixedRotation: true
+            ));
 
         return furnitureTypes;
     }

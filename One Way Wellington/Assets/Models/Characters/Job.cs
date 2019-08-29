@@ -35,6 +35,8 @@ public class Job
         // Set default job pos
         jobPosX = tileOWW.GetX();
         jobPosY = tileOWW.GetY();
+
+        if (jobTime < 0.1f) Debug.LogWarning("Job time is too short! Prerequisites may be skipped");
     }
 
     // Chase jobs not restricted to a single tileOWW 
@@ -153,7 +155,7 @@ public class Job
         {
             p = prerequisiteJob.ToJobSerializable();
         }
-        return new JobSerializable(tileOWW, jobTime, jobType, p); 
+        return new JobSerializable(tileOWW, jobPosX, jobPosY, jobTime, jobType, p); 
     }
 
     public void SetAltPosition(int x, int y)
