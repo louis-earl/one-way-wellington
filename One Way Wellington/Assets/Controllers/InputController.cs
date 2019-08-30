@@ -50,8 +50,13 @@ public class InputController : MonoBehaviour
     public float cameraBoundMax;
 
     // Tile Interface
-    public GameObject tileInterfacePrefab;
     public static GameObject tileInterfaceGO;
+
+    public GameObject tileInterfacePrefab;
+    
+
+
+
 
     // Start is called before the first frame update
     void Start()
@@ -99,32 +104,49 @@ public class InputController : MonoBehaviour
 
         UpdateCameraMovement();
 
-        // Check tile interfaces 
-        if (Input.GetMouseButtonDown(0)) // LMB
-        {
-            Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-
-            TileOWW mousePosTile = WorldController.Instance.GetWorld().GetTileAt((int)mousePos.x, (int)mousePos.y);
-
-
-            if (mousePosTile?.looseItem != null)
-            {
-                tileInterfaceGO = Instantiate(tileInterfacePrefab);
-                tileInterfaceGO.GetComponent<TileInterface>().tile = mousePosTile;
-                tileInterfaceGO.GetComponent<TileInterface>().cargoType.text = mousePosTile.looseItem.itemType;
-                tileInterfaceGO.GetComponent<TileInterface>().quantity.text = mousePosTile.looseItem.quantity.ToString();
-            }
-
-            // TODO: Display other features of the tile 
-
-
-        }
+        UpdateTileInterface();
 
         lastFramePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         lastFramePosition.z = 0;
 
 
     }
+
+    void UpdateTileInterface()
+    {
+        if (Input.GetMouseButtonDown(0)) // LMB
+        {
+            // Check if player clicked on something other than a tile 
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out RaycastHit hit))
+            {
+                if (hit.collider.tag != "NavigationPlane")
+                {
+                    return;
+                }
+            }
+
+            // Get tile clicked on 
+            Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            TileOWW tileOWW = WorldController.Instance.GetWorld().GetTileAt((int)mousePos.x, (int)mousePos.y);
+
+            // Null checks
+            if (tileOWW == null)
+            {
+                return;
+            }
+            if (tileOWW.GetTileType() == "Empty" && tileOWW.currentJobType == null)
+            {
+                return;
+            }
+
+            // Create interface 
+            tileInterfaceGO = Instantiate(tileInterfacePrefab);
+            tileInterfaceGO.GetComponent<TileInterface>().tile = tileOWW;
+            tileInterfaceGO.GetComponent<TileInterface>().tileType.text = tileOWW.GetTileType();
+        }
+    }
+
 
     void UpdateCameraMovement()
     {

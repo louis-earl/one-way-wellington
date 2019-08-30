@@ -123,4 +123,16 @@ public class TileOWW
         return ("Tile: (" + x + ", " + y + "); TileType: " + tileType + "; InstalledFurniture: " + installedFurniture);
     }
 
+    // Job-less and furniture-less
+    public bool IsTileEmpty()
+    {
+        if (currentJobType != null) return false;
+        if (installedFurniture != null) return false;
+        if (installedFurnitureAltX != null) return false;
+        if (installedFurnitureAltY != null) return false;
+
+
+        return true;
+    }
+
 }

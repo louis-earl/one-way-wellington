@@ -2224,7 +2224,7 @@ GameObject:
   - component: {fileID: 268309011}
   m_Layer: 0
   m_Name: Furniture
-  m_TagString: Untagged
+  m_TagString: Tilemap
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7326,7 +7326,7 @@ MonoBehaviour:
   cameraPosZ: 0
   cameraBoundMin: 0
   cameraBoundMax: 0
-  tileInterfacePrefab: {fileID: 4408079604442949160, guid: d6c569d600b83a24892bb399a9593638,
+  tileInterfacePrefab: {fileID: 4408079604442949160, guid: 17ea9ed0d86792345805c7c261f1c7b2,
     type: 3}
 --- !u!1 &1002876743
 GameObject:
@@ -8490,7 +8490,7 @@ GameObject:
   - component: {fileID: 1107455184}
   m_Layer: 0
   m_Name: Lighting
-  m_TagString: Untagged
+  m_TagString: Tilemap
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -9894,7 +9894,7 @@ GameObject:
   - component: {fileID: 1252805204}
   m_Layer: 0
   m_Name: BuildGrid
-  m_TagString: Untagged
+  m_TagString: Tilemap
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -10103,7 +10103,7 @@ GameObject:
   - component: {fileID: 1271772984}
   m_Layer: 0
   m_Name: PendingJobs
-  m_TagString: Untagged
+  m_TagString: Tilemap
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -11409,7 +11409,7 @@ GameObject:
   - component: {fileID: 1368428105}
   m_Layer: 0
   m_Name: NavigationPlane
-  m_TagString: Untagged
+  m_TagString: NavigationPlane
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -11804,7 +11804,7 @@ GameObject:
   - component: {fileID: 1449729230}
   m_Layer: 0
   m_Name: Oxygen
-  m_TagString: Untagged
+  m_TagString: Tilemap
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -12649,7 +12649,7 @@ GameObject:
   - component: {fileID: 1527889544}
   m_Layer: 0
   m_Name: Hull
-  m_TagString: Untagged
+  m_TagString: Tilemap
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -13138,7 +13138,7 @@ GameObject:
   - component: {fileID: 1565778386}
   m_Layer: 0
   m_Name: Tilemap Grid
-  m_TagString: Untagged
+  m_TagString: Tilemap
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -17208,7 +17208,7 @@ GameObject:
   - component: {fileID: 1853569758}
   m_Layer: 0
   m_Name: Rooms
-  m_TagString: Untagged
+  m_TagString: Tilemap
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

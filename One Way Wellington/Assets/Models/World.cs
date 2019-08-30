@@ -55,7 +55,7 @@ public class World
             List<TileOWW> joblessTiles = new List<TileOWW>();
             foreach (TileOWW tileJobCheck in BuildModeController.Instance.emptyHullTiles)
             {
-                if (tileJobCheck.currentJobType == null)
+                if (tileJobCheck.IsTileEmpty())
                 {
                     joblessTiles.Add(tileJobCheck);
                 }
