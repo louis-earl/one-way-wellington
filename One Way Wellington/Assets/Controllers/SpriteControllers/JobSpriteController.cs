@@ -15,6 +15,15 @@ public class JobSpriteController : MonoBehaviour
         Instance = this;
     }
 
+
+    public void UpdateAllJob()
+    {
+        foreach (TileOWW tileOWW in WorldController.Instance.GetWorld().GetAllTiles())
+        {
+            UpdateJob(tileOWW);
+        }
+    }
+
     public void UpdateJob(TileOWW tileOWW)
     {
         if (tileOWW == null) return;

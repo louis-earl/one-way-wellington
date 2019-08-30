@@ -59,7 +59,7 @@ public class CargoController : MonoBehaviour
             Job collectJob = new Job(delegate () { CollectCargoFromStairs(); }, stairwellTile, 0.5f, "collectCargo", tileExcludeOtherJobs: false);
 
 
-            TileOWW dropTile = WorldController.Instance.GetWorld().GetRandomHullTile();
+            TileOWW dropTile = WorldController.Instance.GetWorld().GetRandomHullTile(avoidJobs: true);
 
             Job dropJob = new Job(delegate () { DropCargo(dropTile, keyValuePair.Key, keyValuePair.Value); }, dropTile, 0.5f, "dropCargo", collectJob, tileExcludeOtherJobs: false);
 

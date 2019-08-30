@@ -16,14 +16,15 @@ public class JobSerializable
     protected int jobPosX;
     protected int jobPosY;
 
-    public JobSerializable(TileOWW tileOWW, int jobPosX, int jobPosY, float jobTime, string jobType, JobSerializable prerequisiteJob = null)
+    public JobSerializable(int tilePosX, int tilePosY, int jobPosX, int jobPosY, float jobTime, string jobType, bool tileExcludeOtherJobs = false, JobSerializable prerequisiteJob = null)
     {
-        this.tilePosX = tileOWW.GetX();
-        this.tilePosY = tileOWW.GetY();
+        this.tilePosX = tilePosX;
+        this.tilePosY = tilePosY;
         this.jobPosX = jobPosX;
         this.jobPosY = jobPosY;
         this.jobTime = jobTime;
         this.jobType = jobType;
+        this.tileExcludeOtherJobs = tileExcludeOtherJobs;
         this.prerequisiteJob = prerequisiteJob;
     }
 
@@ -35,11 +36,19 @@ public class JobSerializable
             p = prerequisiteJob.ToJob();
         }
 
-        Job job = new Job(WorldController.Instance.GetWorld().GetTileAt(tilePosX, tilePosY), jobTime, jobType, p);
+        TileOWW tile = WorldController.Instance.GetWorld().GetTileAt(tilePosX, tilePosY);
+
+        if (tile == null)
+        {
+            Debug.LogWarning("Just made a job with no tile");
+        }
+
+        Job job = new Job(tile, jobTime, jobType, tileExcludeOtherJobs, p);
         job.SetAltPosition(jobPosX, jobPosY);
 
         return job;
     }
+
 
    
 }

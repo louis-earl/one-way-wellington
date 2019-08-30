@@ -575,7 +575,7 @@ public class BuildModeController : MonoBehaviour
                     TileOWW temp = WorldController.Instance.GetWorld().GetTileAt(furniture_tile.GetX() + i, furniture_tile.GetY() + j);
                     if (temp.currentJobType != null)
                     {
-                        Debug.Log("Unable to place job baceause tile already had an existing job! Try remove it first.");
+                        Debug.Log("Unable to place job baceause tile already had an existing job: " + temp.currentJobType);
                         return; // Failed to place 
                     }
                 }

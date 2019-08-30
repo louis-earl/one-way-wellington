@@ -54,7 +54,7 @@ public class Job
 
 
     // Constructor used when loading game, because actions can't be serialized 
-    public Job(TileOWW tileOWW, float jobTime, string jobType, Job prerequisiteJob = null)
+    public Job(TileOWW tileOWW, float jobTime, string jobType, bool tileExcludeOtherJobs, Job prerequisiteJob = null)
     {
         Action actionNew = null;
         if (jobType == "Hull")
@@ -81,6 +81,7 @@ public class Job
         this.tileOWW = tileOWW;
         this.jobTime = jobTime;
         this.jobType = jobType;
+        this.tileExcludeOtherJobs = tileExcludeOtherJobs;
         this.prerequisiteJob = prerequisiteJob;
         tileOWW.currentJobType = jobType;
     }
@@ -155,7 +156,7 @@ public class Job
         {
             p = prerequisiteJob.ToJobSerializable();
         }
-        return new JobSerializable(tileOWW, jobPosX, jobPosY, jobTime, jobType, p); 
+        return new JobSerializable(tileOWW.GetX(), tileOWW.GetY(), jobPosX, jobPosY, jobTime, jobType, tileExcludeOtherJobs, p); 
     }
 
     public void SetAltPosition(int x, int y)

@@ -180,7 +180,6 @@ public class WorldController : MonoBehaviour
         foreach (GameObject staffGO in staff) 
         {
             Destroy(staffGO);
-
         }
         staff.Clear();
     }
