@@ -108,13 +108,13 @@ public class BuildModeController : MonoBehaviour
         }
 
         // Consider materials already in stock 
-        if (CargoController.Instance.stocktake.ContainsKey("Hull")) {
-            estimatedCost -= (CargoController.Instance.stocktake["Hull"] * HULL_COST);
+        if (CargoController.Instance.shipStock.ContainsKey("Hull")) {
+            estimatedCost -= (CargoController.Instance.shipStock["Hull"] * HULL_COST);
         }
 
-        if (CargoController.Instance.stocktake.ContainsKey("Wall"))
+        if (CargoController.Instance.shipStock.ContainsKey("Wall"))
         {
-            estimatedCost -= (CargoController.Instance.stocktake["Wall"] * WALL_COST);
+            estimatedCost -= (CargoController.Instance.shipStock["Wall"] * WALL_COST);
         }
 
         // Check funds 
@@ -531,14 +531,14 @@ public class BuildModeController : MonoBehaviour
         }
 
         // Consider materials already in stock 
-        if (CargoController.Instance.stocktake.ContainsKey("Hull"))
+        if (CargoController.Instance.shipStock.ContainsKey("Hull"))
         {
-            hullOrder -= (CargoController.Instance.stocktake["Hull"]);
+            hullOrder -= (CargoController.Instance.shipStock["Hull"]);
         }
 
-        if (CargoController.Instance.stocktake.ContainsKey("Wall"))
+        if (CargoController.Instance.shipStock.ContainsKey("Wall"))
         {
-            wallOrder -= (CargoController.Instance.stocktake["Wall"]);
+            wallOrder -= (CargoController.Instance.shipStock["Wall"]);
         }
 
 

@@ -7,39 +7,25 @@ public class CargoController : MonoBehaviour
     public static CargoController Instance;
     private Dictionary<string, int> undeliveredStock;
 
-    public Dictionary<string, int> stocktake;
+    public Dictionary<string, int> shipStock;
+    public Dictionary<string, List<TileOWW>> shipStockLocations;
 
     // Start is called before the first frame update
     void Start()
     {
         if (Instance == null) Instance = this;
-        stocktake = new Dictionary<string, int>();
+        shipStock = new Dictionary<string, int>();
         undeliveredStock = new Dictionary<string, int>();
+        shipStockLocations = new Dictionary<string, List<TileOWW>>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
 
     public void DeliverItems()
     {
         
-        foreach (KeyValuePair<string, int> keyValuePair in undeliveredStock)
-        {
-            // Add to ship inventory 
-            if (stocktake.ContainsKey(keyValuePair.Key))
-            {
-                stocktake[keyValuePair.Key] += keyValuePair.Value;
-            }
-            else
-            {
-                stocktake.Add(keyValuePair.Key, keyValuePair.Value);
-            }
-
-
+        foreach (KeyValuePair<string, int> cargoTypeQuantityPair in undeliveredStock)
+        {          
             // Create jobs to move 
 
             // Find stairwell
@@ -51,7 +37,9 @@ public class CargoController : MonoBehaviour
             }
             else
             {
-                Debug.LogWarning("Couldn't find a stairwell!!");
+                Debug.Log("Couldn't find a stairwell!!");
+                DropCargo(WorldController.Instance.GetWorld().GetRandomEmptyTile(), cargoTypeQuantityPair.Key, cargoTypeQuantityPair.Value);
+                return;
             }
 
             TileOWW stairwellTile = WorldController.Instance.GetWorld().GetTileAt((int)stairwellPos.x, (int)stairwellPos.y);
@@ -61,10 +49,13 @@ public class CargoController : MonoBehaviour
 
             TileOWW dropTile = WorldController.Instance.GetWorld().GetRandomHullTile(avoidJobs: true);
 
-            Job dropJob = new Job(delegate () { DropCargo(dropTile, keyValuePair.Key, keyValuePair.Value); }, dropTile, 0.5f, "dropCargo", collectJob, tileExcludeOtherJobs: false);
+            Job dropJob = new Job(delegate () { DropCargo(dropTile, cargoTypeQuantityPair.Key, cargoTypeQuantityPair.Value); }, dropTile, 0.5f, "dropCargo", collectJob, tileExcludeOtherJobs: false);
 
 
             JobQueueController.BuildersJobQueue.AddJob(dropJob);
+
+
+            
         }
     }
 
@@ -80,10 +71,34 @@ public class CargoController : MonoBehaviour
 
     public void DropCargo(TileOWW tile, string cargoType, int quantity)
     {
-        Debug.Log("Cargo dropped: " + cargoType);
+        // Add to tile
         BuildModeController.Instance.PlaceFurniture(tile, "Cargo");
         tile.looseItem = new LooseItem(cargoType, quantity);
+
+        // Add to ship inventory 
+        if (shipStock.ContainsKey(cargoType))
+        {
+            shipStock[cargoType] += quantity;
+        }
+        else
+        {
+            shipStock.Add(cargoType, quantity);
+        }
+
+        // Save reference of tile location 
+        if (!shipStockLocations.ContainsKey(cargoType))
+        {     
+            shipStockLocations.Add(cargoType, new List<TileOWW>());           
+        }
+        shipStockLocations[cargoType].Add(tile);
+
+        // Clear all failed jobs 
+        foreach (GameObject characterGO in WorldController.Instance.staff)
+        {
+            characterGO.GetComponent<Character>().failedJobs = new List<Job>();
+        }
     }
+
 
     // Assumes the payment has already been made !
     public void PlaceOrder(string itemType, int quantity)
@@ -96,5 +111,30 @@ public class CargoController : MonoBehaviour
         {
             undeliveredStock.Add(itemType, quantity);
         }
+
+        // if at a planet stop:
+        // Deliver items 
+    }
+
+
+    public TileOWW FindCargo(string cargoType)
+    {
+        if (shipStockLocations.ContainsKey(cargoType))
+        {
+            // Prefer to take from the smallest stack, so that space can be cleared 
+            int smallestQuantity = int.MaxValue;
+            TileOWW smallestQuantityTile = null;
+            foreach (TileOWW tileOWW in shipStockLocations[cargoType])
+            {
+                if (tileOWW.looseItem.quantity < smallestQuantity)
+                {
+                    smallestQuantity = tileOWW.looseItem.quantity;
+                    smallestQuantityTile = tileOWW;
+                }
+            }
+
+            return smallestQuantityTile;
+        }
+        return null;
     }
 }

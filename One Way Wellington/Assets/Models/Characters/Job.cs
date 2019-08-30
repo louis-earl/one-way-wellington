@@ -148,6 +148,11 @@ public class Job
  
     }
 
+    public void SetPrerequisiteJob(Job prerequisiteJob)
+    {
+        this.prerequisiteJob = prerequisiteJob;
+    }
+
     // Saving Job objects not supported! Use JobSerializable instead
     public JobSerializable ToJobSerializable()
     {

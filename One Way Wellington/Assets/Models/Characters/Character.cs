@@ -54,6 +54,40 @@ public class Character : MonoBehaviour
             else currentJob = targetJob.GetPrerequisiteJob();
         }
 
+        // Check if in stock 
+        if (currentJob?.GetJobType() == "Hull")
+        {
+            if (CargoController.Instance.shipStock.ContainsKey("Hull"))
+            {
+
+                if (CargoController.Instance.shipStock["Hull"] == 0)
+                {
+                    // item is not in stock 
+                    ReturnFailedJob();
+                    return;
+                }
+                else if (CargoController.Instance.shipStock["Hull"] < 0)
+                {
+                    Debug.LogError("Stock is a negative value");
+                }
+                else
+                {
+                    // Item is in stock! Character must go get it first 
+                    TileOWW cargoTile = CargoController.Instance.FindCargo("Hull");
+                    currentJob.SetPrerequisiteJob(new Job(delegate () { }, cargoTile, 0.5f, "Pickup Cargo"));
+                    currentJob = null;
+                    return;
+                }
+            }
+            else
+            {
+                // Item is not in stock 
+                ReturnFailedJob();
+                return;
+
+            }
+        }
+
         // Check if another character finished a duplicate chase job
         if (currentJob?.GetJobType() == "attack" && currentJob?.GetCharacter() == null)
         {
@@ -73,9 +107,8 @@ public class Character : MonoBehaviour
             }
             else
             {
-                failedJobs.Add(targetJob);
-                jobQueue.AddJob(targetJob);
-                targetJob = currentJob = null;
+                ReturnFailedJob();
+                return;
             }
         }
 
@@ -99,6 +132,13 @@ public class Character : MonoBehaviour
                 }
             }
         }
+    }
+
+    public void ReturnFailedJob()
+    {
+        failedJobs.Add(targetJob);
+        jobQueue.AddJob(targetJob);
+        targetJob = currentJob = null;
     }
 
     // Do job until finished 

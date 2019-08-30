@@ -40,13 +40,36 @@ public class World
         return tiles;
     }
 
-    public TileOWW GetRandomHullTile(bool avoidJobs = false)
+    public TileOWW GetRandomEmptyTile()
+    {
+        List<TileOWW> emptyTiles = new List<TileOWW>();
+
+        foreach (TileOWW emptyTile in tiles)
+        {
+            if (emptyTile.GetTileType() == "Empty" && emptyTile.currentJobType == null)
+            {
+                emptyTiles.Add(emptyTile);
+            }
+        }
+
+        return emptyTiles[Random.Range(0, emptyTiles.Count)];
+    }
+
+
+    public TileOWW GetRandomHullTile(bool avoidJobs = false, bool returnDefaultOnFail = false)
     {
         // If no empty hull tile exists 
         if (BuildModeController.Instance.emptyHullTiles.Count == 0)
         {
-            Debug.LogError("Couldn't find any empty hull tiles!");
-            return null;
+            if (returnDefaultOnFail)
+            {
+                return GetTileAt(0, 0);
+            }
+            else
+            {
+                Debug.LogError("Couldn't find any empty hull tiles!");
+                return null;
+            }
         }
 
         if (avoidJobs)
