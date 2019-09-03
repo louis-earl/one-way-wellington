@@ -84,8 +84,7 @@ public class FurnitureType
             200,
             3,
             fixedRotation: true,
-            multiSize: true,
-            walkable: false
+            multiSize: true
             ));
 
         furnitureTypes.Add("Bed", new FurnitureType(
@@ -179,8 +178,7 @@ public class FurnitureType
             200,
             3,
             fixedRotation: true,
-            multiSize: true,
-            walkable: false
+            multiSize: true
             ));
 
         furnitureTypes.Add("Oxygen Vent", new FurnitureType(

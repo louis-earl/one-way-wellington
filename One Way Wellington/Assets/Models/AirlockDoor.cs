@@ -5,10 +5,10 @@ using UnityEngine.AI;
 
 public class AirlockDoor : MonoBehaviour
 {
-    void OnTriggerStay(Collider other)
+    void OnTriggerStay2D(Collider2D other)
     {
 
-        if (other.gameObject.tag == "Character")
+        if (other.gameObject.tag == "Passenger" || other.gameObject.tag == "Guard" || other.gameObject.tag == "Builder")
         {
             // Disable collision 
             gameObject.GetComponent<NavMeshObstacle>().enabled = false;
@@ -22,9 +22,9 @@ public class AirlockDoor : MonoBehaviour
         }
     }
 
-    void OnTriggerExit(Collider other)
+    void OnTriggerExit2D(Collider2D other)
     {
-        if (other.gameObject.tag == "Character")
+        if (other.gameObject.tag == "Passenger" || other.gameObject.tag == "Guard" || other.gameObject.tag == "Builder")
         {
             // Enable collision 
             gameObject.GetComponent<NavMeshObstacle>().enabled = true;

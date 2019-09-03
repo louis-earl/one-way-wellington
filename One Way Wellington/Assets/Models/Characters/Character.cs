@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
@@ -9,6 +10,8 @@ public class Character : MonoBehaviour
     protected float currentY;
     protected Sprite sprite;
 
+    protected float health;
+
     // Jobs 
     public Job targetJob; // The base job object
     public Job currentJob; // Any prerequisite jobs of the base object must be completed first 
@@ -16,6 +19,8 @@ public class Character : MonoBehaviour
 
     protected NavMeshAgent navMeshAgent;
     protected SpriteRenderer spriteRenderer;
+
+    protected JobQueue jobQueue;
 
     private void Start()
     {
@@ -33,7 +38,7 @@ public class Character : MonoBehaviour
         spriteRenderer.transform.localPosition = new Vector3(0f, 0f, 0.25f);
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         Refresh();
     }
@@ -49,6 +54,13 @@ public class Character : MonoBehaviour
             else currentJob = targetJob.GetPrerequisiteJob();
         }
 
+        // Check if another character finished a duplicate chase job
+        if (currentJob?.GetJobType() == "attack" && currentJob?.GetCharacter() == null)
+        {
+            targetJob = currentJob = null;
+        }
+
+
         // Set path 
         if (currentJob != null)
         {
@@ -62,7 +74,7 @@ public class Character : MonoBehaviour
             else
             {
                 failedJobs.Add(targetJob);
-                JobQueueController.BuildersJobQueue.AddJob(targetJob);
+                jobQueue.AddJob(targetJob);
                 targetJob = currentJob = null;
             }
         }
@@ -70,24 +82,38 @@ public class Character : MonoBehaviour
         // Check if at job location
         if (currentJob != null)
         {
-            if (Vector3.Distance(new Vector3(currentX, currentY), new Vector3(currentJob.GetJobPosX(), currentJob.GetJobPosY())) < 2)
+            // For tile based job
+            if (Vector3.Distance(new Vector3(currentX, currentY), new Vector3(currentJob.GetJobPosX(), currentJob.GetJobPosY())) < 1)
             {
-                // Do job until finished 
-                if (currentJob.DoJob(Time.deltaTime))
+                DoJobTick();
+                return;
+            }
+            // For character based job
+            if (currentJob.GetCharacter() != null)
+            {
+                if (Vector3.Distance(transform.position, currentJob.GetCharacter().transform.position) < 1)
                 {
-                    if (currentJob == targetJob)
-                    {
-                        currentJob.GetTileOWW().currentJobType = null;
-                        JobSpriteController.Instance.UpdateJob(currentJob.GetTileOWW());
-                        currentJob = targetJob = null;
-                        navMeshAgent.SetDestination(new Vector3(currentX, currentY, 0));
-                        failedJobs.Clear();
-                    }
-                    else currentJob = null;
+
+                    DoJobTick();
+                    return;
                 }
             }
         }
+    }
 
+    // Do job until finished 
+    public void DoJobTick()
+    {
+        if (currentJob.DoJob(Time.fixedDeltaTime))
+        {
+            if (currentJob == targetJob)
+            {
+                currentJob = targetJob = null;
+                navMeshAgent.SetDestination(new Vector3(currentX, currentY, 0));
+                failedJobs.Clear();
+            }
+            else currentJob = null;
+        }
     }
 
     public float GetXPos()
@@ -98,6 +124,122 @@ public class Character : MonoBehaviour
     public float GetYPos()
     {
         return currentY;
+    }
+
+    public void TakeDamage(float damage)
+    {
+        float startHealth = health;
+        Debug.Log("Taking damage: " + damage);
+        health -= damage;
+
+        if (health < 0)
+        {
+           
+            
+            if (gameObject.CompareTag("Passenger") || gameObject.CompareTag("Builder") || gameObject.CompareTag("Guard"))
+            {
+                // Clear previous notification 
+                GameObject previousNotificationGO = NotificationController.Instance.FindNotificationGO(("Your " + gameObject.tag + ", '" + gameObject.name + "' is low on health!"));
+                if (previousNotificationGO != null)
+                {
+                    NotificationController.Instance.CloseNotification(previousNotificationGO);
+                }
+
+                // Create new notification
+                NotificationController.Instance.CreateNotification("Your " + gameObject.tag + ", '" + gameObject.name + "' has died!", UrgencyLevel.High, null);
+            }
+
+            // Remove other references 
+            if (gameObject.CompareTag("Builder") || gameObject.CompareTag("Guard"))
+            {
+                WorldController.Instance.staff.Remove(gameObject);
+            }
+            else if (gameObject.CompareTag("Passenger"))
+            {
+                JourneyController.Instance.currentPassengers.Remove(gameObject);
+            }
+
+            // Remove this character
+            Destroy(gameObject);
+        }
+        else if (health < 50 && startHealth >= 50)
+        {
+            // Create new notification 
+            if (gameObject.CompareTag("Passenger") || gameObject.CompareTag("Builder") || gameObject.CompareTag("Guard"))
+            {
+                List<Action> actions = new List<Action>()
+                {
+                    delegate () { StartCoroutine(InputController.Instance.MoveCameraTo(currentX, currentY)); }
+                };
+                NotificationController.Instance.CreateNotification("Your " + gameObject.tag + ", '" + gameObject.name + "' is low on health!", UrgencyLevel.Medium, actions);
+            }
+        }
+        
+    }
+
+    // Use 2D raycast to find character in view 
+    // TODO: Return a character?
+    protected void DoJobAtVisibleCharacter(params string[] characterTags)
+    {
+        // Get a list of potential targets 
+        Collider2D[] potentialTargets = Physics2D.OverlapCircleAll(transform.position, 10);
+
+
+        foreach (Collider2D target in potentialTargets)
+        {
+            // Type check
+            if (target.transform.parent != null)
+            {
+                // Params can be ordered by priority 
+                foreach (string characterTag in characterTags)
+                {
+                    // Debug.Log(string.Join("", characterTag) + " -> " + target.transform.parent.tag);
+                    if (characterTag.Equals(target.transform.parent.tag))
+                    {
+                        // Visibility check 
+                        RaycastHit2D hit = Physics2D.Raycast(transform.position, (target.transform.position - transform.position));
+                        // Debug.DrawRay(transform.position, (target.transform.position - transform.position), Color.red);
+                        if (characterTag.Equals(target.transform.parent.tag))
+                        {
+                            Action attackAction = delegate () { target.GetComponentInParent<Character>().TakeDamage(25); };
+                            targetJob = new Job(attackAction, target.GetComponentInParent<Character>(), 1f, "attack");
+                            return;
+                        }
+                    }
+                }
+            }
+        }
+
+    }
+
+    protected void DoJobAtFurnitureTile(string furnitureType, string jobType, Action action, float jobTime)
+    {
+        // Does a charger exist?
+        if (BuildModeController.Instance.furnitureTileOWWMap.ContainsKey(furnitureType))
+        {
+            // Loop through all chargers
+            for (int i = 0; i < BuildModeController.Instance.furnitureTileOWWMap[furnitureType].Count; i++)
+            {
+                TileOWW tileOWW = BuildModeController.Instance.furnitureTileOWWMap[furnitureType][i];
+                if (tileOWW.currentJobType == null)
+                {
+                    if (targetJob != null)
+                    {
+
+                        if (targetJob.GetJobType() != jobType)
+                        {
+                            jobQueue.AddJob(targetJob);
+                            targetJob = currentJob = null;
+                        }
+
+                    }
+
+                    targetJob = new Job(action, tileOWW, 5, jobType);
+                    return;
+
+                }
+            }
+        }
     }
 
 }

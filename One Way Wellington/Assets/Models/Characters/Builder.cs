@@ -12,7 +12,7 @@ public class Builder : Staff
         base.Init();
 
         // Setup from here onwards
-
+        jobQueue = JobQueueController.BuildersJobQueue;
     }
 
     protected override void Refresh()
@@ -26,7 +26,7 @@ public class Builder : Staff
         // Find and set a target/current jobs
         if (targetJob == null)
         {
-            targetJob = JobQueueController.BuildersJobQueue.GetNextJob(new Vector2(currentX, currentY), failedJobs);
+            targetJob = jobQueue.GetNextJob(new Vector2(currentX, currentY), failedJobs);
             if (targetJob == null)
             {
                 // We are idle

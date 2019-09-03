@@ -17,8 +17,12 @@ public class JobSpriteController : MonoBehaviour
 
     public void UpdateJob(TileOWW tileOWW)
     {
+        if (tileOWW == null) return;
+
         RuleTile t;
-        if (tileOWW.currentJobType != null)
+        if (tileOWW.currentJobType != null &&
+            ((tileOWW.installedFurnitureAltX == null && tileOWW.installedFurnitureAltY == null) || 
+            (tileOWW.installedFurnitureAltX == tileOWW.GetX() && tileOWW.installedFurnitureAltY == tileOWW.GetY())))
         {
             // Create job graphics 
             t = Resources.Load<RuleTile>("TileSets/Furniture/" + tileOWW.currentJobType);

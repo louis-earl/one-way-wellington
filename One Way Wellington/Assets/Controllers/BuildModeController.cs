@@ -29,6 +29,11 @@ public class BuildModeController : MonoBehaviour
 
     public Dictionary<string, List<TileOWW>> roomsTileOWWMap;
 
+    public List<TileOWW> emptyHullTiles;
+    public List<TileOWW> allHullTiles;
+
+    public GameObject staffParent;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -190,7 +195,7 @@ public class BuildModeController : MonoBehaviour
     {    
         if (furnitureType.cost > CurrencyController.Instance.GetBankBalance())
         {
-            Debug.Log("Couldn't affoard.");
+            // Debug.Log("Couldn't affoard.");
             return false;
         }
 
@@ -202,22 +207,32 @@ public class BuildModeController : MonoBehaviour
                 TileOWW t = WorldController.Instance.GetWorld().GetTileAt(tile.GetX() + i, tile.GetY() + j);
                 if ((t.GetTileType() == "Hull" && furnitureType.exteriorOnly) || (t.GetTileType() == "Empty" && !furnitureType.exteriorOnly))
                 {
-                    Debug.Log("Interior / exterior check failed.");
+                    // Debug.Log("Interior / exterior check failed.");
                     return false;
                 }
                 if (t.installedFurnitureAltX != null || t.installedFurnitureAltY != null)
                 {
-                    Debug.Log("Multi-tile furniture check failed.");
+                    //Allow certain furniture to overwrite others 
+                    if (t.GetInstalledFurniture()?.GetFurnitureType() == "Wall" && furnitureType.title == "Airlock")
+                    {
+                        return true;
+                    }
+                    // Debug.Log("Multi-tile furniture check failed.");
                     return false;
                 }
                 if (t.GetInstalledFurniture() != null)
                 {
-                    Debug.Log("Installed furniture check failed");
+                    //Allow certain furniture to overwrite others 
+                    if (t.GetInstalledFurniture().GetFurnitureType() == "Wall" && furnitureType.title == "Airlock")
+                    {
+                        return true;
+                    }
+                    // Debug.Log("Installed furniture check failed");
                     return false;
                 }
                 if (t.currentJobType != null)
                 {
-                    Debug.Log("Existing job check failed.");
+                    // Debug.Log("Existing job check failed.");
                     return false;
                 }
             }
@@ -526,7 +541,20 @@ public class BuildModeController : MonoBehaviour
             }
 
             Action placeFurnitureAction = delegate () { PlaceFurniture(furniture_tile, furnitureType.title); };
-            Job job = new Job(placeFurnitureAction, furniture_tile, furnitureType.installTime, furnitureType.title);
+            Job job;
+
+            // Allow certain furniture to overwrite others by creating a prerequisite removal job
+            if (furniture_tile.GetInstalledFurniture()?.GetFurnitureType() == "Wall" && furnitureType.title == "Airlock")
+            {
+                Action removeExistingFurnitureAction = delegate () { RemoveFurniture(furniture_tile); };
+                Job prerequisiteJob = new Job(removeExistingFurnitureAction, furniture_tile, 2, "removeFurniture");
+                job = new Job(placeFurnitureAction, furniture_tile, furnitureType.installTime, furnitureType.title, prerequisiteJob);
+            }
+            else
+            {
+                job = new Job(placeFurnitureAction, furniture_tile, furnitureType.installTime, furnitureType.title);
+            }
+            
             furniture_tile.currentJobType = job.GetJobType();
             JobQueueController.BuildersJobQueue.AddJob(job);
 
@@ -539,6 +567,8 @@ public class BuildModeController : MonoBehaviour
                 {
                     TileOWW temp = WorldController.Instance.GetWorld().GetTileAt(furniture_tile.GetX() + i, furniture_tile.GetY() + j);
                     temp.currentJobType = furniture_tile.currentJobType;
+                    temp.installedFurnitureAltX = furniture_tile.GetX();
+                    temp.installedFurnitureAltY = furniture_tile.GetY();
                 }
             }
         }
@@ -624,11 +654,18 @@ public class BuildModeController : MonoBehaviour
     public void PlaceHull(TileOWW tile)
     {
         tile.SetTileType("Hull");
+        emptyHullTiles.Add(tile);
+        allHullTiles.Add(tile);
+        ObjectiveController.Instance.CheckObjectives();
     }
 
     public void RemoveHull(TileOWW tile)
     {
         tile.SetTileType("Empty");
+        emptyHullTiles.Remove(tile);
+        allHullTiles.Add(tile);
+        ObjectiveController.Instance.CheckObjectives();
+
     }
 
     public void PlaceFurniture(TileOWW tile, string furnitureType)
@@ -659,9 +696,11 @@ public class BuildModeController : MonoBehaviour
                 temp.currentJobType = null;
                 temp.installedFurnitureAltX = tile.GetX();
                 temp.installedFurnitureAltY = tile.GetY();
-
+                emptyHullTiles.Remove(tile);
             }
         }
+
+        ObjectiveController.Instance.CheckObjectives();
     }
 
     public void RemoveFurniture(TileOWW tile)
@@ -677,7 +716,7 @@ public class BuildModeController : MonoBehaviour
                 TileOWW temp = WorldController.Instance.GetWorld().GetTileAt(tile.GetX() + i, tile.GetY() + j);
                 temp.installedFurnitureAltX = null;
                 temp.installedFurnitureAltY = null;
-
+                emptyHullTiles.Add(tile);
             }
         }
 
@@ -686,6 +725,8 @@ public class BuildModeController : MonoBehaviour
         {
             furnitureTileOWWMap[furnitureType].Remove(tile);
         }
+
+        ObjectiveController.Instance.CheckObjectives();
     }
 
     public void PlaceRoom(List<TileOWW> room_tiles, string roomType)
@@ -711,22 +752,27 @@ public class BuildModeController : MonoBehaviour
         }
 
         RoomController.Instance.DoRoomChecks();
+
+        ObjectiveController.Instance.CheckObjectives();
     }
 
-    public void PlaceStaff(float x, float y, GameObject staff, float energy = 100, float health = 100)
+    public void PlaceStaff(float x, float y, GameObject staff, string staffName, float energy = 100, float health = 100)
     {
         if (CurrencyController.Instance.GetBankBalance() >= 500)
         {
             GameObject staffGO = Instantiate(staff, new Vector3(x, y, 0), Quaternion.identity);
-            staffGO.name = "Builder";
+
+            staffGO.name = staffName;
             staffGO.GetComponent<Staff>().SetEnergy(energy);
             staffGO.GetComponent<Staff>().SetHealth(health);
-
+            staffGO.transform.parent = staffParent.transform;
             WorldController.Instance.staff.Add(staffGO);
 
             // TODO: Invoice depend on staff type
             CurrencyController.Instance.ChangeBankBalance(-500);
         }
+
+        ObjectiveController.Instance.CheckObjectives();
     }
 
     private void CreatePreview(GameObject prefab, string preview, int x, int y)

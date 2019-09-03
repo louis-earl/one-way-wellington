@@ -39,4 +39,21 @@ public class World
     {
         return tiles;
     }
+
+    public TileOWW GetRandomHullTile()
+    {
+        if (BuildModeController.Instance.emptyHullTiles.Count == 0)
+        {
+            return null;
+        }
+        TileOWW randomTile = BuildModeController.Instance.emptyHullTiles[Random.Range(0, BuildModeController.Instance.emptyHullTiles.Count)];
+        if (randomTile == null)
+        {
+            Debug.LogError("Couldn't find any hull tiles!");
+        }
+
+        return randomTile;
+
+
+    }
 }

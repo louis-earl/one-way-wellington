@@ -12,6 +12,7 @@ public class SaveFile
     // Staff Data 
     // On a per index basis for the following fields: 
     public string[] staffTypes;
+    public string[] staffNames;
     public float[] staffPosX;
     public float[] staffPosY;
     public float[] staffEnergy;
@@ -23,7 +24,7 @@ public class SaveFile
     public List<JobSerializable> passengersJobQueue;
 
 
-    // TODO: Planets
+    // dPlanets
     public List<PlanetData> planets;
 
 }

@@ -7,7 +7,6 @@ public class Staff : Character
 {
     // Staff needs 
     protected float energy;
-    protected float health;
 
     // Interface
     public static GameObject staffUIInstance;
@@ -24,8 +23,9 @@ public class Staff : Character
 
     }
 
-    public void OnMouseDown()
+    public void OnMouseUpAsButton()
     {
+        Debug.Log("Click on staff member");
         if (Passenger.passengerUIInstance != null) Destroy(Passenger.passengerUIInstance);
         if (staffUIInstance != null) Destroy(staffUIInstance);
 
@@ -40,12 +40,9 @@ public class Staff : Character
     {
         base.Refresh();
 
-        if (energy > 0)
-        {
-            energy -= 1 * Time.deltaTime;
-            spriteRenderer.color = Color.white;
-        }
-        else
+        energy = Mathf.Clamp(energy - (1 * Time.deltaTime), 0, 100);
+
+        if (energy <= 0)
         {
             // Enter a low power mode (staff never die from zero energy) 
             spriteRenderer.color = Color.red;
@@ -55,46 +52,34 @@ public class Staff : Character
                 FindCharger();
             }
         }
+        else if (health < 100)
+        {
+            if (targetJob?.GetJobType() != "Use3DPrinter")
+            {
+                Find3DPrinter();
+            }
+        }
     }
 
     private void FindCharger()
     {
-        // Does a charger exist?
-        if (BuildModeController.Instance.furnitureTileOWWMap.ContainsKey("Charging Pad"))
-        {
-            // Loop through all chargers
-            for (int i = 0; i < BuildModeController.Instance.furnitureTileOWWMap["Charging Pad"].Count; i++)
-            {
-                TileOWW tileCharger = BuildModeController.Instance.furnitureTileOWWMap["Charging Pad"][i];
-                if (tileCharger.currentJobType == null)
-                {
-                    if (targetJob != null)
-                    {
+        DoJobAtFurnitureTile("Charging Pad", "UseChargingPad", delegate () { UseChargingPad(); }, 5 );
+    }
 
-                        if (targetJob.GetJobType() != "UseChargingPad")
-                        {
-                            JobQueueController.BuildersJobQueue.AddJob(targetJob);
-                            targetJob = currentJob = null;
-                        }
-                        Action rechargeAction = delegate () { UseChargingPad(); };
-                        targetJob = new Job(UseChargingPad, tileCharger, 5, "UseChargingPad");
-                        return;
-
-                    }
-                    else
-                    {
-                        Action rechargeAction = delegate () { UseChargingPad(); };
-                        targetJob = new Job(UseChargingPad, tileCharger, 5, "UseChargingPad");
-                        return;
-                    }
-                }
-            }
-        }
+    private void Find3DPrinter()
+    {
+        DoJobAtFurnitureTile("3D Printer", "Use3DPrinter", delegate () { Use3DPrinter(); }, 10);
     }
 
     public void UseChargingPad()
     {
         energy = 100;
+        spriteRenderer.color = Color.white;
+    }
+
+    public void Use3DPrinter()
+    {
+        health = 100;
         spriteRenderer.color = Color.white;
     }
 

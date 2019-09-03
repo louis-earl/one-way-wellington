@@ -56,8 +56,6 @@ public class OxygenController : MonoBehaviour
 
         }
 
-        Debug.Log("Number of oxygen groups: " + oxygenTileGroups.Count);
-
         // Go through all tile groups 
         foreach(TileOWW originTile in oxygenTileGroups.Keys)
         {
