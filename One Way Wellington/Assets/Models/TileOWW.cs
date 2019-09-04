@@ -135,4 +135,33 @@ public class TileOWW
         return true;
     }
 
+	public void CollectCargo(int quantity)
+	{
+		looseItem.quantity -= quantity;
+
+		// Global stock reference 
+		CargoController.Instance.shipStock[looseItem.itemType] -= 1;
+		if (CargoController.Instance.shipStock[looseItem.itemType] < 0)
+		{
+			Debug.LogWarning("Ship stock went below 0 for " + looseItem.itemType);
+		}
+
+		if (looseItem.quantity <= 0)
+		{
+			// Type check 
+			if (installedFurniture.GetFurnitureType() == "Cargo")
+			{
+				CargoController.Instance.shipStockLocations[looseItem.itemType].Remove(this);
+				looseItem = null;
+				installedFurniture = null;
+
+			}
+			else
+			{
+				Debug.LogWarning("Trying to remove cargo but installed furniture type didn't match.");
+			}
+			FurnitureSpriteController.Instance.UpdateFurniture(this);
+		}
+	}
+
 }

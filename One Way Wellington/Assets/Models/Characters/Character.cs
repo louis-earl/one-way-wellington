@@ -303,7 +303,14 @@ public class Character : MonoBehaviour
 	protected void PickUpCargo(string cargoType, int quantity)
 	{
 		TileOWW cargoTile = CargoController.Instance.FindCargo(cargoType);
-		cargoTile.looseItem.quantity -= 1;
-		this.inventory = new LooseItem(cargoType, 1);
+		if (cargoTile != null)
+		{
+			cargoTile.CollectCargo(quantity);
+			this.inventory = new LooseItem(cargoType, quantity);
+		}
+		else
+		{
+			ReturnFailedJob();
+		}
 	}
 }
