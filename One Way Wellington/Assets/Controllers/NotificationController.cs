@@ -57,6 +57,7 @@ public class NotificationController : MonoBehaviour
 
         notificationGO.transform.SetParent(notificationParent.transform);
         notificationGO.transform.SetSiblingIndex(0);
+		notificationGO.transform.localScale = Vector3.one;
         Notification notification = notificationGO.GetComponent<Notification>();
         notification.descriptionGO.text = description;
         if (buttonActions != null)
@@ -65,6 +66,7 @@ public class NotificationController : MonoBehaviour
             {
                 GameObject buttonGO = Instantiate(buttonPrefab);
                 buttonGO.transform.SetParent(notification.buttonParent.transform);
+				buttonGO.transform.localScale = Vector3.one;
                 buttonGO.GetComponent<Button>().onClick.AddListener(() => action.Invoke());
             }
         }

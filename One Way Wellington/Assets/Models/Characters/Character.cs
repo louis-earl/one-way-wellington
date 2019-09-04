@@ -12,6 +12,8 @@ public class Character : MonoBehaviour
 
     protected float health;
 
+	protected LooseItem inventory;
+
     // Jobs 
     public Job targetJob; // The base job object
     public Job currentJob; // Any prerequisite jobs of the base object must be completed first 
@@ -54,38 +56,44 @@ public class Character : MonoBehaviour
             else currentJob = targetJob.GetPrerequisiteJob();
         }
 
-        // Check if in stock 
+        // If applicable, Check if in stock 
         if (currentJob?.GetJobType() == "Hull")
         {
-            if (CargoController.Instance.shipStock.ContainsKey("Hull"))
-            {
+			// Check if character already has stock 
+			if (inventory?.itemType != "Hull")
+			{
 
-                if (CargoController.Instance.shipStock["Hull"] == 0)
-                {
-                    // item is not in stock 
-                    ReturnFailedJob();
-                    return;
-                }
-                else if (CargoController.Instance.shipStock["Hull"] < 0)
-                {
-                    Debug.LogError("Stock is a negative value");
-                }
-                else
-                {
-                    // Item is in stock! Character must go get it first 
-                    TileOWW cargoTile = CargoController.Instance.FindCargo("Hull");
-                    currentJob.SetPrerequisiteJob(new Job(delegate () { }, cargoTile, 0.5f, "Pickup Cargo"));
-                    currentJob = null;
-                    return;
-                }
-            }
-            else
-            {
-                // Item is not in stock 
-                ReturnFailedJob();
-                return;
 
-            }
+				if (CargoController.Instance.shipStock.ContainsKey("Hull"))
+				{
+
+					if (CargoController.Instance.shipStock["Hull"] == 0)
+					{
+						// item is not in stock 
+						ReturnFailedJob();
+						return;
+					}
+					else if (CargoController.Instance.shipStock["Hull"] < 0)
+					{
+						Debug.LogError("Stock is a negative value");
+					}
+					else
+					{
+						// Item is in stock! Character must go get it first 
+						TileOWW cargoTile = CargoController.Instance.FindCargo("Hull");
+						currentJob.SetPrerequisiteJob(new Job(delegate () { PickUpCargo("Hull", 1); }, cargoTile, 0.5f, "Pickup Cargo"));
+						currentJob = null;
+						return;
+					}
+				}
+				else
+				{
+					// Item is not in stock 
+					ReturnFailedJob();
+					return;
+
+				}
+			}
         }
 
         // Check if another character finished a duplicate chase job
@@ -144,10 +152,20 @@ public class Character : MonoBehaviour
     // Do job until finished 
     public void DoJobTick()
     {
+		// If job is complete 
         if (currentJob.DoJob(Time.fixedDeltaTime))
         {
             if (currentJob == targetJob)
             {
+				// Remove inventory if it was a build job
+				if (currentJob.GetJobType() == "Hull")
+				{
+					inventory.quantity -= 1;
+					if (inventory.quantity == 0)
+					{
+						inventory = null;
+					}
+				}
                 currentJob = targetJob = null;
                 navMeshAgent.SetDestination(new Vector3(currentX, currentY, 0));
                 failedJobs.Clear();
@@ -282,4 +300,10 @@ public class Character : MonoBehaviour
         }
     }
 
+	protected void PickUpCargo(string cargoType, int quantity)
+	{
+		TileOWW cargoTile = CargoController.Instance.FindCargo(cargoType);
+		cargoTile.looseItem.quantity -= 1;
+		this.inventory = new LooseItem(cargoType, 1);
+	}
 }

@@ -23,6 +23,7 @@ public class ObjectiveController : MonoBehaviour
         // Create new ObjectiveGO for UI
         GameObject objectiveGO = Instantiate(objectiveUIPrefab);
         objectiveGO.transform.SetParent(objectiveUIParent.transform);
+		objectiveGO.transform.localScale = Vector3.one;
         objectiveGO.GetComponent<ObjectiveUI>().title.text = objective.title;
         objectiveGO.GetComponent<ObjectiveUI>().onComplete.text = string.Format("{0:C} when completed", objective.reward);
         objectiveGO.GetComponent<ObjectiveUI>().buttonClose.GetComponent<Button>().onClick.AddListener(delegate () { CloseObjective(objectiveGO); });
@@ -32,7 +33,8 @@ public class ObjectiveController : MonoBehaviour
         {
             GameObject goalGO = Instantiate(goalUIPrefab);
             goalGO.transform.SetParent(objectiveGO.GetComponent<ObjectiveUI>().goalsParent);
-            goalGO.GetComponentInChildren<TextMeshProUGUI>().text = goal.title;
+			goalGO.transform.localScale = Vector3.one;
+			goalGO.GetComponentInChildren<TextMeshProUGUI>().text = goal.title;
         }
     }
 
