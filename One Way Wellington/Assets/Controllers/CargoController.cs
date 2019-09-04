@@ -48,6 +48,9 @@ public class CargoController : MonoBehaviour
                 DropCargo(WorldController.Instance.GetWorld().GetRandomEmptyTile(), cargoTypeQuantityPair.Key, cargoTypeQuantityPair.Value);
             }                  
         }
+
+		// All stock delivered 
+		undeliveredStock = new Dictionary<string, int>();
     }
 
     public void CollectCargoFromStairs()

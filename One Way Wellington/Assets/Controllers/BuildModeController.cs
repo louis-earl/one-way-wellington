@@ -604,7 +604,7 @@ public class BuildModeController : MonoBehaviour
             CurrencyController.Instance.DeductBankBalance(furnitureType.cost);
 
 			// Order
-			CargoController.Instance.PlaceOrder(furnitureType, 1);
+			CargoController.Instance.PlaceOrder(furnitureType.title, 1);
 
 			// Multi-tile furniture items 
 			for (int i = 0; i < furnitureType.sizeX; i++)
