@@ -34,28 +34,19 @@ public class CargoController : MonoBehaviour
             if (BuildModeController.Instance.furnitureTileOWWMap.ContainsKey("Stairwell"))
             {
                 stairwellPos = new Vector3(BuildModeController.Instance.furnitureTileOWWMap["Stairwell"][0].GetX(), BuildModeController.Instance.furnitureTileOWWMap["Stairwell"][0].GetY(), 0);
-            }
+
+				// Cargo can be picked up and placed properly
+				TileOWW stairwellTile = WorldController.Instance.GetWorld().GetTileAt((int)stairwellPos.x, (int)stairwellPos.y);
+				Job collectJob = new Job(delegate () { CollectCargoFromStairs(); }, stairwellTile, 0.5f, "Collect Cargo", tileExcludeOtherJobs: false);
+				TileOWW dropTile = WorldController.Instance.GetWorld().GetRandomHullTile(avoidJobs: true);
+				Job dropJob = new Job(delegate () { DropCargo(dropTile, cargoTypeQuantityPair.Key, cargoTypeQuantityPair.Value); }, dropTile, 0.5f, "Drop Cargo", collectJob, tileExcludeOtherJobs: false);
+				JobQueueController.BuildersJobQueue.AddJob(dropJob);
+			}
             else
             {
                 Debug.Log("Couldn't find a stairwell!!");
                 DropCargo(WorldController.Instance.GetWorld().GetRandomEmptyTile(), cargoTypeQuantityPair.Key, cargoTypeQuantityPair.Value);
-                return;
-            }
-
-            TileOWW stairwellTile = WorldController.Instance.GetWorld().GetTileAt((int)stairwellPos.x, (int)stairwellPos.y);
-
-            Job collectJob = new Job(delegate () { CollectCargoFromStairs(); }, stairwellTile, 0.5f, "collectCargo", tileExcludeOtherJobs: false);
-
-
-            TileOWW dropTile = WorldController.Instance.GetWorld().GetRandomHullTile(avoidJobs: true);
-
-            Job dropJob = new Job(delegate () { DropCargo(dropTile, cargoTypeQuantityPair.Key, cargoTypeQuantityPair.Value); }, dropTile, 0.5f, "dropCargo", collectJob, tileExcludeOtherJobs: false);
-
-
-            JobQueueController.BuildersJobQueue.AddJob(dropJob);
-
-
-            
+            }                  
         }
     }
 
@@ -111,6 +102,8 @@ public class CargoController : MonoBehaviour
         {
             undeliveredStock.Add(itemType, quantity);
         }
+
+		Debug.Log("Order placed for " + itemType + " x" + quantity);
 
         // if at a planet stop:
         // Deliver items 

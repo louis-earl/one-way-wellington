@@ -162,7 +162,7 @@ public class Character : MonoBehaviour
 		// If job is complete 
         if (currentJob.DoJob(Time.fixedDeltaTime))
         {
-            if (currentJob == targetJob && currentJob != null)
+            if (currentJob != null)
             {
 				// Remove inventory if it was a build job
 				if (currentJob.GetJobType().Contains("Build"))
@@ -177,11 +177,18 @@ public class Character : MonoBehaviour
 					}
 					else Debug.LogError("Item being built didn't match item in inventory!");
 				}
-                currentJob = targetJob = null;
-                navMeshAgent.SetDestination(new Vector3(currentX, currentY, 0));
-                failedJobs.Clear();
+
+				if (currentJob == targetJob)
+				{
+					currentJob = targetJob = null;
+					navMeshAgent.SetDestination(new Vector3(currentX, currentY, 0));
+					failedJobs.Clear();
+				}
+				else
+				{
+					currentJob = null;
+				}
             }
-            else currentJob = null;
         }
     }
 

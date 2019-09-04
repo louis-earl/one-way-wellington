@@ -524,6 +524,7 @@ public class BuildModeController : MonoBehaviour
                 tile.currentJobType = j.GetJobType();
                 JobQueueController.BuildersJobQueue.AddJob(j);
 
+				hullOrder ++;
                 wallOrder ++;
 
             }
@@ -563,16 +564,16 @@ public class BuildModeController : MonoBehaviour
     }
 
     // Overloaded method for planing single furniture jobs at once
-    public void PlanFurniture(TileOWW furniture_tile, FurnitureType furnitureType)
+    public void PlanFurniture(TileOWW furnitureTile, FurnitureType furnitureType)
     {
-        if (furniture_tile != null)
+        if (furnitureTile != null)
         {
             // Check validity for multi-tile 
             for (int i = 0; i < furnitureType.sizeX; i++)
             {
                 for (int j = 0; j < furnitureType.sizeY; j++)
                 {
-                    TileOWW temp = WorldController.Instance.GetWorld().GetTileAt(furniture_tile.GetX() + i, furniture_tile.GetY() + j);
+                    TileOWW temp = WorldController.Instance.GetWorld().GetTileAt(furnitureTile.GetX() + i, furnitureTile.GetY() + j);
                     if (temp.currentJobType != null)
                     {
                         Debug.Log("Unable to place job baceause tile already had an existing job: " + temp.currentJobType);
@@ -581,35 +582,39 @@ public class BuildModeController : MonoBehaviour
                 }
             }
 
-            Action placeFurnitureAction = delegate () { PlaceFurniture(furniture_tile, furnitureType.title); };
+            Action placeFurnitureAction = delegate () { PlaceFurniture(furnitureTile, furnitureType.title); };
             Job job;
 
             // Allow certain furniture to overwrite others by creating a prerequisite removal job
-            if (furniture_tile.GetInstalledFurniture()?.GetFurnitureType() == "Wall" && furnitureType.title == "Airlock")
+            if (furnitureTile.GetInstalledFurniture()?.GetFurnitureType() == "Wall" && furnitureType.title == "Airlock")
             {
-                Action removeExistingFurnitureAction = delegate () { RemoveFurniture(furniture_tile); };
-                Job prerequisiteJob = new Job(removeExistingFurnitureAction, furniture_tile, 2, "Remove Wall");
-                job = new Job(placeFurnitureAction, furniture_tile, furnitureType.installTime, "Build " + furnitureType.title, prerequisiteJob);
+                Action removeExistingFurnitureAction = delegate () { RemoveFurniture(furnitureTile); };
+                Job prerequisiteJob = new Job(removeExistingFurnitureAction, furnitureTile, 2, "Remove Wall");
+                job = new Job(placeFurnitureAction, furnitureTile, furnitureType.installTime, "Build " + furnitureType.title, prerequisiteJob);
             }
             else
             {
-                job = new Job(placeFurnitureAction, furniture_tile, furnitureType.installTime, "Build " + furnitureType.title);
+                job = new Job(placeFurnitureAction, furnitureTile, furnitureType.installTime, "Build " + furnitureType.title);
             }
             
-            furniture_tile.currentJobType = job.GetJobType();
+            furnitureTile.currentJobType = job.GetJobType();
             JobQueueController.BuildersJobQueue.AddJob(job);
 
-            CurrencyController.Instance.ChangeBankBalance(-furnitureType.cost);
+			// Invoice 
+            CurrencyController.Instance.DeductBankBalance(furnitureType.cost);
 
-            // Multi-tile furniture items 
-            for (int i = 0; i < furnitureType.sizeX; i++)
+			// Order
+			CargoController.Instance.PlaceOrder(furnitureType, 1);
+
+			// Multi-tile furniture items 
+			for (int i = 0; i < furnitureType.sizeX; i++)
             {
                 for (int j = 0; j < furnitureType.sizeY; j++)
                 {
-                    TileOWW temp = WorldController.Instance.GetWorld().GetTileAt(furniture_tile.GetX() + i, furniture_tile.GetY() + j);
-                    temp.currentJobType = furniture_tile.currentJobType;
-                    temp.installedFurnitureAltX = furniture_tile.GetX();
-                    temp.installedFurnitureAltY = furniture_tile.GetY();
+                    TileOWW temp = WorldController.Instance.GetWorld().GetTileAt(furnitureTile.GetX() + i, furnitureTile.GetY() + j);
+                    temp.currentJobType = furnitureTile.currentJobType;
+                    temp.installedFurnitureAltX = furnitureTile.GetX();
+                    temp.installedFurnitureAltY = furnitureTile.GetY();
                 }
             }
         }
