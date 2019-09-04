@@ -44,7 +44,7 @@ public class TileOWW
 
     public void SetTileType(string tileType)
     {
-        this.tileType = tileType;
+		this.tileType = tileType;
         TileSpriteController.Instance.UpdateTile(this);
 
     }

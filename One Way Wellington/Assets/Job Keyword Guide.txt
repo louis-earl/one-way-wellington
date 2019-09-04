@@ -1,0 +1,38 @@
+=================
+Job Keyword Guide
+=================
+
+These keywords will appear as tooltips to describe what a character 
+is doing, or what is planned for a tile. 
+
+Use this guide to ensure all tooltips are consistant and can be broken
+down (sliced) easily using script. 
+
+
+
+Building/construction jobs:
+ - "Build " + itemType
+ - "Remove " + itemType
+ - "Destroy " + itemType
+ - e.g. "Build Hull", "Destroy Wall", "Remove Charging Pad" 
+
+
+Need fulfilment jobs: 
+ - "Use " + itemType
+ - e.g. "Use Toilet", "Use Charging Pad"
+
+
+Inventory jobs: 
+ - "Pick Up Cargo " + itemType 
+ - "Drop Off Cargo " + itemType 
+ - e.g. "Pick Up Cargo (Hull)", "Drop Off Cargo (Charging Pad)"
+
+
+Constant jobs: 
+ - ?
+
+
+Attack jobs:
+ - "Attack " + characterType
+ - e.g. "Attack Orc", "Attack Guard" 
+

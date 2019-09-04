@@ -57,22 +57,22 @@ public class Job
     public Job(TileOWW tileOWW, float jobTime, string jobType, bool tileExcludeOtherJobs, Job prerequisiteJob = null)
     {
         Action actionNew = null;
-        if (jobType == "Hull")
-        {
-            actionNew = delegate () { BuildModeController.Instance.PlaceHull(tileOWW); };
-        }
-        else if (BuildModeController.Instance.furnitureTypes.ContainsKey(jobType))
+		if (jobType == "Build Hull")
+		{
+			actionNew = delegate () { BuildModeController.Instance.PlaceHull(tileOWW); };
+		}
+		else if (BuildModeController.Instance.furnitureTypes.ContainsKey(jobType) && jobType.Contains("Build"))
         {
             actionNew = delegate () { BuildModeController.Instance.PlaceFurniture(tileOWW, jobType); };
         }
-        else if (jobType == "removeFurniture")
+		else if (jobType == "Destroy Hull")
+		{
+			actionNew = delegate () { BuildModeController.Instance.RemoveHull(tileOWW); };
+		}
+		else if (BuildModeController.Instance.furnitureTypes.ContainsKey(jobType) &&  jobType.Contains("Remove"))
         {
             actionNew = delegate () { BuildModeController.Instance.RemoveFurniture(tileOWW); };
-        }
-        else if (jobType == "removeHull")
-        {
-            actionNew = delegate () { BuildModeController.Instance.RemoveHull(tileOWW); };
-        }
+        }  
         else
         {
             Debug.LogWarning("The job type: " + jobType + " loaded is not present in the Job constructor!!");

@@ -502,7 +502,7 @@ public class BuildModeController : MonoBehaviour
             if (tile.currentJobType == null)
             {
                 Action placeHullAction = delegate () { PlaceHull(tile); };
-                Job j = new Job(placeHullAction, tile, 3, "Hull");
+                Job j = new Job(placeHullAction, tile, 3, "Build Hull");
                 tile.currentJobType = j.GetJobType();
                 JobQueueController.BuildersJobQueue.AddJob(j);
 
@@ -520,7 +520,7 @@ public class BuildModeController : MonoBehaviour
                 Action placeHullAction = delegate () { PlaceHull(tile); };
 
                 // This wall job has a prerequisite job, which is to build the hull first.
-                Job j = new Job(placeFurnitureAction, tile, 3, "Wall", new Job(placeHullAction, tile, 3, "Hull"));
+                Job j = new Job(placeFurnitureAction, tile, 3, "Build Wall", new Job(placeHullAction, tile, 3, "Build Hull"));
                 tile.currentJobType = j.GetJobType();
                 JobQueueController.BuildersJobQueue.AddJob(j);
 
@@ -588,12 +588,12 @@ public class BuildModeController : MonoBehaviour
             if (furniture_tile.GetInstalledFurniture()?.GetFurnitureType() == "Wall" && furnitureType.title == "Airlock")
             {
                 Action removeExistingFurnitureAction = delegate () { RemoveFurniture(furniture_tile); };
-                Job prerequisiteJob = new Job(removeExistingFurnitureAction, furniture_tile, 2, "removeFurniture");
-                job = new Job(placeFurnitureAction, furniture_tile, furnitureType.installTime, furnitureType.title, prerequisiteJob);
+                Job prerequisiteJob = new Job(removeExistingFurnitureAction, furniture_tile, 2, "Remove Wall");
+                job = new Job(placeFurnitureAction, furniture_tile, furnitureType.installTime, "Build " + furnitureType.title, prerequisiteJob);
             }
             else
             {
-                job = new Job(placeFurnitureAction, furniture_tile, furnitureType.installTime, furnitureType.title);
+                job = new Job(placeFurnitureAction, furniture_tile, furnitureType.installTime, "Build " + furnitureType.title);
             }
             
             furniture_tile.currentJobType = job.GetJobType();
@@ -628,13 +628,13 @@ public class BuildModeController : MonoBehaviour
                 if (tile.GetInstalledFurniture() != null)
                 {
                     Action removeFurnitureAction = delegate () { RemoveFurniture(tile); };
-                    Job j = new Job(removeHullAction, tile, 2, "removeHull", new Job(removeFurnitureAction, tile, 2, "removeFurniture"));
+                    Job j = new Job(removeHullAction, tile, 2, "Destroy Hull", new Job(removeFurnitureAction, tile, 2, "Remove " + tile.GetInstalledFurniture().GetFurnitureType()));
                     tile.currentJobType = j.GetJobType();
                     JobQueueController.BuildersJobQueue.AddJob(j);
                 }
                 else
                 {
-                    Job j = new Job(removeHullAction, tile, 2, "removeHull");
+                    Job j = new Job(removeHullAction, tile, 2, "Destroy Hull");
                     tile.currentJobType = j.GetJobType();
                     JobQueueController.BuildersJobQueue.AddJob(j);
                 }
@@ -686,7 +686,7 @@ public class BuildModeController : MonoBehaviour
     private void CreateRemoveFurnitureAction(TileOWW tile, int offsetX = 0, int offsetY = 0)
     {
         Action removeFurnitureAction = delegate () { RemoveFurniture(tile); };
-        Job j = new Job(removeFurnitureAction, tile, 2, "removeFurniture");
+        Job j = new Job(removeFurnitureAction, tile, 2, "Remove " + tile.GetInstalledFurniture().GetFurnitureType());
         j.SetAltPosition(tile.GetX() + offsetX, tile.GetY() + offsetY);
         tile.currentJobType = j.GetJobType();
         JobQueueController.BuildersJobQueue.AddJob(j);

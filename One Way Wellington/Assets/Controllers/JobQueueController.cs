@@ -27,4 +27,22 @@ public class JobQueueController : MonoBehaviour
         PassengersJobQueue = new JobQueue();
         OrcsJobQueue = new JobQueue();
     }
+
+
+	public string ConvertJobTypeToFurnitureType(string jobType)
+	{
+		string furnitureType = string.Empty;
+		if (jobType.Contains("Build"))
+		{
+			furnitureType = jobType.Replace("Build ", string.Empty);
+			// Debug.Log(tileOWW.currentJobType + " -> " + currentTileType);
+		}
+		else
+		{
+			Debug.LogWarning(jobType + " couldn't be converted to a furnitureType.");
+			return null;
+		}
+
+		return furnitureType;
+	}
 }
