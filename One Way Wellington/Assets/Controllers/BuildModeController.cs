@@ -702,7 +702,10 @@ public class BuildModeController : MonoBehaviour
         tile.SetTileType("Hull");
         emptyHullTiles.Add(tile);
         allHullTiles.Add(tile);
+
+        // Event checks 
         ObjectiveController.Instance.CheckObjectives();
+        CargoController.Instance.CheckTempStockLocations();
     }
 
     public void RemoveHull(TileOWW tile)

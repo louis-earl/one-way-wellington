@@ -87,7 +87,7 @@ public class World
             // If no job-less hull tiles exist
             if (joblessTiles.Count == 0)
             {
-                Debug.LogError("No empty jobless hull tile exists!");
+                Debug.LogWarning("No empty jobless hull tile exists!");
                 return null;
             }
 

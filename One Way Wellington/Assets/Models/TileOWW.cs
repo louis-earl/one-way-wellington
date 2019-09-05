@@ -126,27 +126,54 @@ public class TileOWW
     // Job-less and furniture-less
     public bool IsTileEmpty()
     {
-        if (currentJobType != null) return false;
-        if (installedFurniture != null) return false;
-        if (installedFurnitureAltX != null) return false;
-        if (installedFurnitureAltY != null) return false;
-
+        if (currentJobType != null)
+        {
+            Debug.Log(currentJobType);
+            return false;
+        }
+        if (installedFurniture != null)
+        {
+            Debug.Log(installedFurniture);
+            return false;
+        }
+        if (installedFurnitureAltX != null)
+        {
+            Debug.Log(installedFurnitureAltX);
+            return false;
+        }
+        if (installedFurnitureAltY != null)
+        {
+            Debug.Log(installedFurnitureAltY);
+            return false;
+        }
 
         return true;
     }
 
 	public void CollectCargo(int quantity)
 	{
-		looseItem.quantity -= quantity;
+        // Another character bet us to the job?
+        if (looseItem == null) return;
+
+
+        // This means to collect all 
+        if (quantity == -1)
+        {
+            quantity = looseItem.quantity;
+            Debug.Log("Collecting all cargo: " + quantity);
+
+        }
+
+        looseItem.quantity -= quantity;
 
 		// Global stock reference 
-		CargoController.Instance.shipStock[looseItem.itemType] -= 1;
+		CargoController.Instance.shipStock[looseItem.itemType] -= quantity;
 		if (CargoController.Instance.shipStock[looseItem.itemType] < 0)
 		{
 			Debug.LogWarning("Ship stock went below 0 for " + looseItem.itemType);
 		}
 
-		if (looseItem.quantity <= 0)
+		if (looseItem.quantity == 0)
 		{
 			// Type check 
 			if (installedFurniture.GetFurnitureType() == "Cargo")
@@ -162,6 +189,10 @@ public class TileOWW
 			}
 			FurnitureSpriteController.Instance.UpdateFurniture(this);
 		}
+        else if (looseItem.quantity < 0)
+        {
+            Debug.LogError("Quantity of item is below 0!");
+        }
 	}
 
 }

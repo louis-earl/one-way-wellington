@@ -32,16 +32,20 @@ public class JobQueueController : MonoBehaviour
 	public string ConvertJobTypeToFurnitureType(string jobType)
 	{
 		string furnitureType = string.Empty;
-		if (jobType.Contains("Build"))
-		{
-			furnitureType = jobType.Replace("Build ", string.Empty);
-			// Debug.Log(tileOWW.currentJobType + " -> " + currentTileType);
-		}
-		else
-		{
-			Debug.LogWarning(jobType + " couldn't be converted to a furnitureType.");
-			return null;
-		}
+        if (jobType.Contains("Build"))
+        {
+            furnitureType = jobType.Replace("Build ", string.Empty);
+            // Debug.Log(tileOWW.currentJobType + " -> " + currentTileType);
+        }
+        else if (jobType.Contains("Pickup"))
+        {
+            return null;
+        }
+        else
+        {
+            Debug.LogWarning(jobType + " couldn't be converted to a furnitureType.");
+            return null;
+        }
 
 		return furnitureType;
 	}

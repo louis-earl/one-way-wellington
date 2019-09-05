@@ -84,6 +84,7 @@ public class Character : MonoBehaviour
 						{
 							// Item is in stock! Character must go get it first 
 							TileOWW cargoTile = CargoController.Instance.FindCargo(furnitureType);
+                            if (cargoTile == null) Debug.LogError("No location found for item with stock count of: " + CargoController.Instance.shipStock[furnitureType]);
 							currentJob.SetPrerequisiteJob(new Job(delegate () { PickUpCargo(furnitureType, 1); }, cargoTile, 0.5f, "Pickup " + furnitureType + " Cargo"));
 							currentJob = null;
 							return;
