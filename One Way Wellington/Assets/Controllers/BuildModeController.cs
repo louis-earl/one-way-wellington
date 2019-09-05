@@ -502,7 +502,7 @@ public class BuildModeController : MonoBehaviour
             if (tile.currentJobType == null)
             {
                 Action placeHullAction = delegate () { PlaceHull(tile); };
-                Job j = new Job(placeHullAction, tile, 3, "Build Hull");
+                Job j = new Job(placeHullAction, tile, 3, "Build Hull", JobPriority.Medium);
                 tile.currentJobType = j.GetJobType();
                 JobQueueController.BuildersJobQueue.AddJob(j);
 
@@ -520,7 +520,7 @@ public class BuildModeController : MonoBehaviour
                 Action placeHullAction = delegate () { PlaceHull(tile); };
 
                 // This wall job has a prerequisite job, which is to build the hull first.
-                Job j = new Job(placeFurnitureAction, tile, 3, "Build Wall", new Job(placeHullAction, tile, 3, "Build Hull"));
+                Job j = new Job(placeFurnitureAction, tile, 3, "Build Wall", JobPriority.Medium, new Job(placeHullAction, tile, 3, "Build Hull", JobPriority.Medium));
                 tile.currentJobType = j.GetJobType();
                 JobQueueController.BuildersJobQueue.AddJob(j);
 
@@ -589,12 +589,12 @@ public class BuildModeController : MonoBehaviour
             if (furnitureTile.GetInstalledFurniture()?.GetFurnitureType() == "Wall" && furnitureType.title == "Airlock")
             {
                 Action removeExistingFurnitureAction = delegate () { RemoveFurniture(furnitureTile); };
-                Job prerequisiteJob = new Job(removeExistingFurnitureAction, furnitureTile, 2, "Remove Wall");
-                job = new Job(placeFurnitureAction, furnitureTile, furnitureType.installTime, "Build " + furnitureType.title, prerequisiteJob);
+                Job prerequisiteJob = new Job(removeExistingFurnitureAction, furnitureTile, 2, "Remove Wall", JobPriority.Medium);
+                job = new Job(placeFurnitureAction, furnitureTile, furnitureType.installTime, "Build " + furnitureType.title, JobPriority.Medium, prerequisiteJob);
             }
             else
             {
-                job = new Job(placeFurnitureAction, furnitureTile, furnitureType.installTime, "Build " + furnitureType.title);
+                job = new Job(placeFurnitureAction, furnitureTile, furnitureType.installTime, "Build " + furnitureType.title, JobPriority.Medium);
             }
             
             furnitureTile.currentJobType = job.GetJobType();
@@ -633,13 +633,13 @@ public class BuildModeController : MonoBehaviour
                 if (tile.GetInstalledFurniture() != null)
                 {
                     Action removeFurnitureAction = delegate () { RemoveFurniture(tile); };
-                    Job j = new Job(removeHullAction, tile, 2, "Destroy Hull", new Job(removeFurnitureAction, tile, 2, "Remove " + tile.GetInstalledFurniture().GetFurnitureType()));
+                    Job j = new Job(removeHullAction, tile, 2, "Destroy Hull", JobPriority.Medium, new Job(removeFurnitureAction, tile, 2, "Remove " + tile.GetInstalledFurniture().GetFurnitureType(), JobPriority.Medium));
                     tile.currentJobType = j.GetJobType();
                     JobQueueController.BuildersJobQueue.AddJob(j);
                 }
                 else
                 {
-                    Job j = new Job(removeHullAction, tile, 2, "Destroy Hull");
+                    Job j = new Job(removeHullAction, tile, 2, "Destroy Hull", JobPriority.Medium);
                     tile.currentJobType = j.GetJobType();
                     JobQueueController.BuildersJobQueue.AddJob(j);
                 }
@@ -691,7 +691,7 @@ public class BuildModeController : MonoBehaviour
     private void CreateRemoveFurnitureAction(TileOWW tile, int offsetX = 0, int offsetY = 0)
     {
         Action removeFurnitureAction = delegate () { RemoveFurniture(tile); };
-        Job j = new Job(removeFurnitureAction, tile, 2, "Remove " + tile.GetInstalledFurniture().GetFurnitureType());
+        Job j = new Job(removeFurnitureAction, tile, 2, "Remove " + tile.GetInstalledFurniture().GetFurnitureType(), JobPriority.Medium);
         j.SetAltPosition(tile.GetX() + offsetX, tile.GetY() + offsetY);
         tile.currentJobType = j.GetJobType();
         JobQueueController.BuildersJobQueue.AddJob(j);

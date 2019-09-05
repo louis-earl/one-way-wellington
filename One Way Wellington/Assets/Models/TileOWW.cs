@@ -160,7 +160,7 @@ public class TileOWW
         if (quantity == -1)
         {
             quantity = looseItem.quantity;
-            Debug.Log("Collecting all cargo: " + quantity);
+            Debug.Log("Collecting all " + looseItem.itemType + " cargo: " + quantity);
 
         }
 

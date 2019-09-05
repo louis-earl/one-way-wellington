@@ -15,8 +15,9 @@ public class JobSerializable
     protected bool tileExcludeOtherJobs;
     protected int jobPosX;
     protected int jobPosY;
+    protected JobPriority jobPriority;
 
-    public JobSerializable(int tilePosX, int tilePosY, int jobPosX, int jobPosY, float jobTime, string jobType, bool tileExcludeOtherJobs = false, JobSerializable prerequisiteJob = null)
+    public JobSerializable(int tilePosX, int tilePosY, int jobPosX, int jobPosY, float jobTime, string jobType, JobPriority jobPriority, bool tileExcludeOtherJobs = false, JobSerializable prerequisiteJob = null)
     {
         this.tilePosX = tilePosX;
         this.tilePosY = tilePosY;
@@ -26,6 +27,7 @@ public class JobSerializable
         this.jobType = jobType;
         this.tileExcludeOtherJobs = tileExcludeOtherJobs;
         this.prerequisiteJob = prerequisiteJob;
+        this.jobPriority = jobPriority;
     }
 
     public Job ToJob()
@@ -43,7 +45,7 @@ public class JobSerializable
             Debug.LogWarning("Just made a job with no tile");
         }
 
-        Job job = new Job(tile, jobTime, jobType, tileExcludeOtherJobs, p);
+        Job job = new Job(tile, jobTime, jobType, tileExcludeOtherJobs, jobPriority, p);
         job.SetAltPosition(jobPosX, jobPosY);
 
         return job;

@@ -11,13 +11,14 @@ public class Job
     protected float jobTime;
     protected string jobType;
     protected Action action;
+    protected JobPriority jobPriority;
     public bool tileExcludeOtherJobs;
 
     // If a job location is different from the actual tile being worked on
     protected int jobPosX;
     protected int jobPosY;
 
-    public Job(Action action, TileOWW tileOWW, float jobTime, string jobType, Job prerequisiteJob = null, bool tileExcludeOtherJobs = true)
+    public Job(Action action, TileOWW tileOWW, float jobTime, string jobType, JobPriority jobPriority, Job prerequisiteJob = null, bool tileExcludeOtherJobs = true)
     {
         this.action = action;
         this.tileOWW = tileOWW;
@@ -25,6 +26,7 @@ public class Job
         this.jobType = jobType;
         this.prerequisiteJob = prerequisiteJob;
         this.tileExcludeOtherJobs = tileExcludeOtherJobs;
+        this.jobPriority = jobPriority;
 
         // The tile won't hold a reference to this job. Likely because a character is wandering.
         if (tileExcludeOtherJobs == true)
@@ -40,13 +42,14 @@ public class Job
     }
 
     // Chase jobs not restricted to a single tileOWW 
-    public Job(Action action, Character character, float jobTime, string jobType, Job prerequisiteJob = null)
+    public Job(Action action, Character character, float jobTime, string jobType, JobPriority jobPriority, Job prerequisiteJob = null)
     {
         this.action = action;
         this.character = character;
         this.jobTime = jobTime;
         this.jobType = jobType;
         this.prerequisiteJob = prerequisiteJob;
+        this.jobPriority = jobPriority;
 
         tileExcludeOtherJobs = false;
 
@@ -54,7 +57,7 @@ public class Job
 
 
     // Constructor used when loading game, because actions can't be serialized 
-    public Job(TileOWW tileOWW, float jobTime, string jobType, bool tileExcludeOtherJobs, Job prerequisiteJob = null)
+    public Job(TileOWW tileOWW, float jobTime, string jobType, bool tileExcludeOtherJobs, JobPriority jobPriority, Job prerequisiteJob = null)
     {
         Action actionNew = null;
 		if (jobType == "Build Hull")
@@ -83,6 +86,7 @@ public class Job
         this.jobType = jobType;
         this.tileExcludeOtherJobs = tileExcludeOtherJobs;
         this.prerequisiteJob = prerequisiteJob;
+        this.jobPriority = jobPriority;
         tileOWW.currentJobType = jobType;
     }
 
@@ -101,6 +105,11 @@ public class Job
     public TileOWW GetTileOWW()
     {
         return tileOWW;
+    }
+
+    public JobPriority GetJobPriority()
+    {
+        return jobPriority;
     }
 
     public bool DoJob(float deltaTime)
@@ -161,7 +170,7 @@ public class Job
         {
             p = prerequisiteJob.ToJobSerializable();
         }
-        return new JobSerializable(tileOWW.GetX(), tileOWW.GetY(), jobPosX, jobPosY, jobTime, jobType, tileExcludeOtherJobs, p); 
+        return new JobSerializable(tileOWW.GetX(), tileOWW.GetY(), jobPosX, jobPosY, jobTime, jobType, jobPriority, tileExcludeOtherJobs, p); 
     }
 
     public void SetAltPosition(int x, int y)

@@ -34,8 +34,8 @@ public class Captain : Staff
             if (targetJob == null)
             {
                 // We are idle, wander the ship 
-                Action attackAction = delegate () { };
-                targetJob = new Job(attackAction, WorldController.Instance.GetWorld().GetRandomHullTile(), 1f, "Wander", tileExcludeOtherJobs: false);
+                Action wanderAction = delegate () { };
+                targetJob = new Job(wanderAction, WorldController.Instance.GetWorld().GetRandomHullTile(), 1f, "Wander", JobPriority.Medium, tileExcludeOtherJobs: false);
             }
         }
 

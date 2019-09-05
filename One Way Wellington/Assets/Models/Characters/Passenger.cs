@@ -189,7 +189,7 @@ public class Passenger : Character
                         targetJob = currentJob = null;
                     }
 
-                    targetJob = new Job(action, tileCharger, jobTime, jobType);
+                    targetJob = new Job(action, tileCharger, jobTime, jobType, JobPriority.Medium);
                     return true;
                 }
             }

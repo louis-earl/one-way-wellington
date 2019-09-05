@@ -84,8 +84,13 @@ public class Character : MonoBehaviour
 						{
 							// Item is in stock! Character must go get it first 
 							TileOWW cargoTile = CargoController.Instance.FindCargo(furnitureType);
-                            if (cargoTile == null) Debug.LogError("No location found for item with stock count of: " + CargoController.Instance.shipStock[furnitureType]);
-							currentJob.SetPrerequisiteJob(new Job(delegate () { PickUpCargo(furnitureType, 1); }, cargoTile, 0.5f, "Pickup " + furnitureType + " Cargo"));
+                            if (cargoTile == null)
+                            {
+                                Debug.LogError("No location found for item with stock count of: " + CargoController.Instance.shipStock[furnitureType]);
+                                currentJob = null;
+                                return;
+                            }
+							currentJob.SetPrerequisiteJob(new Job(delegate () { PickUpCargo(furnitureType, 1); }, cargoTile, 0.5f, "Pickup " + furnitureType + " Cargo", JobPriority.Medium));
 							currentJob = null;
 							return;
 						}
@@ -279,7 +284,7 @@ public class Character : MonoBehaviour
                         if (characterTag.Equals(target.transform.parent.tag))
                         {
                             Action attackAction = delegate () { target.GetComponentInParent<Character>().TakeDamage(25); };
-                            targetJob = new Job(attackAction, target.GetComponentInParent<Character>(), 1f, "Attack " + target.name);
+                            targetJob = new Job(attackAction, target.GetComponentInParent<Character>(), 1f, "Attack " + target.name, JobPriority.High);
                             return;
                         }
                     }
@@ -291,7 +296,7 @@ public class Character : MonoBehaviour
 
     protected void DoJobAtFurnitureTile(string furnitureType, string jobType, Action action, float jobTime)
     {
-        // Does a charger exist?
+        // Does the furnitureType exist in the world?
         if (BuildModeController.Instance.furnitureTileOWWMap.ContainsKey(furnitureType))
         {
             // Loop through all chargers
@@ -311,7 +316,7 @@ public class Character : MonoBehaviour
 
                     }
 
-                    targetJob = new Job(action, tileOWW, 5, jobType);
+                    targetJob = new Job(action, tileOWW, 5, jobType, JobPriority.Medium);
                     return;
 
                 }

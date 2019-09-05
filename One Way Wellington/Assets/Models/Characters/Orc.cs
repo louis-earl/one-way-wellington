@@ -36,7 +36,7 @@ public class Orc : Enemy
             {
                 // We are idle, wander the ship 
                 Action idleAction = delegate () { };
-                targetJob = new Job(idleAction, WorldController.Instance.GetWorld().GetRandomHullTile(), 1f, "Wander", tileExcludeOtherJobs: false);
+                targetJob = new Job(idleAction, WorldController.Instance.GetWorld().GetRandomHullTile(), 1f, "Wander", JobPriority.Low, tileExcludeOtherJobs: false);
             }
         }
         

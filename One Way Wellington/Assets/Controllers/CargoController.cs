@@ -37,10 +37,9 @@ public class CargoController : MonoBehaviour
                 TileOWW dropTile = WorldController.Instance.GetWorld().GetRandomHullTile(avoidJobs: true);
                 if (dropTile != null)
                 {
-                    Job collectJob = new Job(delegate () { CollectAllCargoFromTile(tileOWW, dropTile); }, tileOWW, 0.5f, "Collect Cargo", tileExcludeOtherJobs: false);
+                    Job collectJob = new Job(delegate () { CollectAllCargoFromTile(tileOWW, dropTile); }, tileOWW, 0.5f, "Collect Cargo", JobPriority.High, tileExcludeOtherJobs: false);
 
                     // Store reference - what stock is going where 
-                    if (stockInTransit.ContainsKey(dropTile)) return;
                     Job dropJob = new Job(delegate ()
                     {
                         if (dropTile != null)
@@ -48,7 +47,7 @@ public class CargoController : MonoBehaviour
                             DropCargo(dropTile, stockInTransit[dropTile].itemType, stockInTransit[dropTile].quantity);
                         }
                     },
-                    dropTile, 0.5f, "Drop Cargo", collectJob, tileExcludeOtherJobs: false);
+                    dropTile, 0.5f, "Drop Cargo", JobPriority.High, collectJob, tileExcludeOtherJobs: true);
 
 
                     JobQueueController.BuildersJobQueue.AddJob(dropJob);
@@ -75,9 +74,9 @@ public class CargoController : MonoBehaviour
 
 				// Cargo can be picked up and placed properly
 				TileOWW stairwellTile = WorldController.Instance.GetWorld().GetTileAt((int)stairwellPos.x, (int)stairwellPos.y);
-				Job collectJob = new Job(delegate () { CollectAllCargoFromStairs(); }, stairwellTile, 0.5f, "Collect Cargo", tileExcludeOtherJobs: false);
+				Job collectJob = new Job(delegate () { CollectAllCargoFromStairs(); }, stairwellTile, 0.5f, "Collect Cargo", JobPriority.High, tileExcludeOtherJobs: false);
 				TileOWW dropTile = WorldController.Instance.GetWorld().GetRandomHullTile(avoidJobs: true);
-				Job dropJob = new Job(delegate () { DropCargo(dropTile, cargoTypeQuantityPair.Key, cargoTypeQuantityPair.Value); }, dropTile, 0.5f, "Drop Cargo", collectJob, tileExcludeOtherJobs: false);
+				Job dropJob = new Job(delegate () { DropCargo(dropTile, cargoTypeQuantityPair.Key, cargoTypeQuantityPair.Value); }, dropTile, 0.5f, "Drop Cargo", JobPriority.High, collectJob, tileExcludeOtherJobs: false);
 				JobQueueController.BuildersJobQueue.AddJob(dropJob);
 			}
             else
@@ -176,7 +175,12 @@ public class CargoController : MonoBehaviour
             TileOWW smallestQuantityTile = null;
             foreach (TileOWW tileOWW in shipStockLocations[cargoType])
             {
-                if (tileOWW.looseItem.quantity < smallestQuantity)
+                if (tileOWW.looseItem == null)
+                {
+                    Debug.LogWarning("The location of this stock has not been removed properly. " + cargoType + " " + tileOWW);
+                    shipStockLocations[cargoType].Remove(tileOWW);
+                }
+                else if (tileOWW.looseItem.quantity < smallestQuantity)
                 {
                     smallestQuantity = tileOWW.looseItem.quantity;
                     smallestQuantityTile = tileOWW;
