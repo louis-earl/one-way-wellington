@@ -37,7 +37,7 @@ public class JobQueueController : MonoBehaviour
             furnitureType = jobType.Replace("Build ", string.Empty);
             // Debug.Log(tileOWW.currentJobType + " -> " + currentTileType);
         }
-        else if (jobType.Contains("Pickup"))
+        else if (jobType.Contains("Pickup") || jobType.Contains("Drop"))
         {
             return null;
         }

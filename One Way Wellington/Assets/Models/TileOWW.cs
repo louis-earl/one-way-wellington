@@ -128,22 +128,22 @@ public class TileOWW
     {
         if (currentJobType != null)
         {
-            Debug.Log(currentJobType);
+            // Debug.Log(currentJobType);
             return false;
         }
         if (installedFurniture != null)
         {
-            Debug.Log(installedFurniture);
+            // Debug.Log(installedFurniture);
             return false;
         }
         if (installedFurnitureAltX != null)
         {
-            Debug.Log(installedFurnitureAltX);
+            // Debug.Log(installedFurnitureAltX);
             return false;
         }
         if (installedFurnitureAltY != null)
         {
-            Debug.Log(installedFurnitureAltY);
+            // Debug.Log(installedFurnitureAltY);
             return false;
         }
 

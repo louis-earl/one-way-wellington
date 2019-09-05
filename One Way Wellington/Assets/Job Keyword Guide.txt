@@ -23,9 +23,9 @@ Need fulfilment jobs:
 
 
 Inventory jobs: 
- - "Pick Up Cargo " + itemType 
- - "Drop Off Cargo " + itemType 
- - e.g. "Pick Up Cargo (Hull)", "Drop Off Cargo (Charging Pad)"
+ - "Pickup Cargo " + itemType 
+ - "Drop Cargo " + itemType 
+ - e.g. "Pickup Cargo (Hull)", "Drop Cargo (Charging Pad)"
 
 
 Constant jobs: 

@@ -28,27 +28,9 @@ public class NotificationController : MonoBehaviour
         if (Instance == null) Instance = this;
 
         notifications = new List<GameObject>();
-
-        // DEBUG
-        CreateNotification("Test notification", UrgencyLevel.Medium, null);
-        CreateNotification("Test notification with 1 action", UrgencyLevel.Medium, new List<Action>()
-        {
-            null
-        });
-        CreateNotification("Test notification with 2 actions", UrgencyLevel.Medium, new List<Action>()
-        {
-            null,
-            null
-        });
-        CreateNotification("Test notification with 3 actions", UrgencyLevel.Medium, new List<Action>()
-        {
-            null,
-            null,
-            null
-        });
     }
 
-    public void CreateNotification(string description, UrgencyLevel urgencyLevel, List<Action> buttonActions)
+    public void CreateNotification(string description, UrgencyLevel urgencyLevel, List<Action> buttonActions = null)
     {
 
         GameObject notificationGO = Instantiate(notificationPrefab);
@@ -69,6 +51,20 @@ public class NotificationController : MonoBehaviour
 				buttonGO.transform.localScale = Vector3.one;
                 buttonGO.GetComponent<Button>().onClick.AddListener(() => action.Invoke());
             }
+        }
+
+        // Colour based on urgency 
+        if (urgencyLevel == UrgencyLevel.High)
+        {
+            notificationGO.GetComponent<Image>().color = Color.red;
+        }
+        else if (urgencyLevel == UrgencyLevel.Medium)
+        {
+            notificationGO.GetComponent<Image>().color = Color.yellow;
+        }
+        else if (urgencyLevel == UrgencyLevel.Low)
+        {
+            notificationGO.GetComponent<Image>().color = Color.white;
         }
 
         notification.buttonClose.onClick.AddListener(delegate () { CloseNotification(notificationGO); });

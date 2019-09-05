@@ -82,6 +82,7 @@ public class CargoController : MonoBehaviour
             else
             {
                 Debug.Log("Couldn't find a stairwell!!");
+                NotificationController.Instance.CreateNotification("Your ship needs a Stairwell to function properly.", UrgencyLevel.Medium, null);
                 TileOWW randomEmptyTile = WorldController.Instance.GetWorld().GetRandomEmptyTile();
                 DropCargo(randomEmptyTile, cargoTypeQuantityPair.Key, cargoTypeQuantityPair.Value);
                 tempStockLocations.Enqueue(randomEmptyTile);
