@@ -98,19 +98,22 @@ public class ObjectiveController : MonoBehaviour
         allObjectives = new Dictionary<string, Objective>();
         currentObjectives = new List<Objective>();
 
-        List<Goal> goals = new List<Goal>
-        {
-            new Goal_Furniture("Build at least 32 hull tiles", 32, "Hull")
-        };
 
-        List<string> nextObjectives = new List<string>
-        {
-            "Staff Basics",
-            "Get Moving",
-            "Habitable"
-        };
+        allObjectives.Add("Getting Started",
+            new Objective(
+                "Getting Started",
+                new List<Goal>
+                {
+                    new Goal_CameraPan("Hold the right mouse button and drag to pan the camera", new Vector2(Camera.main.transform.position.x, Camera.main.transform.position.y), 10),
+                    new Goal_CameraSize("Use the mouse scroll wheel to zoom the camera", Camera.main.orthographicSize, 15)
+                },
+                0,
+                new List<string>
+                {
+                    "The Hull"
+                }
+         ));
 
-        // The Hull
         allObjectives.Add("The Hull",
             new Objective(
                 "The Hull",
@@ -291,8 +294,8 @@ public class ObjectiveController : MonoBehaviour
 
 
 
-        // DEBUG
-        AddObjective(allObjectives["The Hull"]);
+        // Initial Objective 
+        AddObjective(allObjectives["Getting Started"]);
         
     }
 

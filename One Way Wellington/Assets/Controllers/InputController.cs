@@ -184,6 +184,9 @@ public class InputController : MonoBehaviour
 
         // Always update background scale, camera orthographic size may be controlled elsewhere 
         UpdateBackgroundScale();
+
+        // Check objectives
+        ObjectiveController.Instance.CheckObjectives();
     }
 
     public void SetMode_None()
