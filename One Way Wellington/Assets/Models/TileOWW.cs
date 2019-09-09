@@ -180,8 +180,7 @@ public class TileOWW
 			{
 				CargoController.Instance.shipStockLocations[looseItem.itemType].Remove(this);
 				looseItem = null;
-				installedFurniture = null;
-
+                BuildModeController.Instance.RemoveFurniture(this);
 			}
 			else
 			{

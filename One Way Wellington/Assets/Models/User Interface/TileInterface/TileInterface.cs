@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
@@ -34,6 +35,7 @@ public class TileInterface : MonoBehaviour
 
         tileType.text = tile.GetTileType();
 
+        // Installed furniture 
         if (tile.GetInstalledFurniture() != null)
         {
             if (furniturePanelGO == null)
@@ -42,6 +44,21 @@ public class TileInterface : MonoBehaviour
             }
             furniturePanelGO.GetComponent<FurniturePanel>().furnitureType.text = tile.GetInstalledFurniture().GetFurnitureType();
         }
+        /*
+        // Installed furniture alt position 
+        else if (tile.installedFurnitureAltX != null && tile.installedFurnitureAltY != null)
+        {
+            if (tile.installedFurnitureAltX != tile.GetX() || tile.installedFurnitureAltY != tile.GetY())
+            {
+                if (furniturePanelGO == null)
+                {
+                    furniturePanelGO = Instantiate(furniturePanelPrefab, parentGO.transform);
+                }
+                TileOWW furnitureTile = WorldController.Instance.GetWorld().GetTileAt((int)tile.installedFurnitureAltX, (int)tile.installedFurnitureAltY);
+                furniturePanelGO.GetComponent<FurniturePanel>().furnitureType.text = furnitureTile.GetInstalledFurniture().GetFurnitureType() + " (from alt tile)";
+            }
+        }
+        */
         else
         {
             if (furniturePanelGO != null)
@@ -50,6 +67,7 @@ public class TileInterface : MonoBehaviour
             }
         }
 
+        // Current job
         if (tile.currentJobType != null)
         {
             if (jobPanelGO == null)
@@ -66,6 +84,7 @@ public class TileInterface : MonoBehaviour
             }
         }
 
+        // Cargo 
         if (tile.looseItem != null)
         {
             if (looseItemGO == null)
