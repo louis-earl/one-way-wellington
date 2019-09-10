@@ -56,7 +56,7 @@ public class TileOWW
 
     public void SetInstalledFurniture(InstalledFurniture installedFurniture)
     {
-        if (this.installedFurniture != null) Debug.LogError("Warning: Trying to change installedFurniture without removing existing first.");
+        if (this.installedFurniture != null) Debug.LogWarning("Warning: Trying to change installedFurniture without removing existing first.");
         this.installedFurniture = installedFurniture;
         if (BuildModeController.Instance.furnitureTypes.ContainsKey(installedFurniture.GetFurnitureType()))
         {

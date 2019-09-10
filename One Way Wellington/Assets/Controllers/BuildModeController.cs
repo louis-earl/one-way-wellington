@@ -755,6 +755,13 @@ public class BuildModeController : MonoBehaviour
     public void RemoveFurniture(TileOWW tile)
     {
         string furnitureType = tile.GetInstalledFurniture()?.GetFurnitureType();
+
+        // 'Airlock' may be in 'Airlock Open' state
+        if (furnitureType == "Airlock Open")
+        {
+            furnitureType = "Airlock";
+        }
+
         tile.RemoveInstalledFurniture();
 
         // Multi-tile references 

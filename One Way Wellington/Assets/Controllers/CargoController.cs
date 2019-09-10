@@ -100,6 +100,8 @@ public class CargoController : MonoBehaviour
 
     public void CollectAllCargoFromTile(TileOWW pickUpTile, TileOWW dropTile)
     {
+        if (pickUpTile.looseItem == null) return;
+
         stockInTransit.Add(dropTile, new LooseItem(pickUpTile.looseItem.itemType, pickUpTile.looseItem.quantity));
 
         pickUpTile.CollectCargo(-1);
