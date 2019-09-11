@@ -86,7 +86,7 @@ public class UserInterfaceController : MonoBehaviour
         CloseOtherBuilding(0);
         subPanels[0].SetActive(!subPanels[0].activeInHierarchy);
         if (!subPanels[0].activeInHierarchy) InputController.Instance.SetMode_None();
-        else button_Hull.image.color = new Color(1f, 0.73f, 0.94f);
+        else button_Hull.image.color = new Color(1f, 1f, 1f);
     }
 
     public void ToggleWallPanel()
@@ -94,7 +94,7 @@ public class UserInterfaceController : MonoBehaviour
         CloseOtherBuilding(1);
         subPanels[1].SetActive(!subPanels[1].activeInHierarchy);
         if (!subPanels[1].activeInHierarchy) InputController.Instance.SetMode_None();
-        else button_Wall.image.color = new Color(1f, 0.73f, 0.94f);
+        else button_Wall.image.color = new Color(1f, 1f, 1f);
     }
 
     public void ToggleStoragePanel()
@@ -102,7 +102,7 @@ public class UserInterfaceController : MonoBehaviour
         CloseOtherBuilding(2);
         subPanels[2].SetActive(!subPanels[2].activeInHierarchy);
         if (!subPanels[2].activeInHierarchy) InputController.Instance.SetMode_None();
-        else button_Storage.image.color = new Color(1f, 0.73f, 0.94f);
+        else button_Storage.image.color = new Color(1f, 1f, 1f);
     }
 
     public void ToggleFurniturePanel()
@@ -110,7 +110,7 @@ public class UserInterfaceController : MonoBehaviour
         CloseOtherBuilding(3);
         subPanels[3].SetActive(!subPanels[3].activeInHierarchy);
         if (!subPanels[3].activeInHierarchy) InputController.Instance.SetMode_None();
-        else button_Furniture.image.color = new Color(1f, 0.73f, 0.94f);
+        else button_Furniture.image.color = new Color(1f, 1f, 1f);
     }
 
     public void ToggleRoomsPanel()
@@ -121,7 +121,7 @@ public class UserInterfaceController : MonoBehaviour
         else
         {
 
-            button_Rooms.image.color = new Color(1f, 0.73f, 0.94f);
+            button_Rooms.image.color = new Color(1f, 1f, 1f);
             BuildModeController.Instance.roomsTilemap.SetActive(true);
         }
     }
@@ -131,7 +131,7 @@ public class UserInterfaceController : MonoBehaviour
         CloseOtherBuilding(5);
         subPanels[5].SetActive(!subPanels[5].activeInHierarchy);
         if (!subPanels[5].activeInHierarchy) InputController.Instance.SetMode_None();
-        else button_Staff.image.color = new Color(1f, 0.73f, 0.94f);
+        else button_Staff.image.color = new Color(1f, 1f, 1f);
     }
 
     public void ShowMapUI()
