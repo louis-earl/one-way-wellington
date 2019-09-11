@@ -42,8 +42,7 @@ public class BuildModeController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (Instance == null) Instance = this;
-
+        Instance = this;
         dragPreviewGameObjects = new List<GameObject>();
 
         InstantiateFurnitureTypes();
