@@ -32,6 +32,7 @@ public class Builder : Staff
                 // We are idle
                 // Go to storage and enter low power mode 
             }
+ 
         }
         
     }

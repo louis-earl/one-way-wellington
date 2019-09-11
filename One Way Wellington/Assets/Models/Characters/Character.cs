@@ -12,6 +12,8 @@ public class Character : MonoBehaviour
 
     protected float health;
 
+	protected LooseItem inventory;
+
     // Jobs 
     public Job targetJob; // The base job object
     public Job currentJob; // Any prerequisite jobs of the base object must be completed first 
@@ -54,11 +56,64 @@ public class Character : MonoBehaviour
             else currentJob = targetJob.GetPrerequisiteJob();
         }
 
-        // Check if another character finished a duplicate chase job
-        if (currentJob?.GetJobType() == "attack" && currentJob?.GetCharacter() == null)
-        {
-            targetJob = currentJob = null;
+        // If applicable, Check if in stock 
+		if (currentJob != null) {
+			if (currentJob.GetJobType().Contains("Build"))
+			{
+				string furnitureType = JobQueueController.Instance.ConvertJobTypeToFurnitureType(currentJob.GetJobType());
+
+				// Check if character already has stock 
+				if (inventory?.itemType != furnitureType)
+				{
+
+
+					if (CargoController.Instance.shipStock.ContainsKey(furnitureType))
+					{
+
+						if (CargoController.Instance.shipStock[furnitureType] == 0)
+						{
+							// item is not in stock 
+							ReturnFailedJob();
+							return;
+						}
+						else if (CargoController.Instance.shipStock[furnitureType] < 0)
+						{
+							Debug.LogError(furnitureType + " stock is a negative value");
+						}
+						else
+						{
+							// Item is in stock! Character must go get it first 
+							TileOWW cargoTile = CargoController.Instance.FindCargo(furnitureType);
+                            if (cargoTile == null)
+                            {
+                                Debug.LogError("No location found for item with stock count of: " + CargoController.Instance.shipStock[furnitureType]);
+                                currentJob = null;
+                                return;
+                            }
+							currentJob.SetPrerequisiteJob(new Job(delegate () { PickUpCargo(furnitureType, 1); }, cargoTile, 0.5f, "Pickup " + furnitureType + " Cargo", JobPriority.Medium));
+							currentJob = null;
+							return;
+						}
+					}
+					else
+					{
+						// Item is not in stock 
+						ReturnFailedJob();
+						return;
+
+					}
+				}
+			}
         }
+
+		// Check if another character finished a duplicate chase job
+		if (currentJob != null)
+		{
+			if (currentJob.GetJobType().Contains("Attack") && currentJob?.GetCharacter() == null)
+			{
+				targetJob = currentJob = null;
+			}
+		}
 
 
         // Set path 
@@ -73,9 +128,8 @@ public class Character : MonoBehaviour
             }
             else
             {
-                failedJobs.Add(targetJob);
-                jobQueue.AddJob(targetJob);
-                targetJob = currentJob = null;
+                ReturnFailedJob();
+                return;
             }
         }
 
@@ -101,18 +155,46 @@ public class Character : MonoBehaviour
         }
     }
 
+    public void ReturnFailedJob()
+    {
+        failedJobs.Add(targetJob);
+        jobQueue.AddJob(targetJob);
+        targetJob = currentJob = null;
+    }
+
     // Do job until finished 
     public void DoJobTick()
     {
+		// If job is complete 
         if (currentJob.DoJob(Time.fixedDeltaTime))
         {
-            if (currentJob == targetJob)
+            if (currentJob != null)
             {
-                currentJob = targetJob = null;
-                navMeshAgent.SetDestination(new Vector3(currentX, currentY, 0));
-                failedJobs.Clear();
+				// Remove inventory if it was a build job
+				if (currentJob.GetJobType().Contains("Build"))
+				{
+					// Check item built is item in inventory 
+					if (inventory.itemType == JobQueueController.Instance.ConvertJobTypeToFurnitureType(currentJob.GetJobType())) {
+						inventory.quantity -= 1;
+						if (inventory.quantity == 0)
+						{
+							inventory = null;
+						}
+					}
+					else Debug.LogError("Item being built didn't match item in inventory!");
+				}
+
+				if (currentJob == targetJob)
+				{
+					currentJob = targetJob = null;
+					navMeshAgent.SetDestination(new Vector3(currentX, currentY, 0));
+					failedJobs.Clear();
+				}
+				else
+				{
+					currentJob = null;
+				}
             }
-            else currentJob = null;
         }
     }
 
@@ -202,7 +284,7 @@ public class Character : MonoBehaviour
                         if (characterTag.Equals(target.transform.parent.tag))
                         {
                             Action attackAction = delegate () { target.GetComponentInParent<Character>().TakeDamage(25); };
-                            targetJob = new Job(attackAction, target.GetComponentInParent<Character>(), 1f, "attack");
+                            targetJob = new Job(attackAction, target.GetComponentInParent<Character>(), 1f, "Attack " + target.name, JobPriority.High);
                             return;
                         }
                     }
@@ -214,7 +296,7 @@ public class Character : MonoBehaviour
 
     protected void DoJobAtFurnitureTile(string furnitureType, string jobType, Action action, float jobTime)
     {
-        // Does a charger exist?
+        // Does the furnitureType exist in the world?
         if (BuildModeController.Instance.furnitureTileOWWMap.ContainsKey(furnitureType))
         {
             // Loop through all chargers
@@ -234,7 +316,7 @@ public class Character : MonoBehaviour
 
                     }
 
-                    targetJob = new Job(action, tileOWW, 5, jobType);
+                    targetJob = new Job(action, tileOWW, 5, jobType, JobPriority.Medium);
                     return;
 
                 }
@@ -242,4 +324,17 @@ public class Character : MonoBehaviour
         }
     }
 
+	protected void PickUpCargo(string cargoType, int quantity)
+	{
+		TileOWW cargoTile = CargoController.Instance.FindCargo(cargoType);
+		if (cargoTile != null)
+		{
+			cargoTile.CollectCargo(quantity);
+			this.inventory = new LooseItem(cargoType, quantity);
+		}
+		else
+		{
+			ReturnFailedJob();
+		}
+	}
 }
