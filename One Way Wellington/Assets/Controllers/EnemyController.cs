@@ -35,7 +35,7 @@ public class EnemyController : MonoBehaviour
         
         if (BuildModeController.Instance.furnitureTileOWWMap.ContainsKey("Stairwell"))
         {
-            stairwellPos = new Vector3(BuildModeController.Instance.furnitureTileOWWMap["Stairwell"][0].GetX(), BuildModeController.Instance.furnitureTileOWWMap["Stairwell"][0].GetY(), 0);
+            stairwellPos = new Vector3(BuildModeController.Instance.furnitureTileOWWMap["Stairwell"][0].GetX() + 2, BuildModeController.Instance.furnitureTileOWWMap["Stairwell"][0].GetY(), 0);
         }
         else
         {

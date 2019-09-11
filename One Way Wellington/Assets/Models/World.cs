@@ -40,65 +40,20 @@ public class World
         return tiles;
     }
 
-    public TileOWW GetRandomEmptyTile()
+    public TileOWW GetRandomHullTile()
     {
-        List<TileOWW> emptyTiles = new List<TileOWW>();
-
-        foreach (TileOWW emptyTile in tiles)
-        {
-            if (emptyTile.GetTileType() == "Empty" && emptyTile.currentJobType == null)
-            {
-                emptyTiles.Add(emptyTile);
-            }
-        }
-
-        return emptyTiles[Random.Range(0, emptyTiles.Count)];
-    }
-
-
-    public TileOWW GetRandomHullTile(bool avoidJobs = false, bool returnDefaultOnFail = false)
-    {
-        // If no empty hull tile exists 
         if (BuildModeController.Instance.emptyHullTiles.Count == 0)
         {
-            if (returnDefaultOnFail)
-            {
-                return GetTileAt(0, 0);
-            }
-            else
-            {
-                Debug.LogError("Couldn't find any empty hull tiles!");
-                return null;
-            }
+            return null;
         }
-
-        if (avoidJobs)
+        TileOWW randomTile = BuildModeController.Instance.emptyHullTiles[Random.Range(0, BuildModeController.Instance.emptyHullTiles.Count)];
+        if (randomTile == null)
         {
-            // Collect all job-less hull tiles into a list  
-            List<TileOWW> joblessTiles = new List<TileOWW>();
-            foreach (TileOWW tileJobCheck in BuildModeController.Instance.emptyHullTiles)
-            {
-                if (tileJobCheck.IsTileEmpty())
-                {
-                    joblessTiles.Add(tileJobCheck);
-                }
-            }
-
-            // If no job-less hull tiles exist
-            if (joblessTiles.Count == 0)
-            {
-                Debug.LogWarning("No empty jobless hull tile exists!");
-                return null;
-            }
-
-            // Pick random empty job-less hull tile 
-            return joblessTiles[Random.Range(0, joblessTiles.Count)];
-            
+            Debug.LogError("Couldn't find any hull tiles!");
         }
-        else
-        {     
-            // Pick random empty hull tile 
-            return BuildModeController.Instance.emptyHullTiles[Random.Range(0, BuildModeController.Instance.emptyHullTiles.Count)];
-        }
+
+        return randomTile;
+
+
     }
 }

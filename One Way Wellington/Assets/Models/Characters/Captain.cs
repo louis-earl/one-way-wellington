@@ -25,17 +25,17 @@ public class Captain : Staff
 
         // Program from here onwards
 
-        if (targetJob == null || targetJob?.GetJobType() == "Wander")
+        if (targetJob == null || targetJob?.GetJobType() == "wander")
         {
 
-            DoJobAtFurnitureTile("ShipControls", "Use Ship Controls", delegate () { }, 10);
+            DoJobAtFurnitureTile("ShipControls", "UseShipControls", delegate () { }, 10);
 
 
             if (targetJob == null)
             {
                 // We are idle, wander the ship 
-                Action wanderAction = delegate () { };
-                targetJob = new Job(wanderAction, WorldController.Instance.GetWorld().GetRandomHullTile(), 1f, "Wander", JobPriority.Medium, tileExcludeOtherJobs: false);
+                Action attackAction = delegate () { };
+                targetJob = new Job(attackAction, WorldController.Instance.GetWorld().GetRandomHullTile(), 1f, "wander", tileExcludeOtherJobs: false);
             }
         }
 

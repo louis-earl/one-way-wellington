@@ -15,14 +15,6 @@ public class RoomSpriteController : MonoBehaviour
         Instance = this;
     }
 
-    public void UpdateAllRoom()
-    {
-        foreach (TileOWW tileOWW in WorldController.Instance.GetWorld().GetAllTiles())
-        {
-            UpdateRoom(tileOWW);
-        }
-    }
-
     public void UpdateRoom(TileOWW tileOWW)
     {
         RuleTile t;

@@ -19,6 +19,11 @@ public class TileSpriteController : MonoBehaviour
         Instance = this;
     }
 
+    // Update is called once per frame
+    void Update()
+    {
+
+    }
 
     public void InstantiateTiles(World world)
     {
@@ -29,15 +34,6 @@ public class TileSpriteController : MonoBehaviour
             t.name = tile.GetX() + "_" + tile.GetY();
             tilemap.SetTile(new Vector3Int(tile.GetX(), tile.GetY(), 0), t);
             tileObjectMap.Add(tile, t);
-        }
-    }
-
-
-    public void UpdateAllTile()
-    {
-        foreach (TileOWW tileOWW in WorldController.Instance.GetWorld().GetAllTiles())
-        {
-            UpdateTile(tileOWW);
         }
     }
 

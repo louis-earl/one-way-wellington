@@ -126,22 +126,22 @@ public class Passenger : Character
         
         if (bladder == 0)
         {
-            if (SetJobAtFurnitureTile("Toilet Stall", "Use Toilet Stall", 5, delegate () { UseToiletStall(); })) return;
+            if (SetJobAtFurnitureTile("Toilet Stall", "UseToiletStall", 5, delegate () { UseToiletStall(); })) return;
         }
 
         if (nourishment == 0)
         {
-            if (SetJobAtFurnitureTile("Cafe", "Use Cafe", 5, delegate () { UseCafe(); })) return;
+            if (SetJobAtFurnitureTile("Cafe", "UseCafe", 5, delegate () { UseCafe(); })) return;
         }
 
         if (hygiene == 0)
         {
-            if (SetJobAtFurnitureTile("Shower Stall", "Use Shower Stall", 10, delegate () { UseShowerStall(); })) return;
+            if (SetJobAtFurnitureTile("Shower Stall", "UseShowerStall", 10, delegate () { UseShowerStall(); })) return;
         }
 
         if (energy == 0)
         {
-            if (SetJobAtFurnitureTile("Bed", "Use Bed", 20, delegate () { UseBed(); })) return;
+            if (SetJobAtFurnitureTile("Bed", "UseBed", 20, delegate () { UseBed(); })) return;
         }
     }
     
@@ -189,7 +189,7 @@ public class Passenger : Character
                         targetJob = currentJob = null;
                     }
 
-                    targetJob = new Job(action, tileCharger, jobTime, jobType, JobPriority.Medium);
+                    targetJob = new Job(action, tileCharger, jobTime, jobType);
                     return true;
                 }
             }
