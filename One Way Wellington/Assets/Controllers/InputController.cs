@@ -49,6 +49,15 @@ public class InputController : MonoBehaviour
     public float cameraBoundMin;
     public float cameraBoundMax;
 
+    // Tile Interface
+    public static GameObject tileInterfaceGO;
+
+    public GameObject tileInterfacePrefab;
+    
+
+
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -83,17 +92,61 @@ public class InputController : MonoBehaviour
             SetMode_None();
 
             // Clear pop-up interfaces 
-            if (Passenger.passengerUIInstance != null) Destroy(Passenger.passengerUIInstance);
-            if (Staff.staffUIInstance != null) Destroy(Staff.staffUIInstance);
-            if (Planet.planetUI != null) Destroy(Planet.planetUI);
+            ClearUI();
+        }
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            ClearUI();
         }
 
         UpdateDragging();
+
         UpdateCameraMovement();
+
+        UpdateTileInterface();
 
         lastFramePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         lastFramePosition.z = 0;
+
+
     }
+
+    void UpdateTileInterface()
+    {
+        if (Input.GetMouseButtonDown(0)) // LMB
+        {
+            // Check if player clicked on something other than a tile 
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out RaycastHit hit))
+            {
+                if (hit.collider.tag != "NavigationPlane")
+                {
+                    return;
+                }
+            }
+
+            // Get tile clicked on 
+            Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            TileOWW tileOWW = WorldController.Instance.GetWorld().GetTileAt((int)mousePos.x, (int)mousePos.y);
+
+            // Null checks
+            if (tileOWW == null)
+            {
+                return;
+            }
+            if (tileOWW.GetTileType() == "Empty" && tileOWW.currentJobType == null && tileOWW.looseItem == null)
+            {
+                return;
+            }
+
+            // Create interface 
+            tileInterfaceGO = Instantiate(tileInterfacePrefab);
+            tileInterfaceGO.GetComponent<TileInterface>().tile = tileOWW;
+            tileInterfaceGO.GetComponent<TileInterface>().tileType.text = tileOWW.GetTileType();
+        }
+    }
+
 
     void UpdateCameraMovement()
     {
@@ -131,6 +184,9 @@ public class InputController : MonoBehaviour
 
         // Always update background scale, camera orthographic size may be controlled elsewhere 
         UpdateBackgroundScale();
+
+        // Check objectives
+        ObjectiveController.Instance.CheckObjectives();
     }
 
     public void SetMode_None()
@@ -249,6 +305,14 @@ public class InputController : MonoBehaviour
         BuildModeController.Instance.SetGridVisible(true);
     }
 
+    void ClearUI()
+    {
+        if (Passenger.passengerUIInstance != null) Destroy(Passenger.passengerUIInstance);
+        if (Staff.staffUIInstance != null) Destroy(Staff.staffUIInstance);
+        if (Planet.planetUI != null) Destroy(Planet.planetUI);
+        if (tileInterfaceGO != null) Destroy(tileInterfaceGO);
+    }
+
     void UpdateDragging()
     {
         // If we're over a UI element, then bail out from this.
@@ -260,12 +324,7 @@ public class InputController : MonoBehaviour
         // Start Drag
         if (Input.GetMouseButtonDown(0))
         {
-            dragStartPosition = currFramePosition;
-
-            // Clear UI 
-            if (Passenger.passengerUIInstance != null) Destroy(Passenger.passengerUIInstance);
-            if (Staff.staffUIInstance != null) Destroy(Staff.staffUIInstance);
-            if (Planet.planetUI != null) Destroy(Planet.planetUI);
+            dragStartPosition = currFramePosition;          
         }
 
         int start_x = Mathf.FloorToInt(dragStartPosition.x);

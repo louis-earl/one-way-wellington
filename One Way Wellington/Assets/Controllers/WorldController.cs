@@ -51,8 +51,16 @@ public class WorldController : MonoBehaviour
     {
         foreach (TileOWW tile in world.GetAllTiles())
         {
+            if (tile.GetInstalledFurniture()?.GetFurnitureType() == "Airlock Open")
+            {
+                tile.SetInstalledFurniture(new InstalledFurniture("Airlock"));
+            }
+            else
+            {
+                FurnitureSpriteController.Instance.UpdateFurniture(tile);
+            }
+
             TileSpriteController.Instance.UpdateTile(tile);
-            FurnitureSpriteController.Instance.UpdateFurniture(tile);
             JobSpriteController.Instance.UpdateJob(tile);
             RoomSpriteController.Instance.UpdateRoom(tile);
         }
@@ -180,7 +188,6 @@ public class WorldController : MonoBehaviour
         foreach (GameObject staffGO in staff) 
         {
             Destroy(staffGO);
-
         }
         staff.Clear();
     }

@@ -21,6 +21,15 @@ public class FurnitureSpriteController : MonoBehaviour
         Instance = this;
     }
 
+    public void UpdateAllFurniture()
+    {
+        foreach (TileOWW tileOWW in WorldController.Instance.GetWorld().GetAllTiles())
+        {
+            UpdateFurniture(tileOWW);
+        }
+    }
+
+    
     public void UpdateFurniture(TileOWW tileOWW)
     {
         RuleTile t;
