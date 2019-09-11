@@ -3,7 +3,7 @@ This is a student project by Louis Earl, for Massey University and WREDA
 
 ![alt text][logo]
 
-[logo]: https://github.com/louieearl/one-way-wellington/oww-promo.png "OWW Promo Image"
+[logo]: https://github.com/louieearl/one-way-wellington/blob/master/oww-promo.PNG "OWW Promo Image"
 
 ### The Game
 One Way Wellington is a 2D building/management game made in Unity. The goal is to transport as many creative passengers across the galaxy - to the coolest little capital on Earth.
