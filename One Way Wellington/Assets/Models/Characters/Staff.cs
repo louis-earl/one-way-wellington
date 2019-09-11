@@ -25,7 +25,6 @@ public class Staff : Character
 
     public void OnMouseUpAsButton()
     {
-        Debug.Log("Click on staff member");
         if (Passenger.passengerUIInstance != null) Destroy(Passenger.passengerUIInstance);
         if (staffUIInstance != null) Destroy(staffUIInstance);
 
@@ -47,14 +46,14 @@ public class Staff : Character
             // Enter a low power mode (staff never die from zero energy) 
             spriteRenderer.color = Color.red;
 
-            if (targetJob?.GetJobType() != "UseChargingPad")
+            if (targetJob?.GetJobType() != "Use Charging Pad")
             {
                 FindCharger();
             }
         }
         else if (health < 100)
         {
-            if (targetJob?.GetJobType() != "Use3DPrinter")
+            if (targetJob?.GetJobType() != "Use 3D Printer")
             {
                 Find3DPrinter();
             }
@@ -63,12 +62,12 @@ public class Staff : Character
 
     private void FindCharger()
     {
-        DoJobAtFurnitureTile("Charging Pad", "UseChargingPad", delegate () { UseChargingPad(); }, 5 );
+        DoJobAtFurnitureTile("Charging Pad", "Use Charging Pad", delegate () { UseChargingPad(); }, 5 );
     }
 
     private void Find3DPrinter()
     {
-        DoJobAtFurnitureTile("3D Printer", "Use3DPrinter", delegate () { Use3DPrinter(); }, 10);
+        DoJobAtFurnitureTile("3D Printer", "Use 3D Printer", delegate () { Use3DPrinter(); }, 10);
     }
 
     public void UseChargingPad()

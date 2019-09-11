@@ -11,13 +11,14 @@ public class Job
     protected float jobTime;
     protected string jobType;
     protected Action action;
+    protected JobPriority jobPriority;
     public bool tileExcludeOtherJobs;
 
     // If a job location is different from the actual tile being worked on
     protected int jobPosX;
     protected int jobPosY;
 
-    public Job(Action action, TileOWW tileOWW, float jobTime, string jobType, Job prerequisiteJob = null, bool tileExcludeOtherJobs = true)
+    public Job(Action action, TileOWW tileOWW, float jobTime, string jobType, JobPriority jobPriority, Job prerequisiteJob = null, bool tileExcludeOtherJobs = true)
     {
         this.action = action;
         this.tileOWW = tileOWW;
@@ -25,6 +26,7 @@ public class Job
         this.jobType = jobType;
         this.prerequisiteJob = prerequisiteJob;
         this.tileExcludeOtherJobs = tileExcludeOtherJobs;
+        this.jobPriority = jobPriority;
 
         // The tile won't hold a reference to this job. Likely because a character is wandering.
         if (tileExcludeOtherJobs == true)
@@ -35,16 +37,19 @@ public class Job
         // Set default job pos
         jobPosX = tileOWW.GetX();
         jobPosY = tileOWW.GetY();
+
+        if (jobTime < 0.1f) Debug.LogWarning("Job time is too short! Prerequisites may be skipped");
     }
 
     // Chase jobs not restricted to a single tileOWW 
-    public Job(Action action, Character character, float jobTime, string jobType, Job prerequisiteJob = null)
+    public Job(Action action, Character character, float jobTime, string jobType, JobPriority jobPriority, Job prerequisiteJob = null)
     {
         this.action = action;
         this.character = character;
         this.jobTime = jobTime;
         this.jobType = jobType;
         this.prerequisiteJob = prerequisiteJob;
+        this.jobPriority = jobPriority;
 
         tileExcludeOtherJobs = false;
 
@@ -52,25 +57,25 @@ public class Job
 
 
     // Constructor used when loading game, because actions can't be serialized 
-    public Job(TileOWW tileOWW, float jobTime, string jobType, Job prerequisiteJob = null)
+    public Job(TileOWW tileOWW, float jobTime, string jobType, bool tileExcludeOtherJobs, JobPriority jobPriority, Job prerequisiteJob = null)
     {
         Action actionNew = null;
-        if (jobType == "Hull")
-        {
-            actionNew = delegate () { BuildModeController.Instance.PlaceHull(tileOWW); };
-        }
-        else if (BuildModeController.Instance.furnitureTypes.ContainsKey(jobType))
+		if (jobType == "Build Hull")
+		{
+			actionNew = delegate () { BuildModeController.Instance.PlaceHull(tileOWW); };
+		}
+		else if (BuildModeController.Instance.furnitureTypes.ContainsKey(jobType) && jobType.Contains("Build"))
         {
             actionNew = delegate () { BuildModeController.Instance.PlaceFurniture(tileOWW, jobType); };
         }
-        else if (jobType == "removeFurniture")
+		else if (jobType == "Destroy Hull")
+		{
+			actionNew = delegate () { BuildModeController.Instance.RemoveHull(tileOWW); };
+		}
+		else if (BuildModeController.Instance.furnitureTypes.ContainsKey(jobType) &&  jobType.Contains("Remove"))
         {
             actionNew = delegate () { BuildModeController.Instance.RemoveFurniture(tileOWW); };
-        }
-        else if (jobType == "removeHull")
-        {
-            actionNew = delegate () { BuildModeController.Instance.RemoveHull(tileOWW); };
-        }
+        }  
         else
         {
             Debug.LogWarning("The job type: " + jobType + " loaded is not present in the Job constructor!!");
@@ -79,7 +84,9 @@ public class Job
         this.tileOWW = tileOWW;
         this.jobTime = jobTime;
         this.jobType = jobType;
+        this.tileExcludeOtherJobs = tileExcludeOtherJobs;
         this.prerequisiteJob = prerequisiteJob;
+        this.jobPriority = jobPriority;
         tileOWW.currentJobType = jobType;
     }
 
@@ -98,6 +105,11 @@ public class Job
     public TileOWW GetTileOWW()
     {
         return tileOWW;
+    }
+
+    public JobPriority GetJobPriority()
+    {
+        return jobPriority;
     }
 
     public bool DoJob(float deltaTime)
@@ -145,6 +157,11 @@ public class Job
  
     }
 
+    public void SetPrerequisiteJob(Job prerequisiteJob)
+    {
+        this.prerequisiteJob = prerequisiteJob;
+    }
+
     // Saving Job objects not supported! Use JobSerializable instead
     public JobSerializable ToJobSerializable()
     {
@@ -153,7 +170,7 @@ public class Job
         {
             p = prerequisiteJob.ToJobSerializable();
         }
-        return new JobSerializable(tileOWW, jobTime, jobType, p); 
+        return new JobSerializable(tileOWW.GetX(), tileOWW.GetY(), jobPosX, jobPosY, jobTime, jobType, jobPriority, tileExcludeOtherJobs, p); 
     }
 
     public void SetAltPosition(int x, int y)
