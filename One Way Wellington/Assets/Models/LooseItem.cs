@@ -2,15 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[System.Serializable]
-public class LooseItem
+public class LooseItem : MonoBehaviour
 {
-    public string itemType;
-    public int quantity;
-
-    public LooseItem(string itemType, int quantity)
+    // Start is called before the first frame update
+    void Start()
     {
-        this.itemType = itemType;
-        this.quantity = quantity;
+        
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        
     }
 }
