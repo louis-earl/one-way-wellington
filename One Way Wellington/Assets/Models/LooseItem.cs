@@ -1,0 +1,16 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+[System.Serializable]
+public class LooseItem
+{
+    public string itemType;
+    public int quantity;
+
+    public LooseItem(string itemType, int quantity)
+    {
+        this.itemType = itemType;
+        this.quantity = quantity;
+    }
+}
