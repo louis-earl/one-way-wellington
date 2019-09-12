@@ -11,6 +11,8 @@ TagManager:
   - Undefined
   - Guard
   - Captain
+  - Tilemap
+  - NavigationPlane
   layers:
   - Default
   - TransparentFX

@@ -15,17 +15,27 @@ public class JobSpriteController : MonoBehaviour
         Instance = this;
     }
 
+
+    public void UpdateAllJob()
+    {
+        foreach (TileOWW tileOWW in WorldController.Instance.GetWorld().GetAllTiles())
+        {
+            UpdateJob(tileOWW);
+        }
+    }
+
     public void UpdateJob(TileOWW tileOWW)
     {
         if (tileOWW == null) return;
 
         RuleTile t;
-        if (tileOWW.currentJobType != null &&
-            ((tileOWW.installedFurnitureAltX == null && tileOWW.installedFurnitureAltY == null) || 
-            (tileOWW.installedFurnitureAltX == tileOWW.GetX() && tileOWW.installedFurnitureAltY == tileOWW.GetY())))
-        {
-            // Create job graphics 
-            t = Resources.Load<RuleTile>("TileSets/Furniture/" + tileOWW.currentJobType);
+        if (tileOWW.currentJobType != null && // Has a job
+            ((tileOWW.installedFurnitureAltX == null && tileOWW.installedFurnitureAltY == null) || // Is the origin tile of job
+            (tileOWW.installedFurnitureAltX == tileOWW.GetX() && tileOWW.installedFurnitureAltY == tileOWW.GetY()))) // Is the origin tile of job
+        {			
+
+			// Create job graphics 
+			t = Resources.Load<RuleTile>("TileSets/Furniture/" + JobQueueController.Instance.ConvertJobTypeToFurnitureType(tileOWW.currentJobType));
             tilemap.SetTile(new Vector3Int(tileOWW.GetX(), tileOWW.GetY(), 0), t);
             tilemap.RefreshTile(new Vector3Int(tileOWW.GetX(), tileOWW.GetY(), 0));
         }
