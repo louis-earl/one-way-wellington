@@ -28,7 +28,7 @@ public class Planet : MonoBehaviour
         GeneratePotentialPassengers();
     }
 
-    private void OnMouseUpAsButton()
+    private void OnMouseDown()
     {
         if (planetName != "Earth")
         {

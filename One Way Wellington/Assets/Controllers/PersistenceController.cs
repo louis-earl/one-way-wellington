@@ -132,29 +132,6 @@ public class PersistenceController : MonoBehaviour
         fileStream.Close();
     }
 
-
-    public void UnloadGame()
-    {
-        JobQueueController.Instance.ClearAllJobs();
-        WorldController.Instance.ClearAllStaff();
-        WorldController.Instance.ClearAllPlanets();
-        BuildModeController.Instance.furnitureTileOWWMap.Clear();
-        BuildModeController.Instance.emptyHullTiles = new List<TileOWW>();
-        BuildModeController.Instance.allHullTiles = new List<TileOWW>();
-        JourneyController.Instance.shipCoordinates = Vector2.zero;
-
-        WorldController.Instance.SetWorld(new World(100, 100));
-
-
-        // DEBUG ONLY 
-        // Update all sprites 
-        FurnitureSpriteController.Instance.UpdateAllFurniture();
-        JobSpriteController.Instance.UpdateAllJob();
-        RoomSpriteController.Instance.UpdateAllRoom();
-        TileSpriteController.Instance.UpdateAllTile();
-    }
-
-
     public void LoadGame(string saveName)
     {
         if (File.Exists(Application.persistentDataPath + "/" + saveName))
@@ -165,7 +142,16 @@ public class PersistenceController : MonoBehaviour
             SaveFile saveFile = (SaveFile)bf.Deserialize(fileStream);
 
             // UNLOAD 
-            UnloadGame();
+            JobQueueController.Instance.ClearAllJobs();
+
+            WorldController.Instance.ClearAllStaff();
+            WorldController.Instance.ClearAllPlanets();
+
+            BuildModeController.Instance.furnitureTileOWWMap.Clear();
+            BuildModeController.Instance.emptyHullTiles = new List<TileOWW>();
+            BuildModeController.Instance.allHullTiles = new List<TileOWW>();
+
+            JourneyController.Instance.shipCoordinates = Vector2.zero;
 
 
             // LOAD
