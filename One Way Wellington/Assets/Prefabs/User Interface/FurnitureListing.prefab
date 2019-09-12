@@ -309,6 +309,8 @@ MonoBehaviour:
   text: {fileID: 7257815859553265920}
   image: {fileID: 502283016811162733}
   button: {fileID: 1650355039870176343}
+  description: 
+  price: 0
 --- !u!1 &6127967901849971722
 GameObject:
   m_ObjectHideFlags: 0
