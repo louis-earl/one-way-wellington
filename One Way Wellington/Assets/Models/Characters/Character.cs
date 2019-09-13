@@ -137,7 +137,7 @@ public class Character : MonoBehaviour
         if (currentJob != null)
         {
             // For tile based job
-            if (Vector3.Distance(new Vector3(currentX, currentY), new Vector3(currentJob.GetJobPosX(), currentJob.GetJobPosY())) < 1)
+            if (Vector3.Distance(new Vector3(currentX, currentY), new Vector3(currentJob.GetJobPosX(), currentJob.GetJobPosY())) < 1.2)
             {
                 DoJobTick();
                 return;
@@ -206,6 +206,11 @@ public class Character : MonoBehaviour
     public float GetYPos()
     {
         return currentY;
+    }
+
+    public LooseItem GetInventory()
+    {
+        return inventory;
     }
 
     public float GetHealth()

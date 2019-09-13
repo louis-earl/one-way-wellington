@@ -23,6 +23,19 @@ public class CargoController : MonoBehaviour
         tempStockLocations = new Queue<TileOWW>();
     }
 
+
+    private void Update()
+    {
+        if (undeliveredStock.Count > 0)
+        {
+            if (JourneyController.Instance.isJourneyEditMode)
+            {
+                // We are at a planet and have stock to deliver 
+                DeliverItems();
+            }
+        }
+    }
+
     // Attempt to find placement for cargo that is not located to a hull tile 
     public void CheckTempStockLocations()
     {

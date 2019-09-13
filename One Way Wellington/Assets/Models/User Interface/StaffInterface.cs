@@ -14,6 +14,10 @@ public class StaffInterface : MonoBehaviour
     public Slider sliderEnergy;
     public Slider sliderHealth;
 
+    public TextMeshProUGUI inventoryItemType;
+    public TextMeshProUGUI inventoryQuantity;
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -39,6 +43,17 @@ public class StaffInterface : MonoBehaviour
 
         sliderEnergy.value = staff.GetEnergy();
         sliderHealth.value = staff.GetHealth();
+
+        if (staff.GetInventory() != null)
+        {
+            inventoryItemType.text = staff.GetInventory().itemType;
+            inventoryQuantity.text = staff.GetInventory().quantity.ToString();
+        }
+        else
+        {
+            inventoryItemType.text = "";
+            inventoryQuantity.text = "";
+        }
     }
 
     private void OnMouseEnter()
