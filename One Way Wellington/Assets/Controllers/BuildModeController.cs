@@ -35,8 +35,8 @@ public class BuildModeController : MonoBehaviour
     public GameObject staffParent;
 
     // Static values 
-    private static readonly int HULL_COST = 200;
-    private static readonly int WALL_COST = 250;
+    private static readonly int HULL_COST = 300;
+    private static readonly int WALL_COST = 100;
 
 
     // Start is called before the first frame update

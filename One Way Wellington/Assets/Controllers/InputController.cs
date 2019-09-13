@@ -309,7 +309,13 @@ public class InputController : MonoBehaviour
     {
         if (Passenger.passengerUIInstance != null) Destroy(Passenger.passengerUIInstance);
         if (Staff.staffUIInstance != null) Destroy(Staff.staffUIInstance);
-        if (Planet.planetUI != null) Destroy(Planet.planetUI);
+        if (Planet.planetUI != null)
+        {
+            if (!Planet.planetUI.GetComponent<PlanetInterface>().isMouseOver)
+            {
+                Destroy(Planet.planetUI);
+            }
+        }
         if (tileInterfaceGO != null) Destroy(tileInterfaceGO);
     }
 

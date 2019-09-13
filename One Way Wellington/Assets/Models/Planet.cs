@@ -50,7 +50,7 @@ public class Planet : MonoBehaviour
     public bool SetNextPlanet(Planet nextPlanet, Planet previousPlanet)
     {
         this.previousPlanet = previousPlanet;
-        // Debug.Log(nextPlanet.name + " <- " + planetName + " <- " + this.previousPlanet.name);
+        Debug.Log(nextPlanet.name + " <- " + planetName + " <- " + this.previousPlanet.name);
         if (nextPlanet != this)
         {
             if (this.nextPlanet == null) this.nextPlanet = nextPlanet;

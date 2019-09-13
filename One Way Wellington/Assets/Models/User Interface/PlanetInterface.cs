@@ -25,6 +25,8 @@ public class PlanetInterface : MonoBehaviour
 
     public bool moveWithPlanet = true;
 
+    public bool isMouseOver;
+
 
     // Start is called before the first frame update
     void Start()
@@ -45,17 +47,18 @@ public class PlanetInterface : MonoBehaviour
 
     private void OnMouseEnter()
     {
-        InputController.Instance.cameraZoomEnabled = false;
+        isMouseOver = true;
     }
 
     private void OnMouseExit()
     {
-        InputController.Instance.cameraZoomEnabled = true;
+        isMouseOver = false;
     }
 
     // Activated by UI Button 
     public void AddToJourney(Planet planet)
     {
+        Debug.Log("UI activeated add to journey: " + planet.name);
         JourneyController.Instance.AddNextPlanet(planet);
         InputController.Instance.cameraZoomEnabled = true;
         Destroy(gameObject);

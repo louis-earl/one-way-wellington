@@ -10093,12 +10093,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1176169960530145282}
     m_Modifications:
-    - target: {fileID: 502283016811162733, guid: a9061c87b69309242aa154c5f26a486e,
+    - target: {fileID: 2902878881519650208, guid: a9061c87b69309242aa154c5f26a486e,
         type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: 0660957ecaf073742b0a8ec0d1e67035,
-        type: 3}
+      propertyPath: m_Name
+      value: Listing_Build
+      objectReference: {fileID: 0}
     - target: {fileID: 862919331999470233, guid: a9061c87b69309242aa154c5f26a486e,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -10204,6 +10203,12 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 502283016811162733, guid: a9061c87b69309242aa154c5f26a486e,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 0660957ecaf073742b0a8ec0d1e67035,
+        type: 3}
     - target: {fileID: 1650355039870176343, guid: a9061c87b69309242aa154c5f26a486e,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -10218,11 +10223,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
-      objectReference: {fileID: 0}
-    - target: {fileID: 2902878881519650208, guid: a9061c87b69309242aa154c5f26a486e,
-        type: 3}
-      propertyPath: m_Name
-      value: Listing_Build
       objectReference: {fileID: 0}
     - target: {fileID: 7257815859553265920, guid: a9061c87b69309242aa154c5f26a486e,
         type: 3}
@@ -10240,6 +10240,11 @@ PrefabInstance:
       propertyPath: m_text
       value: build
       objectReference: {fileID: 0}
+    - target: {fileID: 7657502702179021740, guid: a9061c87b69309242aa154c5f26a486e,
+        type: 3}
+      propertyPath: price
+      value: 300
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a9061c87b69309242aa154c5f26a486e, type: 3}
 --- !u!1001 &667202601565662071
@@ -10249,12 +10254,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1176169959215156868}
     m_Modifications:
-    - target: {fileID: 502283016811162733, guid: a9061c87b69309242aa154c5f26a486e,
+    - target: {fileID: 2902878881519650208, guid: a9061c87b69309242aa154c5f26a486e,
         type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: 59621d9d43125644bb0bfd5f7d3ecc9c,
-        type: 3}
+      propertyPath: m_Name
+      value: Listing_Captain
+      objectReference: {fileID: 0}
     - target: {fileID: 862919331999470233, guid: a9061c87b69309242aa154c5f26a486e,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -10360,6 +10364,12 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 502283016811162733, guid: a9061c87b69309242aa154c5f26a486e,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 59621d9d43125644bb0bfd5f7d3ecc9c,
+        type: 3}
     - target: {fileID: 1650355039870176343, guid: a9061c87b69309242aa154c5f26a486e,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -10386,11 +10396,6 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2822388052134463289, guid: cae27d91f1ae4cd419a712a71d9e1e6b,
         type: 3}
-    - target: {fileID: 2902878881519650208, guid: a9061c87b69309242aa154c5f26a486e,
-        type: 3}
-      propertyPath: m_Name
-      value: Listing_Captain
-      objectReference: {fileID: 0}
     - target: {fileID: 7257815859553265920, guid: a9061c87b69309242aa154c5f26a486e,
         type: 3}
       propertyPath: m_text
@@ -10406,6 +10411,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_hasFontAssetChanged
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7657502702179021740, guid: a9061c87b69309242aa154c5f26a486e,
+        type: 3}
+      propertyPath: price
+      value: 500
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a9061c87b69309242aa154c5f26a486e, type: 3}
@@ -17129,10 +17139,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1176169960530145282}
     m_Modifications:
-    - target: {fileID: 502283016811162733, guid: a9061c87b69309242aa154c5f26a486e,
+    - target: {fileID: 2902878881519650208, guid: a9061c87b69309242aa154c5f26a486e,
         type: 3}
-      propertyPath: m_Sprite
-      value: 
+      propertyPath: m_Name
+      value: Listing_Remove
       objectReference: {fileID: 0}
     - target: {fileID: 862919331999470233, guid: a9061c87b69309242aa154c5f26a486e,
         type: 3}
@@ -17239,6 +17249,11 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 502283016811162733, guid: a9061c87b69309242aa154c5f26a486e,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 1650355039870176343, guid: a9061c87b69309242aa154c5f26a486e,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -17253,11 +17268,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
-      objectReference: {fileID: 0}
-    - target: {fileID: 2902878881519650208, guid: a9061c87b69309242aa154c5f26a486e,
-        type: 3}
-      propertyPath: m_Name
-      value: Listing_Remove
       objectReference: {fileID: 0}
     - target: {fileID: 7257815859553265920, guid: a9061c87b69309242aa154c5f26a486e,
         type: 3}
@@ -17274,6 +17284,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_text
       value: remove
+      objectReference: {fileID: 0}
+    - target: {fileID: 7657502702179021740, guid: a9061c87b69309242aa154c5f26a486e,
+        type: 3}
+      propertyPath: description
+      value: Remove the hull and anything else on that tile.
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a9061c87b69309242aa154c5f26a486e, type: 3}
@@ -17292,10 +17307,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1176169959757573493}
     m_Modifications:
-    - target: {fileID: 502283016811162733, guid: a9061c87b69309242aa154c5f26a486e,
+    - target: {fileID: 2902878881519650208, guid: a9061c87b69309242aa154c5f26a486e,
         type: 3}
-      propertyPath: m_Sprite
-      value: 
+      propertyPath: m_Name
+      value: Listing_Remove
       objectReference: {fileID: 0}
     - target: {fileID: 862919331999470233, guid: a9061c87b69309242aa154c5f26a486e,
         type: 3}
@@ -17402,10 +17417,10 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 2902878881519650208, guid: a9061c87b69309242aa154c5f26a486e,
+    - target: {fileID: 502283016811162733, guid: a9061c87b69309242aa154c5f26a486e,
         type: 3}
-      propertyPath: m_Name
-      value: Listing_Remove
+      propertyPath: m_Sprite
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 7257815859553265920, guid: a9061c87b69309242aa154c5f26a486e,
         type: 3}
@@ -17421,10 +17436,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1176169959886268150}
     m_Modifications:
-    - target: {fileID: 502283016811162733, guid: a9061c87b69309242aa154c5f26a486e,
+    - target: {fileID: 2902878881519650208, guid: a9061c87b69309242aa154c5f26a486e,
         type: 3}
-      propertyPath: m_Sprite
-      value: 
+      propertyPath: m_Name
+      value: Listing_Remove
       objectReference: {fileID: 0}
     - target: {fileID: 862919331999470233, guid: a9061c87b69309242aa154c5f26a486e,
         type: 3}
@@ -17531,6 +17546,11 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 502283016811162733, guid: a9061c87b69309242aa154c5f26a486e,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 1650355039870176343, guid: a9061c87b69309242aa154c5f26a486e,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -17545,11 +17565,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
-      objectReference: {fileID: 0}
-    - target: {fileID: 2902878881519650208, guid: a9061c87b69309242aa154c5f26a486e,
-        type: 3}
-      propertyPath: m_Name
-      value: Listing_Remove
       objectReference: {fileID: 0}
     - target: {fileID: 7257815859553265920, guid: a9061c87b69309242aa154c5f26a486e,
         type: 3}
@@ -17576,12 +17591,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1176169959581298094}
     m_Modifications:
-    - target: {fileID: 502283016811162733, guid: a9061c87b69309242aa154c5f26a486e,
+    - target: {fileID: 2902878881519650208, guid: a9061c87b69309242aa154c5f26a486e,
         type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: -2204759511001655569, guid: c3a3e64230e207a44b41f04f12542467,
-        type: 3}
+      propertyPath: m_Name
+      value: Listing_Build
+      objectReference: {fileID: 0}
     - target: {fileID: 862919331999470233, guid: a9061c87b69309242aa154c5f26a486e,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -17687,6 +17701,12 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 502283016811162733, guid: a9061c87b69309242aa154c5f26a486e,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -2204759511001655569, guid: c3a3e64230e207a44b41f04f12542467,
+        type: 3}
     - target: {fileID: 1650355039870176343, guid: a9061c87b69309242aa154c5f26a486e,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -17701,11 +17721,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
-      objectReference: {fileID: 0}
-    - target: {fileID: 2902878881519650208, guid: a9061c87b69309242aa154c5f26a486e,
-        type: 3}
-      propertyPath: m_Name
-      value: Listing_Build
       objectReference: {fileID: 0}
     - target: {fileID: 7257815859553265920, guid: a9061c87b69309242aa154c5f26a486e,
         type: 3}
@@ -17722,6 +17737,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_hasFontAssetChanged
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7657502702179021740, guid: a9061c87b69309242aa154c5f26a486e,
+        type: 3}
+      propertyPath: price
+      value: 100
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a9061c87b69309242aa154c5f26a486e, type: 3}
@@ -17751,12 +17771,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1176169959215156868}
     m_Modifications:
-    - target: {fileID: 502283016811162733, guid: a9061c87b69309242aa154c5f26a486e,
+    - target: {fileID: 2902878881519650208, guid: a9061c87b69309242aa154c5f26a486e,
         type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: 73631c117269f3946abba6c3b22a02f7,
-        type: 3}
+      propertyPath: m_Name
+      value: Listing_Builder
+      objectReference: {fileID: 0}
     - target: {fileID: 862919331999470233, guid: a9061c87b69309242aa154c5f26a486e,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -17862,6 +17881,12 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 502283016811162733, guid: a9061c87b69309242aa154c5f26a486e,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 73631c117269f3946abba6c3b22a02f7,
+        type: 3}
     - target: {fileID: 1650355039870176343, guid: a9061c87b69309242aa154c5f26a486e,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -17888,11 +17913,6 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2822388052134463289, guid: 850d7186b725d4e44be3f660f79a5c12,
         type: 3}
-    - target: {fileID: 2902878881519650208, guid: a9061c87b69309242aa154c5f26a486e,
-        type: 3}
-      propertyPath: m_Name
-      value: Listing_Builder
-      objectReference: {fileID: 0}
     - target: {fileID: 7257815859553265920, guid: a9061c87b69309242aa154c5f26a486e,
         type: 3}
       propertyPath: m_text
@@ -17909,6 +17929,11 @@ PrefabInstance:
       propertyPath: m_hasFontAssetChanged
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7657502702179021740, guid: a9061c87b69309242aa154c5f26a486e,
+        type: 3}
+      propertyPath: price
+      value: 500
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a9061c87b69309242aa154c5f26a486e, type: 3}
 --- !u!1001 &7893117840842358716
@@ -17918,12 +17943,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1176169959215156868}
     m_Modifications:
-    - target: {fileID: 502283016811162733, guid: a9061c87b69309242aa154c5f26a486e,
+    - target: {fileID: 2902878881519650208, guid: a9061c87b69309242aa154c5f26a486e,
         type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: 801bfcd9e0d9cac4eb48e356914af0b6,
-        type: 3}
+      propertyPath: m_Name
+      value: Listing_Guard
+      objectReference: {fileID: 0}
     - target: {fileID: 862919331999470233, guid: a9061c87b69309242aa154c5f26a486e,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -18029,6 +18053,12 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 502283016811162733, guid: a9061c87b69309242aa154c5f26a486e,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 801bfcd9e0d9cac4eb48e356914af0b6,
+        type: 3}
     - target: {fileID: 1650355039870176343, guid: a9061c87b69309242aa154c5f26a486e,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -18055,11 +18085,6 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2822388052134463289, guid: 89d8ec9012d14124abfe4ce1265de0da,
         type: 3}
-    - target: {fileID: 2902878881519650208, guid: a9061c87b69309242aa154c5f26a486e,
-        type: 3}
-      propertyPath: m_Name
-      value: Listing_Guard
-      objectReference: {fileID: 0}
     - target: {fileID: 7257815859553265920, guid: a9061c87b69309242aa154c5f26a486e,
         type: 3}
       propertyPath: m_text
@@ -18075,6 +18100,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_hasFontAssetChanged
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7657502702179021740, guid: a9061c87b69309242aa154c5f26a486e,
+        type: 3}
+      propertyPath: price
+      value: 1000
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a9061c87b69309242aa154c5f26a486e, type: 3}
@@ -18105,10 +18135,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1176169959581298094}
     m_Modifications:
-    - target: {fileID: 502283016811162733, guid: a9061c87b69309242aa154c5f26a486e,
+    - target: {fileID: 2902878881519650208, guid: a9061c87b69309242aa154c5f26a486e,
         type: 3}
-      propertyPath: m_Sprite
-      value: 
+      propertyPath: m_Name
+      value: Listing_Remove
       objectReference: {fileID: 0}
     - target: {fileID: 862919331999470233, guid: a9061c87b69309242aa154c5f26a486e,
         type: 3}
@@ -18215,6 +18245,11 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 502283016811162733, guid: a9061c87b69309242aa154c5f26a486e,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 1650355039870176343, guid: a9061c87b69309242aa154c5f26a486e,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -18229,11 +18264,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
-      objectReference: {fileID: 0}
-    - target: {fileID: 2902878881519650208, guid: a9061c87b69309242aa154c5f26a486e,
-        type: 3}
-      propertyPath: m_Name
-      value: Listing_Remove
       objectReference: {fileID: 0}
     - target: {fileID: 7257815859553265920, guid: a9061c87b69309242aa154c5f26a486e,
         type: 3}

@@ -32,12 +32,14 @@ public class FurnitureListing : MonoBehaviour, IPointerEnterHandler, IPointerExi
     public void OnPointerEnter(PointerEventData pointerEventData)
     {
         // Price 
-        UserInterfaceController.Instance.pricePopUpInstance = Instantiate(UserInterfaceController.Instance.pricePopUpPrefab);
-        UserInterfaceController.Instance.pricePopUpInstance.GetComponentInChildren<TextMeshProUGUI>().text = string.Format("{0:C}", price);
-        UserInterfaceController.Instance.pricePopUpInstance.transform.SetParent(UserInterfaceController.Instance.canvas_Main.transform);
-        UserInterfaceController.Instance.pricePopUpInstance.transform.position = gameObject.transform.position + new Vector3(0, 74 * UserInterfaceController.Instance.canvas_Main.transform.localScale.x);
-        UserInterfaceController.Instance.pricePopUpInstance.transform.localScale = Vector3.one;
-
+        if (price > 0)
+        {
+            UserInterfaceController.Instance.pricePopUpInstance = Instantiate(UserInterfaceController.Instance.pricePopUpPrefab);
+            UserInterfaceController.Instance.pricePopUpInstance.GetComponentInChildren<TextMeshProUGUI>().text = string.Format("{0:C}", price);
+            UserInterfaceController.Instance.pricePopUpInstance.transform.SetParent(UserInterfaceController.Instance.canvas_Main.transform);
+            UserInterfaceController.Instance.pricePopUpInstance.transform.position = gameObject.transform.position + new Vector3(0, 74 * UserInterfaceController.Instance.canvas_Main.transform.localScale.x);
+            UserInterfaceController.Instance.pricePopUpInstance.transform.localScale = Vector3.one;
+        }
         // Description should already be active 
         UserInterfaceController.Instance.tooltipInstance.GetComponentInChildren<TextMeshProUGUI>().text = description;
     }

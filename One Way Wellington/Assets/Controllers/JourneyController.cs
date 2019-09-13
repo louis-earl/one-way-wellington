@@ -71,6 +71,8 @@ public class JourneyController : MonoBehaviour
 
     public void AddNextPlanet(Planet planet)
     {
+        Debug.Log("Adding next planet to journey: " + planet.name);
+
         if (isJourneyEditMode)
         {
             
@@ -108,7 +110,19 @@ public class JourneyController : MonoBehaviour
                         distanceRingInstance.GetComponent<DistanceRing>().CreatePoints();
                     }
                 }
+                else
+                {
+                    Debug.LogWarning("Failed to add planet to journey");
+                }
             }
+            else
+            {
+                Debug.Log("Not enough fuel");
+            }
+        }
+        else
+        {
+            Debug.Log("Not in journey edit mode");
         }
     }
 
