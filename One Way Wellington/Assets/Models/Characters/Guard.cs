@@ -35,8 +35,7 @@ public class Guard : Staff
             if (targetJob == null)
             {
                 // We are idle, wander the ship 
-                Action attackAction = delegate () { };
-                targetJob = new Job(attackAction, WorldController.Instance.GetWorld().GetRandomHullTile(), 1f, "Wander", JobPriority.Low, tileExcludeOtherJobs: false);
+                targetJob = new Job(delegate () { }, WorldController.Instance.GetWorld().GetRandomHullTile(), 1f, "Wander", JobPriority.Low, tileExcludeOtherJobs: false);
             }
         }
 

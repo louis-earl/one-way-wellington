@@ -208,6 +208,16 @@ public class Character : MonoBehaviour
         return currentY;
     }
 
+    public float GetHealth()
+    {
+        return health;
+    }
+
+    public void SetHealth(float health)
+    {
+        this.health = health;
+    }
+
     public void TakeDamage(float damage)
     {
         float startHealth = health;

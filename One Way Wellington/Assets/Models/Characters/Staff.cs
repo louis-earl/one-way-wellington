@@ -31,7 +31,7 @@ public class Staff : Character
         staffUIInstance = Instantiate(UserInterfaceController.Instance.staffUIPrefab);
         staffUIInstance.transform.position = new Vector3(currentX, currentY, 0);
         staffUIInstance.transform.localScale = Vector3.one / 500;
-        staffUIInstance.GetComponent<CharacterInterface>().character = this;
+        staffUIInstance.GetComponent<StaffInterface>().staff = this;
 
     }
 
@@ -93,14 +93,6 @@ public class Staff : Character
 
     }
 
-    public float GetHealth()
-    {
-        return health;
-    }
-
-    public void SetHealth(float health)
-    {
-        this.health = health;
-    }
+    
 
 }

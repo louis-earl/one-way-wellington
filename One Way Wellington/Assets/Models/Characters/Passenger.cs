@@ -40,7 +40,7 @@ public class Passenger : Character
     }
 
 
-    public void OnMouseDown()
+    public void OnMouseUpAsButton()
     {
         if (Staff.staffUIInstance != null) Destroy(Staff.staffUIInstance);
         if (passengerUIInstance != null) Destroy(passengerUIInstance);
@@ -48,7 +48,7 @@ public class Passenger : Character
         passengerUIInstance = Instantiate(UserInterfaceController.Instance.passengerUIPrefab);
         passengerUIInstance.transform.position = new Vector3(currentX, currentY, 0);
         passengerUIInstance.transform.localScale = Vector3.one / 500;
-        passengerUIInstance.GetComponent<CharacterInterface>().character = this;
+        passengerUIInstance.GetComponent<PassengerInterface>().passenger = this;
 
     }
 
@@ -109,7 +109,7 @@ public class Passenger : Character
             {
                 // We are idle
                 // Random movement 
-                if (!navMeshAgent.hasPath) navMeshAgent.SetDestination(new Vector3(UnityEngine.Random.Range(0, 100), UnityEngine.Random.Range(0, 100), 0));
+                targetJob = new Job(delegate () { }, WorldController.Instance.GetWorld().GetRandomHullTile(), 1f, "Wander", JobPriority.Low, tileExcludeOtherJobs: false);
             }
         }
     }
@@ -170,6 +170,32 @@ public class Passenger : Character
     {
         return fare;
     }
+
+    public float GetNourishment()
+    {
+        return nourishment;
+    }
+
+    public float GetEnergy()
+    {
+        return energy;
+    }
+
+    public float GetBladder()
+    {
+        return bladder;
+    }
+
+    public float GetOxygen()
+    {
+        return oxygen;
+    }
+
+    public float GetHygiene()
+    {
+        return hygiene;
+    }
+    
 
 
     protected bool SetJobAtFurnitureTile(string furnitureType, string jobType, float jobTime, Action action)
