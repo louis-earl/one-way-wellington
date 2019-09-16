@@ -873,22 +873,32 @@ public class BuildModeController : MonoBehaviour
 
     private void InstantiateFurnitureTypes()
     {
+        int furnitureIndex = 0;
+        int utilityIndex = 0;
+        int hullIndex = 1;
+
         furnitureTypes = FurnitureType.InstantiateFurnitureTypes();
         foreach (KeyValuePair<string, FurnitureType> furnitureEntry in furnitureTypes)
         {
             if (furnitureEntry.Value.category == FurnitureType.BuildCategory.Furniture)
             {
                 GameObject furnitureEntryGO = Instantiate(furniturePreviewPrefab, furnitureParent.transform);
+                furnitureEntryGO.transform.SetSiblingIndex(furnitureIndex);
+                furnitureIndex++;
                 furnitureEntryGO.GetComponent<FurnitureListing>().InputFurnitureType(furnitureEntry.Value);
             }
             else if (furnitureEntry.Value.category == FurnitureType.BuildCategory.Utility)
             {
                 GameObject furnitureEntryGO = Instantiate(furniturePreviewPrefab, utilityParent.transform);
+                furnitureEntryGO.transform.SetSiblingIndex(utilityIndex);
+                utilityIndex++;
                 furnitureEntryGO.GetComponent<FurnitureListing>().InputFurnitureType(furnitureEntry.Value);
             }
             else if (furnitureEntry.Value.category == FurnitureType.BuildCategory.Hull) 
-                    {
+            {
                 GameObject furnitureEntryGO = Instantiate(furniturePreviewPrefab, hullParent.transform);
+                furnitureEntryGO.transform.SetSiblingIndex(hullIndex);
+                hullIndex++;
                 furnitureEntryGO.GetComponent<FurnitureListing>().InputFurnitureType(furnitureEntry.Value);
             }
            
