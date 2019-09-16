@@ -4,6 +4,7 @@ using TMPro;
 
 public class UserInterfaceController : MonoBehaviour
 {
+    // Build panels 
     public GameObject[] subPanels;
     public GameObject panel_Building;
     public GameObject panel_GoToMap;
@@ -11,16 +12,13 @@ public class UserInterfaceController : MonoBehaviour
     public GameObject panel_LaunchJourney;
     public GameObject panel_LandShip;
 
-    public Button button_Hull;
-    public Button button_Wall;
-    public Button button_Utility;
-    public Button button_Furniture;
-    public Button button_Rooms;
-    public Button button_Staff;
 
+    // Prefabs 
     public GameObject passengerUIPrefab;
     public GameObject staffUIPrefab;
 
+
+    // Reference to the canvas 
     public GameObject canvas_Main;
 
 
@@ -59,11 +57,7 @@ public class UserInterfaceController : MonoBehaviour
         {
             g.SetActive(false);
         }
-        button_Hull.image.color = Color.white;
-        button_Wall.image.color = Color.white;
-        button_Utility.image.color = Color.white;
-        button_Furniture.image.color = Color.white;
-        button_Staff.image.color = Color.white;
+
         BuildModeController.Instance.roomsTilemap.SetActive(false);
         tooltipInstance.SetActive(false);
 
@@ -75,12 +69,7 @@ public class UserInterfaceController : MonoBehaviour
         {
             if (g != subPanels[ignore]) g.SetActive(false);
         }
-        button_Hull.image.color = Color.white;
-        button_Wall.image.color = Color.white;
-        button_Utility.image.color = Color.white;
-        button_Furniture.image.color = Color.white;
-        button_Rooms.image.color = Color.white;
-        button_Staff.image.color = Color.white;
+
         BuildModeController.Instance.roomsTilemap.SetActive(false);
         tooltipInstance.SetActive(false);
 
@@ -99,7 +88,6 @@ public class UserInterfaceController : MonoBehaviour
         else
         {
             tooltipInstance.SetActive(true);       
-            button_Hull.image.color = new Color(1f, 1f, 1f);
         }
         toolTipText = "The hull is the foundation of your spaceship. All interior objects must be placed on a hull tile. Hover over an item for more information.";
         tooltipInstance.GetComponentInChildren<TextMeshProUGUI>().text = toolTipText;
@@ -119,7 +107,6 @@ public class UserInterfaceController : MonoBehaviour
         else
         {
             tooltipInstance.SetActive(true);
-            button_Wall.image.color = new Color(1f, 1f, 1f);
         }
         toolTipText = "Walls don't let oxygen past, so they are a necessity to enclose the exterior of your ship. Hover over an item for more information.";
         tooltipInstance.GetComponentInChildren<TextMeshProUGUI>().text = toolTipText;
@@ -138,7 +125,6 @@ public class UserInterfaceController : MonoBehaviour
         else
         {
             tooltipInstance.SetActive(true);
-            button_Utility.image.color = new Color(1f, 1f, 1f);
         }
         toolTipText = "Utility items are necessities to get your ship up and running. Hover over an item for more information.";
         tooltipInstance.GetComponentInChildren<TextMeshProUGUI>().text = toolTipText;
@@ -157,7 +143,6 @@ public class UserInterfaceController : MonoBehaviour
         else
         {
             tooltipInstance.SetActive(true);
-            button_Furniture.image.color = new Color(1f, 1f, 1f);
         }
         toolTipText = "Furniture objects add functionality to your ship. Hover over an item for more information.";
         tooltipInstance.GetComponentInChildren<TextMeshProUGUI>().text = toolTipText;
@@ -176,7 +161,6 @@ public class UserInterfaceController : MonoBehaviour
         else
         {
             tooltipInstance.SetActive(true);
-            button_Rooms.image.color = new Color(1f, 1f, 1f);
             BuildModeController.Instance.roomsTilemap.SetActive(true);
         }
         toolTipText = "Rooms allow you to designate an area for a particular purpose. Hover over an item for more information.";
@@ -195,7 +179,6 @@ public class UserInterfaceController : MonoBehaviour
         else
         {
             tooltipInstance.SetActive(true);
-            button_Staff.image.color = new Color(1f, 1f, 1f);
         }
         toolTipText = "Hire robotic staff to maintain ship operations. They run on energised coffee and recharge at the charging pad. Hover over an item for more information.";
         tooltipInstance.GetComponentInChildren<TextMeshProUGUI>().text = toolTipText;
