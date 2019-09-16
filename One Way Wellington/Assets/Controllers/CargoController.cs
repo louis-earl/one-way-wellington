@@ -12,6 +12,11 @@ public class CargoController : MonoBehaviour
     public Queue<TileOWW> tempStockLocations; // Cargo that is not located to a hull tile and needs to be moved
     public Dictionary<TileOWW, LooseItem> stockInTransit; // TileOWW is the target tile for the LooseItem to get to 
 
+
+    // For tutorial 
+    private bool hasOrderedBefore;
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -21,6 +26,9 @@ public class CargoController : MonoBehaviour
         shipStockLocations = new Dictionary<string, List<TileOWW>>();
         stockInTransit = new Dictionary<TileOWW, LooseItem>();
         tempStockLocations = new Queue<TileOWW>();
+
+        // TODO: Save/load this 
+        hasOrderedBefore = false;
     }
 
 
@@ -73,7 +81,6 @@ public class CargoController : MonoBehaviour
 
     public void DeliverItems()
     {
-        
         foreach (KeyValuePair<string, int> cargoTypeQuantityPair in undeliveredStock)
         {          
             // Create jobs to move 
@@ -95,11 +102,14 @@ public class CargoController : MonoBehaviour
             else
             {
                 Debug.Log("Couldn't find a stairwell!!");
-                NotificationController.Instance.CreateNotification("Your ship needs a Stairwell to function properly.", UrgencyLevel.Medium, null);
+                NotificationController.Instance.CreateNotification("Your ship needs a stairwell to accept deliveries properly. Your materials have been placed on a random exterior tile instead.", UrgencyLevel.Medium, null);
                 TileOWW randomEmptyTile = WorldController.Instance.GetWorld().GetRandomEmptyTile();
                 DropCargo(randomEmptyTile, cargoTypeQuantityPair.Key, cargoTypeQuantityPair.Value);
                 tempStockLocations.Enqueue(randomEmptyTile);
-            }                  
+            }
+
+            // Order summary notification 
+            NotificationController.Instance.CreateNotification("Your order for " + cargoTypeQuantityPair.Value + " " + cargoTypeQuantityPair.Key + " has been delivered!", UrgencyLevel.Low);
         }
 
 		// All stock delivered 
@@ -166,6 +176,12 @@ public class CargoController : MonoBehaviour
     // Assumes the payment has already been made !
     public void PlaceOrder(string itemType, int quantity)
     {
+        // Tutorial message 
+        if (!hasOrderedBefore)
+        {
+            NotificationController.Instance.CreateNotification("You've just placed your first order for construction materials! Orders are delivered while your ship is stationed at a planet, so you won't receive anything while travelling.", UrgencyLevel.Low);
+        }
+
         if (undeliveredStock.ContainsKey(itemType))
         {
             undeliveredStock[itemType] += quantity;

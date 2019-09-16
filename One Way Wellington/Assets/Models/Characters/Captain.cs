@@ -28,7 +28,7 @@ public class Captain : Staff
         if (targetJob == null || targetJob?.GetJobType() == "Wander")
         {
 
-            DoJobAtFurnitureTile("ShipControls", "Use Ship Controls", delegate () { }, 10);
+            DoJobAtFurnitureTile("Ship Controls", "Use Ship Controls", delegate () { }, 10);
 
 
             if (targetJob == null)
