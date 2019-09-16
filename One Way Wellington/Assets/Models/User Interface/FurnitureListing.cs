@@ -46,7 +46,7 @@ public class FurnitureListing : MonoBehaviour, IPointerEnterHandler, IPointerExi
 
     public void OnPointerExit(PointerEventData pointerEventData)
     {
-        UserInterfaceController.Instance.tooltipInstance.GetComponentInChildren<TextMeshProUGUI>().text = "Hover over an item for more information.";
+        UserInterfaceController.Instance.tooltipInstance.GetComponentInChildren<TextMeshProUGUI>().text = UserInterfaceController.Instance.toolTipText;
         Destroy(UserInterfaceController.Instance.pricePopUpInstance);
     }
 }

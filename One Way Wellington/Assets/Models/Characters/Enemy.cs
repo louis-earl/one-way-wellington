@@ -45,14 +45,5 @@ public class Enemy : Character
     }
 
 
-    public float GetHealth()
-    {
-        return health;
-    }
-
-    public void SetHealth(float health)
-    {
-        this.health = health;
-    }
 
 }

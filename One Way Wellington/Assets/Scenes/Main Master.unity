@@ -4244,7 +4244,7 @@ GameObject:
   - component: {fileID: 1123265782}
   - component: {fileID: 1123265781}
   m_Layer: 5
-  m_Name: Pause_Button
+  m_Name: Home_Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4763,7 +4763,7 @@ GameObject:
   - component: {fileID: 1220551067}
   - component: {fileID: 1220551066}
   m_Layer: 5
-  m_Name: Image
+  m_Name: Location
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4810,7 +4810,7 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_Sprite: {fileID: 21300000, guid: e3aaf3a865ac6d84690dc0e844522f11, type: 3}
-  m_Type: 0
+  m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -4818,7 +4818,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 1
-  m_PixelsPerUnitMultiplier: 1
+  m_PixelsPerUnitMultiplier: 0.5
 --- !u!222 &1220551067
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -9941,7 +9941,7 @@ MonoBehaviour:
   panel_LandShip: {fileID: 2052710392}
   button_Hull: {fileID: 1176169959351212833}
   button_Wall: {fileID: 1176169960205240666}
-  button_Storage: {fileID: 1176169958869716705}
+  button_Utility: {fileID: 1176169958869716705}
   button_Furniture: {fileID: 1176169960624718678}
   button_Rooms: {fileID: 1176169959727164086}
   button_Staff: {fileID: 1176169958805317517}
@@ -9954,6 +9954,7 @@ MonoBehaviour:
     type: 3}
   pricePopUpInstance: {fileID: 0}
   tooltipInstance: {fileID: 1793747910402536197}
+  toolTipText: 
 --- !u!1 &1996609508
 GameObject:
   m_ObjectHideFlags: 0
@@ -10726,8 +10727,8 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 22
-  m_fontSizeBase: 22
+  m_fontSize: 16
+  m_fontSizeBase: 16
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -10797,6 +10798,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1176169960530145282}
     m_Modifications:
+    - target: {fileID: 2902878881519650208, guid: a9061c87b69309242aa154c5f26a486e,
+        type: 3}
+      propertyPath: m_Name
+      value: Listing_Build
+      objectReference: {fileID: 0}
     - target: {fileID: 862919331999470233, guid: a9061c87b69309242aa154c5f26a486e,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -10902,11 +10908,6 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 2902878881519650208, guid: a9061c87b69309242aa154c5f26a486e,
-        type: 3}
-      propertyPath: m_Name
-      value: Listing_Build
-      objectReference: {fileID: 0}
     - target: {fileID: 7257815859553265920, guid: a9061c87b69309242aa154c5f26a486e,
         type: 3}
       propertyPath: m_fontAsset
@@ -10949,6 +10950,12 @@ PrefabInstance:
       propertyPath: price
       value: 300
       objectReference: {fileID: 0}
+    - target: {fileID: 7657502702179021740, guid: a9061c87b69309242aa154c5f26a486e,
+        type: 3}
+      propertyPath: description
+      value: 'Click and drag to place a rectangle of hull tiles. Walls are automatically
+        placed on the perimeter of your selection. '
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a9061c87b69309242aa154c5f26a486e, type: 3}
 --- !u!1001 &667202601565662071
@@ -10958,6 +10965,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1176169959215156868}
     m_Modifications:
+    - target: {fileID: 2902878881519650208, guid: a9061c87b69309242aa154c5f26a486e,
+        type: 3}
+      propertyPath: m_Name
+      value: Listing_Captain
+      objectReference: {fileID: 0}
     - target: {fileID: 862919331999470233, guid: a9061c87b69309242aa154c5f26a486e,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -11063,11 +11075,6 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 2902878881519650208, guid: a9061c87b69309242aa154c5f26a486e,
-        type: 3}
-      propertyPath: m_Name
-      value: Listing_Captain
-      objectReference: {fileID: 0}
     - target: {fileID: 7257815859553265920, guid: a9061c87b69309242aa154c5f26a486e,
         type: 3}
       propertyPath: m_text
@@ -11120,6 +11127,11 @@ PrefabInstance:
         type: 3}
       propertyPath: price
       value: 500
+      objectReference: {fileID: 0}
+    - target: {fileID: 7657502702179021740, guid: a9061c87b69309242aa154c5f26a486e,
+        type: 3}
+      propertyPath: description
+      value: The captain controls your ship, allowing you to travel between planets.
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a9061c87b69309242aa154c5f26a486e, type: 3}
@@ -11553,7 +11565,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1176169958840338035
 RectTransform:
   m_ObjectHideFlags: 0
@@ -11596,7 +11608,7 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_Sprite: {fileID: 21300000, guid: 3095e55c2dc3a6f428fc2ccb4f6a2da0, type: 3}
-  m_Type: 0
+  m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -11799,7 +11811,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1953672902}
-        m_MethodName: ToggleStoragePanel
+        m_MethodName: ToggleUtilityPanel
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -12482,7 +12494,7 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_Sprite: {fileID: 21300000, guid: 3095e55c2dc3a6f428fc2ccb4f6a2da0, type: 3}
-  m_Type: 0
+  m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -12569,7 +12581,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 155}
-  m_SizeDelta: {x: 530, y: 300}
+  m_SizeDelta: {x: 530, y: 150}
   m_Pivot: {x: 0, y: 0}
 --- !u!1 &1176169959202188563
 GameObject:
@@ -12793,7 +12805,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -13554,7 +13566,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 155}
-  m_SizeDelta: {x: 530, y: 300}
+  m_SizeDelta: {x: 530, y: 150}
   m_Pivot: {x: 0, y: 0}
 --- !u!114 &1176169959396466038
 MonoBehaviour:
@@ -13577,7 +13589,7 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_Sprite: {fileID: 21300000, guid: 3095e55c2dc3a6f428fc2ccb4f6a2da0, type: 3}
-  m_Type: 0
+  m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -13745,7 +13757,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -205, y: 130}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1176169959581298095
 MonoBehaviour:
@@ -14170,7 +14182,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -205, y: 130}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1176169959757573494
 MonoBehaviour:
@@ -15153,7 +15165,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 155}
-  m_SizeDelta: {x: 530, y: 300}
+  m_SizeDelta: {x: 530, y: 150}
   m_Pivot: {x: 0, y: 0}
 --- !u!114 &1176169960099556530
 MonoBehaviour:
@@ -15176,7 +15188,7 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_Sprite: {fileID: 21300000, guid: 3095e55c2dc3a6f428fc2ccb4f6a2da0, type: 3}
-  m_Type: 0
+  m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -15275,7 +15287,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1176169960105719325
 RectTransform:
   m_ObjectHideFlags: 0
@@ -15295,7 +15307,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 155}
-  m_SizeDelta: {x: 530, y: 300}
+  m_SizeDelta: {x: 530, y: 150}
   m_Pivot: {x: 0, y: 0}
 --- !u!114 &1176169960105719326
 MonoBehaviour:
@@ -15318,7 +15330,7 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_Sprite: {fileID: 21300000, guid: 3095e55c2dc3a6f428fc2ccb4f6a2da0, type: 3}
-  m_Type: 0
+  m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -15644,7 +15656,7 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_Sprite: {fileID: 21300000, guid: 3095e55c2dc3a6f428fc2ccb4f6a2da0, type: 3}
-  m_Type: 0
+  m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -15708,7 +15720,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -16124,7 +16136,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 20, y: 130}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1176169960530145283
 MonoBehaviour:
@@ -16413,7 +16425,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -17437,7 +17449,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -12.1, y: 1.5999756}
+  m_AnchoredPosition: {x: -12.100098, y: 1.5999756}
   m_SizeDelta: {x: 410, y: 96.52}
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &1478528629199927526
@@ -17844,6 +17856,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1176169960530145282}
     m_Modifications:
+    - target: {fileID: 2902878881519650208, guid: a9061c87b69309242aa154c5f26a486e,
+        type: 3}
+      propertyPath: m_Name
+      value: Listing_Remove
+      objectReference: {fileID: 0}
     - target: {fileID: 862919331999470233, guid: a9061c87b69309242aa154c5f26a486e,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -17949,11 +17966,6 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 2902878881519650208, guid: a9061c87b69309242aa154c5f26a486e,
-        type: 3}
-      propertyPath: m_Name
-      value: Listing_Remove
-      objectReference: {fileID: 0}
     - target: {fileID: 7257815859553265920, guid: a9061c87b69309242aa154c5f26a486e,
         type: 3}
       propertyPath: m_fontAsset
@@ -17993,7 +18005,8 @@ PrefabInstance:
     - target: {fileID: 7657502702179021740, guid: a9061c87b69309242aa154c5f26a486e,
         type: 3}
       propertyPath: description
-      value: Remove the hull and anything else on that tile.
+      value: Click and drag to select an area of hull tiles to remove. Anything on
+        top of the hull tiles will also be removed.
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a9061c87b69309242aa154c5f26a486e, type: 3}
@@ -18012,6 +18025,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1176169959757573493}
     m_Modifications:
+    - target: {fileID: 2902878881519650208, guid: a9061c87b69309242aa154c5f26a486e,
+        type: 3}
+      propertyPath: m_Name
+      value: Listing_Remove
+      objectReference: {fileID: 0}
     - target: {fileID: 862919331999470233, guid: a9061c87b69309242aa154c5f26a486e,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -18080,32 +18098,32 @@ PrefabInstance:
     - target: {fileID: 862919331999470233, guid: a9061c87b69309242aa154c5f26a486e,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 80
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 862919331999470233, guid: a9061c87b69309242aa154c5f26a486e,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 80
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 862919331999470233, guid: a9061c87b69309242aa154c5f26a486e,
         type: 3}
       propertyPath: m_AnchorMin.x
-      value: 0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 862919331999470233, guid: a9061c87b69309242aa154c5f26a486e,
         type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 862919331999470233, guid: a9061c87b69309242aa154c5f26a486e,
         type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 862919331999470233, guid: a9061c87b69309242aa154c5f26a486e,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 862919331999470233, guid: a9061c87b69309242aa154c5f26a486e,
         type: 3}
@@ -18116,11 +18134,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 2902878881519650208, guid: a9061c87b69309242aa154c5f26a486e,
-        type: 3}
-      propertyPath: m_Name
-      value: Listing_Remove
       objectReference: {fileID: 0}
     - target: {fileID: 7257815859553265920, guid: a9061c87b69309242aa154c5f26a486e,
         type: 3}
@@ -18132,6 +18145,11 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 7657502702179021740, guid: a9061c87b69309242aa154c5f26a486e,
+        type: 3}
+      propertyPath: description
+      value: Click and drag to select an area of utility tiles to remove.
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a9061c87b69309242aa154c5f26a486e, type: 3}
 --- !u!1001 &3555451477836110291
@@ -18141,6 +18159,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1176169959886268150}
     m_Modifications:
+    - target: {fileID: 2902878881519650208, guid: a9061c87b69309242aa154c5f26a486e,
+        type: 3}
+      propertyPath: m_Name
+      value: Listing_Remove
+      objectReference: {fileID: 0}
     - target: {fileID: 862919331999470233, guid: a9061c87b69309242aa154c5f26a486e,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -18245,11 +18268,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 2902878881519650208, guid: a9061c87b69309242aa154c5f26a486e,
-        type: 3}
-      propertyPath: m_Name
-      value: Listing_Remove
       objectReference: {fileID: 0}
     - target: {fileID: 7257815859553265920, guid: a9061c87b69309242aa154c5f26a486e,
         type: 3}
@@ -18287,6 +18305,11 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
+    - target: {fileID: 7657502702179021740, guid: a9061c87b69309242aa154c5f26a486e,
+        type: 3}
+      propertyPath: description
+      value: Click and drag to select an area of furniture tiles to remove.
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a9061c87b69309242aa154c5f26a486e, type: 3}
 --- !u!1001 &3560293119201308079
@@ -18296,6 +18319,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1176169959581298094}
     m_Modifications:
+    - target: {fileID: 2902878881519650208, guid: a9061c87b69309242aa154c5f26a486e,
+        type: 3}
+      propertyPath: m_Name
+      value: Listing_Build
+      objectReference: {fileID: 0}
     - target: {fileID: 862919331999470233, guid: a9061c87b69309242aa154c5f26a486e,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -18364,32 +18392,32 @@ PrefabInstance:
     - target: {fileID: 862919331999470233, guid: a9061c87b69309242aa154c5f26a486e,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 80
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 862919331999470233, guid: a9061c87b69309242aa154c5f26a486e,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 80
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 862919331999470233, guid: a9061c87b69309242aa154c5f26a486e,
         type: 3}
       propertyPath: m_AnchorMin.x
-      value: 0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 862919331999470233, guid: a9061c87b69309242aa154c5f26a486e,
         type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 862919331999470233, guid: a9061c87b69309242aa154c5f26a486e,
         type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 862919331999470233, guid: a9061c87b69309242aa154c5f26a486e,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 862919331999470233, guid: a9061c87b69309242aa154c5f26a486e,
         type: 3}
@@ -18400,11 +18428,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 2902878881519650208, guid: a9061c87b69309242aa154c5f26a486e,
-        type: 3}
-      propertyPath: m_Name
-      value: Listing_Build
       objectReference: {fileID: 0}
     - target: {fileID: 7257815859553265920, guid: a9061c87b69309242aa154c5f26a486e,
         type: 3}
@@ -18448,6 +18471,12 @@ PrefabInstance:
       propertyPath: price
       value: 100
       objectReference: {fileID: 0}
+    - target: {fileID: 7657502702179021740, guid: a9061c87b69309242aa154c5f26a486e,
+        type: 3}
+      propertyPath: description
+      value: Click and drag to place a rectangle of wall tiles. Walls are only placed
+        on the perimeter of your selection.
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a9061c87b69309242aa154c5f26a486e, type: 3}
 --- !u!224 &6000003022245204753
@@ -18466,8 +18495,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 5, y: -5}
-  m_SizeDelta: {x: -10, y: -10}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: -20, y: -20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1001 &6376728742749366170
 PrefabInstance:
@@ -18476,6 +18505,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1176169959215156868}
     m_Modifications:
+    - target: {fileID: 2902878881519650208, guid: a9061c87b69309242aa154c5f26a486e,
+        type: 3}
+      propertyPath: m_Name
+      value: Listing_Builder
+      objectReference: {fileID: 0}
     - target: {fileID: 862919331999470233, guid: a9061c87b69309242aa154c5f26a486e,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -18580,11 +18614,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 2902878881519650208, guid: a9061c87b69309242aa154c5f26a486e,
-        type: 3}
-      propertyPath: m_Name
-      value: Listing_Builder
       objectReference: {fileID: 0}
     - target: {fileID: 7257815859553265920, guid: a9061c87b69309242aa154c5f26a486e,
         type: 3}
@@ -18639,6 +18668,12 @@ PrefabInstance:
       propertyPath: price
       value: 500
       objectReference: {fileID: 0}
+    - target: {fileID: 7657502702179021740, guid: a9061c87b69309242aa154c5f26a486e,
+        type: 3}
+      propertyPath: description
+      value: The builder robot will handle the construction of your ship and installation
+        of items. Each builder has an inventory for carrying materials.
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a9061c87b69309242aa154c5f26a486e, type: 3}
 --- !u!1001 &7893117840842358716
@@ -18648,6 +18683,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1176169959215156868}
     m_Modifications:
+    - target: {fileID: 2902878881519650208, guid: a9061c87b69309242aa154c5f26a486e,
+        type: 3}
+      propertyPath: m_Name
+      value: Listing_Guard
+      objectReference: {fileID: 0}
     - target: {fileID: 862919331999470233, guid: a9061c87b69309242aa154c5f26a486e,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -18752,11 +18792,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 2902878881519650208, guid: a9061c87b69309242aa154c5f26a486e,
-        type: 3}
-      propertyPath: m_Name
-      value: Listing_Guard
       objectReference: {fileID: 0}
     - target: {fileID: 7257815859553265920, guid: a9061c87b69309242aa154c5f26a486e,
         type: 3}
@@ -18811,6 +18846,11 @@ PrefabInstance:
       propertyPath: price
       value: 1000
       objectReference: {fileID: 0}
+    - target: {fileID: 7657502702179021740, guid: a9061c87b69309242aa154c5f26a486e,
+        type: 3}
+      propertyPath: description
+      value: 'The guard robot will patrol your ship and defend against enemy attacks. '
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a9061c87b69309242aa154c5f26a486e, type: 3}
 --- !u!224 &8215850261494606040
@@ -18830,8 +18870,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 733, y: -24}
-  m_SizeDelta: {x: 348, y: 145}
+  m_AnchoredPosition: {x: 747, y: -24}
+  m_SizeDelta: {x: 375, y: 145}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!1001 &8602115663895365808
 PrefabInstance:
@@ -18840,6 +18880,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1176169959581298094}
     m_Modifications:
+    - target: {fileID: 2902878881519650208, guid: a9061c87b69309242aa154c5f26a486e,
+        type: 3}
+      propertyPath: m_Name
+      value: Listing_Remove
+      objectReference: {fileID: 0}
     - target: {fileID: 862919331999470233, guid: a9061c87b69309242aa154c5f26a486e,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -18908,32 +18953,32 @@ PrefabInstance:
     - target: {fileID: 862919331999470233, guid: a9061c87b69309242aa154c5f26a486e,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 80
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 862919331999470233, guid: a9061c87b69309242aa154c5f26a486e,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 80
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 862919331999470233, guid: a9061c87b69309242aa154c5f26a486e,
         type: 3}
       propertyPath: m_AnchorMin.x
-      value: 0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 862919331999470233, guid: a9061c87b69309242aa154c5f26a486e,
         type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 862919331999470233, guid: a9061c87b69309242aa154c5f26a486e,
         type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 862919331999470233, guid: a9061c87b69309242aa154c5f26a486e,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 862919331999470233, guid: a9061c87b69309242aa154c5f26a486e,
         type: 3}
@@ -18944,11 +18989,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 2902878881519650208, guid: a9061c87b69309242aa154c5f26a486e,
-        type: 3}
-      propertyPath: m_Name
-      value: Listing_Remove
       objectReference: {fileID: 0}
     - target: {fileID: 7257815859553265920, guid: a9061c87b69309242aa154c5f26a486e,
         type: 3}
@@ -18985,6 +19025,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 7657502702179021740, guid: a9061c87b69309242aa154c5f26a486e,
+        type: 3}
+      propertyPath: description
+      value: Click and drag to select an area of wall tiles to remove.
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a9061c87b69309242aa154c5f26a486e, type: 3}
