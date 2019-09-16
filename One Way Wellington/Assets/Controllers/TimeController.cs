@@ -1,12 +1,29 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 
 public class TimeController : MonoBehaviour
 {
     public static TimeController Instance;
     public float timeOWW;
+
+    // Colours
+    private static Color colourPressed = new Color(1f, 0.8666666f, 0f);
+    private static Color colourNormal = new Color(0.2313726f, 0.1529412f, 0.7294118f);
+
+
+    // Button images 
+    public Toggle buttonPause;
+    public Toggle buttonPlay;
+    public Toggle buttonFF;
+    public Toggle buttonFFF;
+
+
+
+
+    // Time text 
     public TextMeshProUGUI timeDisplayHour10;
     public TextMeshProUGUI timeDisplayHour01;
     public TextMeshProUGUI timeDisplayMinute10;
@@ -33,23 +50,26 @@ public class TimeController : MonoBehaviour
 
     }
 
-    public void PauseTime()
+
+    public void PauseTime(bool value)
     {
         Time.timeScale = 0;
+
     }
 
-    public void ResumeTime()
+    public void ResumeTime(bool value)
     {
         Time.timeScale = 1;
     }
 
-    public void DoubleTime()
+    public void DoubleTime(bool value)
     {
         Time.timeScale = 2;
     }
 
-    public void QuadrupleTime()
+    public void QuadrupleTime(bool value)
     {
         Time.timeScale = 4;
+
     }
 }
