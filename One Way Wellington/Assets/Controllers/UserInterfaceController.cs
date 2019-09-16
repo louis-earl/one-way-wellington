@@ -93,7 +93,7 @@ public class UserInterfaceController : MonoBehaviour
         else
         {
             tooltipInstance.SetActive(true);
-            button_Hull.image.color = new Color(1f, 0.73f, 0.94f);
+            button_Hull.image.color = new Color(1f, 1f, 1f);
         }
     }
 
@@ -110,7 +110,7 @@ public class UserInterfaceController : MonoBehaviour
         else
         {
             tooltipInstance.SetActive(true);
-            button_Wall.image.color = new Color(1f, 0.73f, 0.94f);
+            button_Wall.image.color = new Color(1f, 1f, 1f);
         }
     }
 
@@ -126,7 +126,7 @@ public class UserInterfaceController : MonoBehaviour
         else
         {
             tooltipInstance.SetActive(true);
-            button_Storage.image.color = new Color(1f, 0.73f, 0.94f);
+            button_Storage.image.color = new Color(1f, 1f, 1f);
         }
     }
 
@@ -142,7 +142,7 @@ public class UserInterfaceController : MonoBehaviour
         else
         {
             tooltipInstance.SetActive(true);
-            button_Furniture.image.color = new Color(1f, 0.73f, 0.94f);
+            button_Furniture.image.color = new Color(1f, 1f, 1f);
         }
     }
 
@@ -158,7 +158,7 @@ public class UserInterfaceController : MonoBehaviour
         else
         {
             tooltipInstance.SetActive(true);
-            button_Rooms.image.color = new Color(1f, 0.73f, 0.94f);
+            button_Rooms.image.color = new Color(1f, 1f, 1f);
             BuildModeController.Instance.roomsTilemap.SetActive(true);
         }
     }
@@ -175,7 +175,7 @@ public class UserInterfaceController : MonoBehaviour
         else
         {
             tooltipInstance.SetActive(true);
-            button_Staff.image.color = new Color(1f, 0.73f, 0.94f);
+            button_Staff.image.color = new Color(1f, 1f, 1f);
         }
     }
 
