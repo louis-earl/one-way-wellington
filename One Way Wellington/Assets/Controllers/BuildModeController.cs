@@ -19,6 +19,7 @@ public class BuildModeController : MonoBehaviour
 
     public GameObject furniturePreviewPrefab;
     public GameObject hullParent;
+    public GameObject wallParent;
     public GameObject furnitureParent;
     public GameObject utilityParent;
 
@@ -108,13 +109,13 @@ public class BuildModeController : MonoBehaviour
         }
 
         // Consider materials already in stock 
-        if (CargoController.Instance.shipStock.ContainsKey("Hull")) {
-            estimatedCost -= (CargoController.Instance.shipStock["Hull"] * HULL_COST);
+        if (CargoController.Instance.unusedShipStock.ContainsKey("Hull")) {
+            estimatedCost -= (CargoController.Instance.unusedShipStock["Hull"] * HULL_COST);
         }
 
-        if (CargoController.Instance.shipStock.ContainsKey("Wall"))
+        if (CargoController.Instance.unusedShipStock.ContainsKey("Wall"))
         {
-            estimatedCost -= (CargoController.Instance.shipStock["Wall"] * WALL_COST);
+            estimatedCost -= (CargoController.Instance.unusedShipStock["Wall"] * WALL_COST);
         }
 
         // Check funds 
@@ -532,16 +533,18 @@ public class BuildModeController : MonoBehaviour
         }
 
         // Consider materials already in stock 
-        if (CargoController.Instance.shipStock.ContainsKey("Hull"))
+        // TODO - BROKEN!
+        /*
+        if (CargoController.Instance.unusedShipStock.ContainsKey("Hull"))
         {
-            hullOrder -= (CargoController.Instance.shipStock["Hull"]);
+            hullOrder -= (CargoController.Instance.unusedShipStock["Hull"]);
         }
 
-        if (CargoController.Instance.shipStock.ContainsKey("Wall"))
+        if (CargoController.Instance.unusedShipStock.ContainsKey("Wall"))
         {
-            wallOrder -= (CargoController.Instance.shipStock["Wall"]);
+            wallOrder -= (CargoController.Instance.unusedShipStock["Wall"]);
         }
-
+        */
 
         // Invoice 
         CurrencyController.Instance.DeductBankBalance(hullOrder * HULL_COST);
@@ -737,6 +740,11 @@ public class BuildModeController : MonoBehaviour
         }
 
         // Multi-tile references 
+
+        if (!furnitureTypes.ContainsKey(furnitureType))
+        {
+            Debug.LogError("This key wasnt found: " + furnitureType);
+        }
         for (int i = 0; i < furnitureTypes[furnitureType].sizeX; i++)
         {
             for (int j = 0; j < furnitureTypes[furnitureType].sizeY; j++)
@@ -876,6 +884,7 @@ public class BuildModeController : MonoBehaviour
         int furnitureIndex = 0;
         int utilityIndex = 0;
         int hullIndex = 1;
+        int wallIndex = 1;
 
         furnitureTypes = FurnitureType.InstantiateFurnitureTypes();
         foreach (KeyValuePair<string, FurnitureType> furnitureEntry in furnitureTypes)
@@ -901,7 +910,14 @@ public class BuildModeController : MonoBehaviour
                 hullIndex++;
                 furnitureEntryGO.GetComponent<FurnitureListing>().InputFurnitureType(furnitureEntry.Value);
             }
-           
+            else if (furnitureEntry.Value.category == FurnitureType.BuildCategory.Wall)
+            {
+                GameObject furnitureEntryGO = Instantiate(furniturePreviewPrefab, wallParent.transform);
+                furnitureEntryGO.transform.SetSiblingIndex(wallIndex);
+                wallIndex++;
+                furnitureEntryGO.GetComponent<FurnitureListing>().InputFurnitureType(furnitureEntry.Value);
+            }
+
         }
     }
 

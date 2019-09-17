@@ -167,8 +167,8 @@ public class TileOWW
         looseItem.quantity -= quantity;
 
 		// Global stock reference 
-		CargoController.Instance.shipStock[looseItem.itemType] -= quantity;
-		if (CargoController.Instance.shipStock[looseItem.itemType] < 0)
+		CargoController.Instance.unusedShipStock[looseItem.itemType] -= quantity;
+		if (CargoController.Instance.unusedShipStock[looseItem.itemType] < 0)
 		{
 			Debug.LogWarning("Ship stock went below 0 for " + looseItem.itemType);
 		}

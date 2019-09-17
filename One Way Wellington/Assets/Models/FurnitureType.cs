@@ -301,17 +301,18 @@ public class FurnitureType
             ));
             */
 
+        
         furnitureTypes.Add("Wall", new FurnitureType(
             "Wall",
-            "It speaks for itself.",
-            FurnitureType.BuildCategory.Wall,
+            "If you can read this, something isn't right.",
+            FurnitureType.BuildCategory.Loose,
             100,
             3,
             fixedRotation: true,
             multiSize: true,
             walkable: false
             ));
-
+            
 
 
 

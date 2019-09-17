@@ -7,7 +7,8 @@ public class CargoController : MonoBehaviour
     public static CargoController Instance;
     private Dictionary<string, int> undeliveredStock;
 
-    public Dictionary<string, int> shipStock;
+    public Dictionary<string, int> unusedShipStock;
+    public Dictionary<string, int> usedShipStock; 
     public Dictionary<string, List<TileOWW>> shipStockLocations;
     public Queue<TileOWW> tempStockLocations; // Cargo that is not located to a hull tile and needs to be moved
     public Dictionary<TileOWW, LooseItem> stockInTransit; // TileOWW is the target tile for the LooseItem to get to 
@@ -21,7 +22,8 @@ public class CargoController : MonoBehaviour
     void Start()
     {
         if (Instance == null) Instance = this;
-        shipStock = new Dictionary<string, int>();
+        unusedShipStock = new Dictionary<string, int>();
+        usedShipStock = new Dictionary<string, int>();
         undeliveredStock = new Dictionary<string, int>();
         shipStockLocations = new Dictionary<string, List<TileOWW>>();
         stockInTransit = new Dictionary<TileOWW, LooseItem>();
@@ -101,15 +103,15 @@ public class CargoController : MonoBehaviour
 			}
             else
             {
-                Debug.Log("Couldn't find a stairwell!!");
-                NotificationController.Instance.CreateNotification("Your ship needs a stairwell to accept deliveries properly. Your materials have been placed on a random exterior tile instead.", UrgencyLevel.Medium, null);
+                // Debug.Log("Couldn't find a stairwell!!");
+                NotificationController.Instance.CreateNotification("Your ship needs a stairwell to accept deliveries properly. Your materials have been placed on a random exterior tile instead.", UrgencyLevel.High, true, null);
                 TileOWW randomEmptyTile = WorldController.Instance.GetWorld().GetRandomEmptyTile();
                 DropCargo(randomEmptyTile, cargoTypeQuantityPair.Key, cargoTypeQuantityPair.Value);
                 tempStockLocations.Enqueue(randomEmptyTile);
             }
 
             // Order summary notification 
-            NotificationController.Instance.CreateNotification("Your order for " + cargoTypeQuantityPair.Value + " " + cargoTypeQuantityPair.Key + " has been delivered!", UrgencyLevel.Low);
+            NotificationController.Instance.CreateNotification("Your order for " + cargoTypeQuantityPair.Value + " " + cargoTypeQuantityPair.Key + " has been delivered!", UrgencyLevel.Low, false);
         }
 
 		// All stock delivered 
@@ -139,13 +141,13 @@ public class CargoController : MonoBehaviour
         tile.looseItem = new LooseItem(cargoType, quantity);
 
         // Add to ship inventory 
-        if (shipStock.ContainsKey(cargoType))
+        if (unusedShipStock.ContainsKey(cargoType))
         {
-            shipStock[cargoType] += quantity;
+            unusedShipStock[cargoType] += quantity;
         }
         else
         {
-            shipStock.Add(cargoType, quantity);
+            unusedShipStock.Add(cargoType, quantity);
         }
 
         // Save reference of tile location 
@@ -179,7 +181,8 @@ public class CargoController : MonoBehaviour
         // Tutorial message 
         if (!hasOrderedBefore)
         {
-            NotificationController.Instance.CreateNotification("You've just placed your first order for construction materials! Orders are delivered while your ship is stationed at a planet, so you won't receive anything while travelling.", UrgencyLevel.Low);
+            hasOrderedBefore = true;
+            NotificationController.Instance.CreateNotification("You've just placed your first order for construction materials! Orders are delivered while your ship is stationed at a planet, so you won't receive anything while travelling.", UrgencyLevel.Medium, true);
         }
 
         if (undeliveredStock.ContainsKey(itemType))
@@ -190,8 +193,8 @@ public class CargoController : MonoBehaviour
         {
             undeliveredStock.Add(itemType, quantity);
         }
-
-		Debug.Log("Order placed for " + itemType + " x" + quantity);
+        NotificationController.Instance.CreateNotification("Your order for " + quantity + " " + itemType + " has been placed!", UrgencyLevel.Low, false);
+        // Debug.Log("Order placed for " + itemType + " x" + quantity);
 
         // if at a planet stop:
         // Deliver items 

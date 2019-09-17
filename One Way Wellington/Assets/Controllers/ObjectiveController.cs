@@ -155,7 +155,7 @@ public class ObjectiveController : MonoBehaviour
                     new Goal_Furniture("Build an Engine", 1, "Engine"),
                     new Goal_Furniture("Build at least 6 Fuel Tanks", 1, "Fuel Tank"),
                     new Goal_Furniture("Build the Ship Controls", 1, "Ship Controls"),
-                    new Goal_Furniture("Build the Staircase", 1, "Staircase"),
+                    new Goal_Furniture("Build the Stairwell", 1, "Stairwell"),
                 },
                 2000,
                 new List<string>()

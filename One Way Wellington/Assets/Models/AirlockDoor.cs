@@ -15,7 +15,7 @@ public class AirlockDoor : MonoBehaviour
     void OnTriggerStay2D(Collider2D other)
     {
 
-        if (other.gameObject.tag == "Passenger" || other.gameObject.tag == "Guard" || other.gameObject.tag == "Builder")
+        if (other.gameObject.tag == "Passenger" || other.gameObject.tag == "Guard" || other.gameObject.tag == "Builder" || other.gameObject.tag == "Captain")
         {
             // Incase the installed furniture has changed
             if (tileOWW.GetInstalledFurniture()?.GetFurnitureType() == "Airlock")
@@ -45,7 +45,7 @@ public class AirlockDoor : MonoBehaviour
 
     void OnTriggerExit2D(Collider2D other)
     {
-        if (other.gameObject.tag == "Passenger" || other.gameObject.tag == "Guard" || other.gameObject.tag == "Builder")
+        if (other.gameObject.tag == "Passenger" || other.gameObject.tag == "Guard" || other.gameObject.tag == "Builder" || other.gameObject.tag == "Captain")
         {
             // Incase the installed furniture has changed 
             if (tileOWW.GetInstalledFurniture()?.GetFurnitureType() == "Airlock Open")

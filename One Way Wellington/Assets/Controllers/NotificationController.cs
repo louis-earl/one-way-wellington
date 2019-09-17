@@ -30,8 +30,14 @@ public class NotificationController : MonoBehaviour
         notifications = new List<GameObject>();
     }
 
-    public void CreateNotification(string description, UrgencyLevel urgencyLevel, List<Action> buttonActions = null)
+    public void CreateNotification(string description, UrgencyLevel urgencyLevel, bool destroyExisting, List<Action> buttonActions = null)
     {
+        // Remove older occurances of the same notification 
+        if (destroyExisting)
+        {
+            CloseNotification(FindNotificationGO(description));
+        }
+
 
         GameObject notificationGO = Instantiate(notificationPrefab);
 
@@ -56,11 +62,11 @@ public class NotificationController : MonoBehaviour
         // Colour based on urgency 
         if (urgencyLevel == UrgencyLevel.High)
         {
-            notificationGO.GetComponent<Image>().color = Color.red;
+            notificationGO.GetComponent<Image>().color = new Color(1, 0.5679187f, 0.06666666f);
         }
         else if (urgencyLevel == UrgencyLevel.Medium)
         {
-            notificationGO.GetComponent<Image>().color = Color.yellow;
+            notificationGO.GetComponent<Image>().color = new Color(1, 0.8666667f, 0.06666667f);
         }
         else if (urgencyLevel == UrgencyLevel.Low)
         {

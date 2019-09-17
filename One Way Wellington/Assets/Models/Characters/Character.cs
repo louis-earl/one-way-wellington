@@ -67,16 +67,16 @@ public class Character : MonoBehaviour
 				{
 
 
-					if (CargoController.Instance.shipStock.ContainsKey(furnitureType))
+					if (CargoController.Instance.unusedShipStock.ContainsKey(furnitureType))
 					{
 
-						if (CargoController.Instance.shipStock[furnitureType] == 0)
+						if (CargoController.Instance.unusedShipStock[furnitureType] == 0)
 						{
 							// item is not in stock 
 							ReturnFailedJob();
 							return;
 						}
-						else if (CargoController.Instance.shipStock[furnitureType] < 0)
+						else if (CargoController.Instance.unusedShipStock[furnitureType] < 0)
 						{
 							Debug.LogError(furnitureType + " stock is a negative value");
 						}
@@ -86,7 +86,7 @@ public class Character : MonoBehaviour
 							TileOWW cargoTile = CargoController.Instance.FindCargo(furnitureType);
                             if (cargoTile == null)
                             {
-                                Debug.LogError("No location found for item with stock count of: " + CargoController.Instance.shipStock[furnitureType]);
+                                Debug.LogError("No location found for item with stock count of: " + CargoController.Instance.unusedShipStock[furnitureType]);
                                 currentJob = null;
                                 return;
                             }
@@ -243,7 +243,7 @@ public class Character : MonoBehaviour
                 }
 
                 // Create new notification
-                NotificationController.Instance.CreateNotification("Your " + gameObject.tag + ", '" + gameObject.name + "' has died!", UrgencyLevel.High, null);
+                NotificationController.Instance.CreateNotification("Your " + gameObject.tag + ", '" + gameObject.name + "' has died!", UrgencyLevel.High, false, null);
             }
 
             // Remove other references 
@@ -268,7 +268,7 @@ public class Character : MonoBehaviour
                 {
                     delegate () { StartCoroutine(InputController.Instance.MoveCameraTo(currentX, currentY)); }
                 };
-                NotificationController.Instance.CreateNotification("Your " + gameObject.tag + ", '" + gameObject.name + "' is low on health!", UrgencyLevel.Medium, actions);
+                NotificationController.Instance.CreateNotification("Your " + gameObject.tag + ", '" + gameObject.name + "' is low on health!", UrgencyLevel.Medium, false, actions);
             }
         }
         
