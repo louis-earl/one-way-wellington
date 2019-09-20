@@ -11719,6 +11719,41 @@ PrefabInstance:
       value: 'Click and drag to place a rectangle of hull tiles. Walls are automatically
         placed on the perimeter of your selection. '
       objectReference: {fileID: 0}
+    - target: {fileID: 7142644889440474767, guid: a9061c87b69309242aa154c5f26a486e,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7142644889440474767, guid: a9061c87b69309242aa154c5f26a486e,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7142644889440474767, guid: a9061c87b69309242aa154c5f26a486e,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7142644889440474767, guid: a9061c87b69309242aa154c5f26a486e,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 993372230}
+    - target: {fileID: 7142644889440474767, guid: a9061c87b69309242aa154c5f26a486e,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ToggleMode_Hull
+      objectReference: {fileID: 0}
+    - target: {fileID: 7142644889440474767, guid: a9061c87b69309242aa154c5f26a486e,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 7142644889440474767, guid: a9061c87b69309242aa154c5f26a486e,
+        type: 3}
+      propertyPath: m_Group
+      value: 
+      objectReference: {fileID: 1176169960530145285}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a9061c87b69309242aa154c5f26a486e, type: 3}
 --- !u!1001 &667202601565662071
@@ -11771,7 +11806,7 @@ PrefabInstance:
     - target: {fileID: 862919331999470233, guid: a9061c87b69309242aa154c5f26a486e,
         type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 862919331999470233, guid: a9061c87b69309242aa154c5f26a486e,
         type: 3}
@@ -11896,6 +11931,47 @@ PrefabInstance:
       propertyPath: description
       value: The captain controls your ship, allowing you to travel between planets.
       objectReference: {fileID: 0}
+    - target: {fileID: 7142644889440474767, guid: a9061c87b69309242aa154c5f26a486e,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7142644889440474767, guid: a9061c87b69309242aa154c5f26a486e,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7142644889440474767, guid: a9061c87b69309242aa154c5f26a486e,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7142644889440474767, guid: a9061c87b69309242aa154c5f26a486e,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 993372230}
+    - target: {fileID: 7142644889440474767, guid: a9061c87b69309242aa154c5f26a486e,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ToggleMode_Staff
+      objectReference: {fileID: 0}
+    - target: {fileID: 7142644889440474767, guid: a9061c87b69309242aa154c5f26a486e,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.GameObject, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 7142644889440474767, guid: a9061c87b69309242aa154c5f26a486e,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
+      value: 
+      objectReference: {fileID: 2822388052134463289, guid: cae27d91f1ae4cd419a712a71d9e1e6b,
+        type: 3}
+    - target: {fileID: 7142644889440474767, guid: a9061c87b69309242aa154c5f26a486e,
+        type: 3}
+      propertyPath: m_Group
+      value: 
+      objectReference: {fileID: 1176169959215156871}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a9061c87b69309242aa154c5f26a486e, type: 3}
 --- !u!1 &1176169958627520873
@@ -13220,6 +13296,7 @@ GameObject:
   - component: {fileID: 1176169959106627927}
   - component: {fileID: 1176169959106627913}
   - component: {fileID: 1176169959106627912}
+  - component: {fileID: 1176169959106627928}
   m_Layer: 5
   m_Name: Content
   m_TagString: Untagged
@@ -13246,6 +13323,19 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0.0000009685755}
   m_SizeDelta: {x: 5, y: 0}
   m_Pivot: {x: 0, y: 1}
+--- !u!114 &1176169959106627928
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1176169959106627926}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2fafe2cfe61f6974895a912c3755e8f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_AllowSwitchOff: 0
 --- !u!114 &1176169959139660272
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13478,6 +13568,7 @@ GameObject:
   - component: {fileID: 1176169959215156868}
   - component: {fileID: 1176169959215156870}
   - component: {fileID: 1176169959215156869}
+  - component: {fileID: 1176169959215156871}
   m_Layer: 5
   m_Name: Content
   m_TagString: Untagged
@@ -13497,8 +13588,8 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 692307242}
-  - {fileID: 616308791}
   - {fileID: 1586151672}
+  - {fileID: 616308791}
   m_Father: {fileID: 1176169958864416493}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -13545,6 +13636,19 @@ MonoBehaviour:
   m_Spacing: {x: 15, y: 45}
   m_Constraint: 1
   m_ConstraintCount: 6
+--- !u!114 &1176169959215156871
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1176169959215156867}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2fafe2cfe61f6974895a912c3755e8f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_AllowSwitchOff: 1
 --- !u!1 &1176169959233605543
 GameObject:
   m_ObjectHideFlags: 0
@@ -14509,6 +14613,7 @@ GameObject:
   - component: {fileID: 1176169959581298094}
   - component: {fileID: 1176169959581298080}
   - component: {fileID: 1176169959581298095}
+  - component: {fileID: 1176169959581298096}
   m_Layer: 5
   m_Name: Content
   m_TagString: Untagged
@@ -14551,6 +14656,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_HorizontalFit: 1
   m_VerticalFit: 1
+--- !u!114 &1176169959581298096
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1176169959581298093}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2fafe2cfe61f6974895a912c3755e8f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_AllowSwitchOff: 1
 --- !u!1 &1176169959691232988
 GameObject:
   m_ObjectHideFlags: 0
@@ -14736,6 +14854,7 @@ GameObject:
   - component: {fileID: 1176169959757573493}
   - component: {fileID: 1176169959757573495}
   - component: {fileID: 1176169959757573494}
+  - component: {fileID: 1176169959757573496}
   m_Layer: 5
   m_Name: Content
   m_TagString: Untagged
@@ -14801,6 +14920,19 @@ MonoBehaviour:
   m_Spacing: {x: 15, y: 45}
   m_Constraint: 1
   m_ConstraintCount: 6
+--- !u!114 &1176169959757573496
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1176169959757573492}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2fafe2cfe61f6974895a912c3755e8f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_AllowSwitchOff: 1
 --- !u!1 &1176169959824719731
 GameObject:
   m_ObjectHideFlags: 0
@@ -15180,6 +15312,7 @@ GameObject:
   - component: {fileID: 1176169959886268150}
   - component: {fileID: 1176169959886268136}
   - component: {fileID: 1176169959886268151}
+  - component: {fileID: 1176169959886268152}
   m_Layer: 5
   m_Name: Content
   m_TagString: Untagged
@@ -15221,6 +15354,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_HorizontalFit: 1
   m_VerticalFit: 1
+--- !u!114 &1176169959886268152
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1176169959886268149}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2fafe2cfe61f6974895a912c3755e8f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_AllowSwitchOff: 1
 --- !u!1 &1176169959897009448
 GameObject:
   m_ObjectHideFlags: 0
@@ -16388,6 +16534,7 @@ GameObject:
   - component: {fileID: 1176169960530145282}
   - component: {fileID: 1176169960530145284}
   - component: {fileID: 1176169960530145283}
+  - component: {fileID: 1176169960530145285}
   m_Layer: 5
   m_Name: Content
   m_TagString: Untagged
@@ -16454,6 +16601,19 @@ MonoBehaviour:
   m_Spacing: {x: 15, y: 45}
   m_Constraint: 1
   m_ConstraintCount: 6
+--- !u!114 &1176169960530145285
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1176169960530145281}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2fafe2cfe61f6974895a912c3755e8f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_AllowSwitchOff: 1
 --- !u!1 &1176169960590879273
 GameObject:
   m_ObjectHideFlags: 0
@@ -18224,6 +18384,41 @@ PrefabInstance:
       value: Click and drag to select an area of hull tiles to remove. Anything on
         top of the hull tiles will also be removed.
       objectReference: {fileID: 0}
+    - target: {fileID: 7142644889440474767, guid: a9061c87b69309242aa154c5f26a486e,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7142644889440474767, guid: a9061c87b69309242aa154c5f26a486e,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7142644889440474767, guid: a9061c87b69309242aa154c5f26a486e,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7142644889440474767, guid: a9061c87b69309242aa154c5f26a486e,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 993372230}
+    - target: {fileID: 7142644889440474767, guid: a9061c87b69309242aa154c5f26a486e,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ToggleMode_RemoveHull
+      objectReference: {fileID: 0}
+    - target: {fileID: 7142644889440474767, guid: a9061c87b69309242aa154c5f26a486e,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 7142644889440474767, guid: a9061c87b69309242aa154c5f26a486e,
+        type: 3}
+      propertyPath: m_Group
+      value: 
+      objectReference: {fileID: 1176169960530145285}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a9061c87b69309242aa154c5f26a486e, type: 3}
 --- !u!222 &2975130064466017242
@@ -18382,6 +18577,41 @@ PrefabInstance:
       propertyPath: description
       value: Click and drag to select an area of utility tiles to remove.
       objectReference: {fileID: 0}
+    - target: {fileID: 7142644889440474767, guid: a9061c87b69309242aa154c5f26a486e,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7142644889440474767, guid: a9061c87b69309242aa154c5f26a486e,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7142644889440474767, guid: a9061c87b69309242aa154c5f26a486e,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7142644889440474767, guid: a9061c87b69309242aa154c5f26a486e,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 993372230}
+    - target: {fileID: 7142644889440474767, guid: a9061c87b69309242aa154c5f26a486e,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ToggleMode_RemoveFurniture
+      objectReference: {fileID: 0}
+    - target: {fileID: 7142644889440474767, guid: a9061c87b69309242aa154c5f26a486e,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 7142644889440474767, guid: a9061c87b69309242aa154c5f26a486e,
+        type: 3}
+      propertyPath: m_Group
+      value: 
+      objectReference: {fileID: 1176169959757573496}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a9061c87b69309242aa154c5f26a486e, type: 3}
 --- !u!1001 &3555451477836110291
@@ -18543,6 +18773,41 @@ PrefabInstance:
       propertyPath: description
       value: Click and drag to select an area of furniture tiles to remove.
       objectReference: {fileID: 0}
+    - target: {fileID: 7142644889440474767, guid: a9061c87b69309242aa154c5f26a486e,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7142644889440474767, guid: a9061c87b69309242aa154c5f26a486e,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7142644889440474767, guid: a9061c87b69309242aa154c5f26a486e,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7142644889440474767, guid: a9061c87b69309242aa154c5f26a486e,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 993372230}
+    - target: {fileID: 7142644889440474767, guid: a9061c87b69309242aa154c5f26a486e,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ToggleMode_RemoveFurniture
+      objectReference: {fileID: 0}
+    - target: {fileID: 7142644889440474767, guid: a9061c87b69309242aa154c5f26a486e,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 7142644889440474767, guid: a9061c87b69309242aa154c5f26a486e,
+        type: 3}
+      propertyPath: m_Group
+      value: 
+      objectReference: {fileID: 1176169959886268152}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a9061c87b69309242aa154c5f26a486e, type: 3}
 --- !u!1001 &3560293119201308079
@@ -18710,6 +18975,41 @@ PrefabInstance:
       value: Click and drag to place a rectangle of wall tiles. Walls are only placed
         on the perimeter of your selection.
       objectReference: {fileID: 0}
+    - target: {fileID: 7142644889440474767, guid: a9061c87b69309242aa154c5f26a486e,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7142644889440474767, guid: a9061c87b69309242aa154c5f26a486e,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7142644889440474767, guid: a9061c87b69309242aa154c5f26a486e,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7142644889440474767, guid: a9061c87b69309242aa154c5f26a486e,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 993372230}
+    - target: {fileID: 7142644889440474767, guid: a9061c87b69309242aa154c5f26a486e,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ToggleMode_Wall
+      objectReference: {fileID: 0}
+    - target: {fileID: 7142644889440474767, guid: a9061c87b69309242aa154c5f26a486e,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 7142644889440474767, guid: a9061c87b69309242aa154c5f26a486e,
+        type: 3}
+      propertyPath: m_Group
+      value: 
+      objectReference: {fileID: 1176169959581298096}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a9061c87b69309242aa154c5f26a486e, type: 3}
 --- !u!224 &6000003022245204753
@@ -18907,6 +19207,47 @@ PrefabInstance:
       value: The builder robot will handle the construction of your ship and installation
         of items. Each builder has an inventory for carrying materials.
       objectReference: {fileID: 0}
+    - target: {fileID: 7142644889440474767, guid: a9061c87b69309242aa154c5f26a486e,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7142644889440474767, guid: a9061c87b69309242aa154c5f26a486e,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7142644889440474767, guid: a9061c87b69309242aa154c5f26a486e,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7142644889440474767, guid: a9061c87b69309242aa154c5f26a486e,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 993372230}
+    - target: {fileID: 7142644889440474767, guid: a9061c87b69309242aa154c5f26a486e,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ToggleMode_Staff
+      objectReference: {fileID: 0}
+    - target: {fileID: 7142644889440474767, guid: a9061c87b69309242aa154c5f26a486e,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.GameObject, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 7142644889440474767, guid: a9061c87b69309242aa154c5f26a486e,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
+      value: 
+      objectReference: {fileID: 2822388052134463289, guid: 850d7186b725d4e44be3f660f79a5c12,
+        type: 3}
+    - target: {fileID: 7142644889440474767, guid: a9061c87b69309242aa154c5f26a486e,
+        type: 3}
+      propertyPath: m_Group
+      value: 
+      objectReference: {fileID: 1176169959215156871}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a9061c87b69309242aa154c5f26a486e, type: 3}
 --- !u!1001 &7893117840842358716
@@ -18959,7 +19300,7 @@ PrefabInstance:
     - target: {fileID: 862919331999470233, guid: a9061c87b69309242aa154c5f26a486e,
         type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 862919331999470233, guid: a9061c87b69309242aa154c5f26a486e,
         type: 3}
@@ -19084,6 +19425,47 @@ PrefabInstance:
       propertyPath: description
       value: 'The guard robot will patrol your ship and defend against enemy attacks. '
       objectReference: {fileID: 0}
+    - target: {fileID: 7142644889440474767, guid: a9061c87b69309242aa154c5f26a486e,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7142644889440474767, guid: a9061c87b69309242aa154c5f26a486e,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7142644889440474767, guid: a9061c87b69309242aa154c5f26a486e,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7142644889440474767, guid: a9061c87b69309242aa154c5f26a486e,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 993372230}
+    - target: {fileID: 7142644889440474767, guid: a9061c87b69309242aa154c5f26a486e,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ToggleMode_Staff
+      objectReference: {fileID: 0}
+    - target: {fileID: 7142644889440474767, guid: a9061c87b69309242aa154c5f26a486e,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.GameObject, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 7142644889440474767, guid: a9061c87b69309242aa154c5f26a486e,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
+      value: 
+      objectReference: {fileID: 2822388052134463289, guid: 89d8ec9012d14124abfe4ce1265de0da,
+        type: 3}
+    - target: {fileID: 7142644889440474767, guid: a9061c87b69309242aa154c5f26a486e,
+        type: 3}
+      propertyPath: m_Group
+      value: 
+      objectReference: {fileID: 1176169959215156871}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a9061c87b69309242aa154c5f26a486e, type: 3}
 --- !u!224 &8215850261494606040
@@ -19265,6 +19647,41 @@ PrefabInstance:
       propertyPath: description
       value: Click and drag to select an area of wall tiles to remove.
       objectReference: {fileID: 0}
+    - target: {fileID: 7142644889440474767, guid: a9061c87b69309242aa154c5f26a486e,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7142644889440474767, guid: a9061c87b69309242aa154c5f26a486e,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7142644889440474767, guid: a9061c87b69309242aa154c5f26a486e,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7142644889440474767, guid: a9061c87b69309242aa154c5f26a486e,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 993372230}
+    - target: {fileID: 7142644889440474767, guid: a9061c87b69309242aa154c5f26a486e,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ToggleMode_RemoveWall
+      objectReference: {fileID: 0}
+    - target: {fileID: 7142644889440474767, guid: a9061c87b69309242aa154c5f26a486e,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 7142644889440474767, guid: a9061c87b69309242aa154c5f26a486e,
+        type: 3}
+      propertyPath: m_Group
+      value: 
+      objectReference: {fileID: 1176169959581298096}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a9061c87b69309242aa154c5f26a486e, type: 3}
 --- !u!1 &8663870763987164175

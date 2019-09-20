@@ -17,22 +17,25 @@ public class WorldController : MonoBehaviour
     // NOTE: Passengers are stored in journey controller 
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         Instance = this;
         // Create world
-        world = new World(100, 100);
+        world = new World(100, 100);  
 
+        // Staff Lists 
+        staff = new List<GameObject>();
+
+    }
+
+    private void Start()
+    {
         // Create tile GameObjects
         TileSpriteController.Instance.InstantiateTiles(world);
 
         // Generate planets 
         GeneratePlanets(75);
         mapGO.SetActive(false);
-
-        // Staff Lists 
-        staff = new List<GameObject>();
-
     }
 
 

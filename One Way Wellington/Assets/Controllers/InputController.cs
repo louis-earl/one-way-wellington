@@ -339,6 +339,13 @@ public class InputController : MonoBehaviour
         int start_y = Mathf.FloorToInt(dragStartPosition.y);
         int end_y = Mathf.FloorToInt(currFramePosition.y);
 
+        // Allows us to preview a single tile (where the mouse is) of a drag-able input mode 
+        if (!Input.GetMouseButton(0))
+        {
+            start_x = end_x;
+            start_y = end_y;
+        }
+
         // We may be dragging in the "wrong" direction, so flip things if needed.
         if (end_x < start_x)
         {
@@ -353,13 +360,10 @@ public class InputController : MonoBehaviour
             start_y = tmp;
         }
 
-        // Previews for plop-able modes 
-        if (isMode_Furniture) BuildModeController.Instance.PreviewFurniture(furnitureTypeInUse, (int)currFramePosition.x, (int)currFramePosition.y);
-        else if (isMode_Staff) BuildModeController.Instance.PreviewStaff("builder", (int)currFramePosition.x, (int)currFramePosition.y);
+        
 
         // Previews for drag-able modes 
-        if (Input.GetMouseButton(0))
-        {
+        
             if (isMode_Hull) BuildModeController.Instance.PreviewHull(start_x, end_x, start_y, end_y);
             else if (isMode_RemoveHull) BuildModeController.Instance.PreviewRemoveHull(start_x, end_x, start_y, end_y);
             else if (isMode_Wall) BuildModeController.Instance.PreviewWall(start_x, end_x, start_y, end_y);
@@ -367,7 +371,12 @@ public class InputController : MonoBehaviour
             else if (isMode_FurnitureMulti) BuildModeController.Instance.PreviewFurniture(furnitureTypeInUse, start_x, end_x, start_y, end_y);
             else if (isMode_RemoveFurniture) BuildModeController.Instance.PreviewRemoveFurniture(start_x, end_x, start_y, end_y);
             else if (isMode_Rooms) BuildModeController.Instance.PreviewRoom(roomTypeInUse, start_x, end_x, start_y, end_y);
-        }
+        
+        // Previews for plop-able modes 
+        
+            if (isMode_Furniture) BuildModeController.Instance.PreviewFurniture(furnitureTypeInUse, (int)currFramePosition.x, (int)currFramePosition.y);
+            else if (isMode_Staff) BuildModeController.Instance.PreviewStaff("builder", (int)currFramePosition.x, (int)currFramePosition.y);
+        
 
         // Cancel drag
         if (Input.GetButtonDown("Cancel"))

@@ -9,9 +9,10 @@ public class FurnitureListing : MonoBehaviour, IPointerEnterHandler, IPointerExi
 {
     public TextMeshProUGUI text;
     public Image image;
-    public Button button;
+    public Toggle toggle;
     public string description;
     public int price;
+
 
     public void InputFurnitureType(FurnitureType furniture)
     {
@@ -22,12 +23,14 @@ public class FurnitureListing : MonoBehaviour, IPointerEnterHandler, IPointerExi
         image.sprite = Resources.Load<Sprite>("Images/Furniture/" + furniture.title.ToLower());
 
         // Set OnClick Action 
-        button.onClick.AddListener(() => InputController.Instance.ToggleMode_Furniture(furniture));
+        toggle.group = gameObject.transform.parent.GetComponent<ToggleGroup>();
+        toggle.onValueChanged.AddListener( delegate { InputController.Instance.ToggleMode_Furniture(furniture); });
 
 
         this.price = furniture.cost;
         this.description = furniture.description;
     }
+
 
     public void OnPointerEnter(PointerEventData pointerEventData)
     {

@@ -39,11 +39,9 @@ public class BuildModeController : MonoBehaviour
     private static readonly int HULL_COST = 300;
     private static readonly int WALL_COST = 100;
 
-
-    // Start is called before the first frame update
-    void Start()
+    private void Awake()
     {
-        Instance = this;
+        if (Instance == null) Instance = this;
         dragPreviewGameObjects = new List<GameObject>();
 
         InstantiateFurnitureTypes();
@@ -54,7 +52,6 @@ public class BuildModeController : MonoBehaviour
         roomsTilemap.SetActive(false);
         // SetGridVisible(true);
     }
-
 
     // Create build jobs for Hull 
     public Tuple<List<TileOWW>, List<TileOWW>, List<TileOWW>> PreviewHull(int start_x, int end_x, int start_y, int end_y)
