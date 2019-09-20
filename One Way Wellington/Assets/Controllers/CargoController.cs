@@ -67,8 +67,13 @@ public class CargoController : MonoBehaviour
                     {
                         if (dropTile != null)
                         {
-                            DropCargo(dropTile, stockInTransit[dropTile].itemType, stockInTransit[dropTile].quantity);
+                            // If key is missing, the cargo has hopefully already been delivered 
+                            if (stockInTransit.ContainsKey(dropTile))
+                            {
+                                DropCargo(dropTile, stockInTransit[dropTile].itemType, stockInTransit[dropTile].quantity);
+                            }
                         }
+
                     },
                     dropTile, 0.5f, "Drop Cargo", JobPriority.High, collectJob, tileExcludeOtherJobs: true);
 
@@ -123,15 +128,15 @@ public class CargoController : MonoBehaviour
         Debug.Log("Cargo collected from stairs!");
     }
 
-    public void CollectAllCargoFromTile(TileOWW pickUpTile, TileOWW dropTile)
+    // Call all related methods when taking cargo from a tile 
+    // Return false if failed 
+    public bool CollectAllCargoFromTile(TileOWW pickUpTile, TileOWW dropTile)
     {
-        if (pickUpTile.looseItem == null) return;
+        if (pickUpTile.looseItem == null) return false;
 
         stockInTransit.Add(dropTile, new LooseItem(pickUpTile.looseItem.itemType, pickUpTile.looseItem.quantity));
-
         pickUpTile.CollectCargo(-1);
-
-        Debug.Log("Cargo collected!");
+        return true;
     }
 
     public void DropCargo(TileOWW tile, string cargoType, int quantity)

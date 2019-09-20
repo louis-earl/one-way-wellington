@@ -107,6 +107,15 @@ public class Planet : MonoBehaviour
         this.planetName = name;
     }
 
+    public void RemovePotentialPassenger(PotentialPassenger potentialPassenger) 
+    {
+        if (potentialPassengers.Contains(potentialPassenger))
+        {
+            potentialPassengers.Remove(potentialPassenger);
+        }
+
+    }
+
     public void GeneratePotentialPassengers()
     {
         potentialPassengers.Clear();

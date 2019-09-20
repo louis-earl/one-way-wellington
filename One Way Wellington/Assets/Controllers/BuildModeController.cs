@@ -52,6 +52,7 @@ public class BuildModeController : MonoBehaviour
         roomsTileOWWMap = new Dictionary<string, List<TileOWW>>();
 
         roomsTilemap.SetActive(false);
+        // SetGridVisible(true);
     }
 
 
@@ -875,8 +876,11 @@ public class BuildModeController : MonoBehaviour
 
     public void SetGridVisible(bool isVisible)
     {
-        if (tilemap.GetComponent<Tilemap>().GetUsedTilesCount() == 0) InstantiateGridTiles(WorldController.Instance.GetWorld());
         tilemap.SetActive(isVisible);
+        if (tilemap.activeInHierarchy)
+        {
+            if (tilemap.GetComponent<Tilemap>().GetUsedTilesCount() == 0) InstantiateGridTiles(WorldController.Instance.GetWorld());
+        }
     }
 
     private void InstantiateFurnitureTypes()

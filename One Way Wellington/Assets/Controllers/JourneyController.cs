@@ -229,11 +229,14 @@ public class JourneyController : MonoBehaviour
 
         if (!isAtOriginPlanet)
         {
+
             lastPlanetVisit.ClearLinkedPlanets();
             Destroy(nextPlanetVisit.linkLine);
 
             lastPlanetVisit = nextPlanetVisit;
             nextPlanetVisit = nextPlanetVisit.GetPreviousPlanet();
+
+            
         }
         else isAtOriginPlanet = false;
 
@@ -263,9 +266,19 @@ public class JourneyController : MonoBehaviour
         {
             if (passengerGO != null)
             {
+                
                 Destroy(passengerGO);
             }
         }
+        currentPassengers.Clear();
+
+
+        // Generate new potential passengers for all planets 
+       foreach(GameObject planetGO in WorldController.Instance.GetPlanets())
+        {
+            planetGO.GetComponent<Planet>().GeneratePotentialPassengers();
+        }
+
     }
 
 }

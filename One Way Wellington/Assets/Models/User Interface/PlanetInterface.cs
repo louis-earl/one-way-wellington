@@ -32,6 +32,10 @@ public class PlanetInterface : MonoBehaviour
     void Start()
     {
         homePosition = transform.position;
+        if (!JourneyController.Instance.isJourneyEditMode)
+        {
+            button_AddToJourney.gameObject.SetActive(false);
+        }
     }
 
     // Update is called once per frame
@@ -94,6 +98,10 @@ public class PlanetInterface : MonoBehaviour
                 (100 + distance * 5));
 
             JourneyController.Instance.currentPassengers.Add(passengerGO);
+
+            // Remove passenger as potential passneger from planet 
+            planet.RemovePotentialPassenger(potentialPassenger);
+
         }
         Destroy(gameObject);
 
