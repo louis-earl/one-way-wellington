@@ -83,7 +83,7 @@ public class FurnitureType
             */
 
         furnitureTypes.Add("Battery", new FurnitureType("Battery",
-            "Must be built outside. Stores electricity for your ship.",
+            "Must be built inside. Stores electricity for your ship.",
             FurnitureType.BuildCategory.Utility,
             200,
             3,
@@ -183,7 +183,7 @@ public class FurnitureType
         */
 
         furnitureTypes.Add("Oxygen Tank", new FurnitureType("Oxygen Tank",
-            "Must be built outside. Stores oxygen to allow your passengers to breathe.",
+            "Must be built inside. Stores oxygen to allow your passengers to breathe.",
             FurnitureType.BuildCategory.Utility,
             200,
             3,
@@ -204,7 +204,7 @@ public class FurnitureType
         furnitureTypes.Add("Ship Controls", new FurnitureType(
             "Ship Controls",
             "The captain sits at the ship controls.",
-            FurnitureType.BuildCategory.Furniture,
+            FurnitureType.BuildCategory.Utility,
             500,
             5,
             sizeX: 2,

@@ -781,7 +781,11 @@ public class BuildModeController : MonoBehaviour
                 TileOWW temp = WorldController.Instance.GetWorld().GetTileAt(tile.GetX() + i, tile.GetY() + j);
                 temp.installedFurnitureAltX = null;
                 temp.installedFurnitureAltY = null;
-                emptyHullTiles.Add(tile);
+
+                if (tile.GetTileType() == "Hull")
+                {
+                    emptyHullTiles.Add(tile);
+                }
             }
         }
 
