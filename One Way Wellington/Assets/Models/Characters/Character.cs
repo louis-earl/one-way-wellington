@@ -72,7 +72,8 @@ public class Character : MonoBehaviour
 
 						if (CargoController.Instance.unusedShipStock[furnitureType] == 0)
 						{
-							// item is not in stock 
+                            // item is not in stock 
+                            Debug.Log("Item: " + furnitureType + " is not in stock");
 							ReturnFailedJob();
 							return;
 						}
@@ -97,8 +98,9 @@ public class Character : MonoBehaviour
 					}
 					else
 					{
-						// Item is not in stock 
-						ReturnFailedJob();
+                        // Item is not in stock 
+                        Debug.Log("Item: " + furnitureType + " is not in stock");
+                        ReturnFailedJob();
 						return;
 
 					}
@@ -128,6 +130,7 @@ public class Character : MonoBehaviour
             }
             else
             {
+                Debug.Log("Couldn't make a path");
                 ReturnFailedJob();
                 return;
             }
@@ -157,8 +160,13 @@ public class Character : MonoBehaviour
 
     public void ReturnFailedJob()
     {
-        failedJobs.Add(targetJob);
-        jobQueue.AddJob(targetJob);
+        if (targetJob.GetJobType() != "Wander")
+        {
+            Debug.Log("Returning failed job: " + targetJob.GetJobType());
+
+            failedJobs.Add(targetJob);
+            jobQueue.AddJob(targetJob);
+        }
         targetJob = currentJob = null;
     }
 
@@ -349,7 +357,8 @@ public class Character : MonoBehaviour
 		}
 		else
 		{
-			ReturnFailedJob();
+            Debug.Log("Not sure why to return job here?");
+			// ReturnFailedJob();
 		}
 	}
 }

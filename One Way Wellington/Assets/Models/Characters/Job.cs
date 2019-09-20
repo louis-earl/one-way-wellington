@@ -64,7 +64,11 @@ public class Job
 		{
 			actionNew = delegate () { BuildModeController.Instance.PlaceHull(tileOWW); };
 		}
-		else if (BuildModeController.Instance.furnitureTypes.ContainsKey(jobType) && jobType.Contains("Build"))
+        else if (jobType == "Build Wall")
+        {
+            actionNew = delegate () { BuildModeController.Instance.PlaceFurniture(tileOWW, "Wall"); };
+        }
+        else if (BuildModeController.Instance.furnitureTypes.ContainsKey(jobType) && jobType.Contains("Build"))
         {
             actionNew = delegate () { BuildModeController.Instance.PlaceFurniture(tileOWW, jobType); };
         }

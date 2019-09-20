@@ -60,6 +60,26 @@ public class WorldController : MonoBehaviour
                 FurnitureSpriteController.Instance.UpdateFurniture(tile);
             }
 
+            // Cargo references 
+            if (tile.looseItem != null)
+            {
+
+                if (CargoController.Instance.unusedShipStock.ContainsKey(tile.looseItem.itemType))
+                {
+                    CargoController.Instance.unusedShipStock[tile.looseItem.itemType] += tile.looseItem.quantity;
+                }
+                else
+                {
+                    CargoController.Instance.unusedShipStock.Add(tile.looseItem.itemType, tile.looseItem.quantity);
+                }
+
+                if (!CargoController.Instance.shipStockLocations.ContainsKey(tile.looseItem.itemType))
+                {
+                    CargoController.Instance.shipStockLocations.Add(tile.looseItem.itemType, new List<TileOWW>());
+                }
+                CargoController.Instance.shipStockLocations[tile.looseItem.itemType].Add(tile);
+            }
+
             TileSpriteController.Instance.UpdateTile(tile);
             JobSpriteController.Instance.UpdateJob(tile);
             RoomSpriteController.Instance.UpdateRoom(tile);

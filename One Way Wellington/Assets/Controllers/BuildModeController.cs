@@ -771,6 +771,12 @@ public class BuildModeController : MonoBehaviour
             furnitureType = "Airlock";
         }
 
+        // Update pathfinding 
+        if (furnitureType == "Wall")
+        {
+            // TODO: reset all failed jobs 
+        }
+        
         tile.RemoveInstalledFurniture();
 
         // Multi-tile references 

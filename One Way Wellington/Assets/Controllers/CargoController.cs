@@ -8,7 +8,6 @@ public class CargoController : MonoBehaviour
     private Dictionary<string, int> undeliveredStock;
 
     public Dictionary<string, int> unusedShipStock;
-    public Dictionary<string, int> usedShipStock; 
     public Dictionary<string, List<TileOWW>> shipStockLocations;
     public Queue<TileOWW> tempStockLocations; // Cargo that is not located to a hull tile and needs to be moved
     public Dictionary<TileOWW, LooseItem> stockInTransit; // TileOWW is the target tile for the LooseItem to get to 
@@ -23,7 +22,6 @@ public class CargoController : MonoBehaviour
     {
         if (Instance == null) Instance = this;
         unusedShipStock = new Dictionary<string, int>();
-        usedShipStock = new Dictionary<string, int>();
         undeliveredStock = new Dictionary<string, int>();
         shipStockLocations = new Dictionary<string, List<TileOWW>>();
         stockInTransit = new Dictionary<TileOWW, LooseItem>();
