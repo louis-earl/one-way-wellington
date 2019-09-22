@@ -340,7 +340,7 @@ public class InputController : MonoBehaviour
         int end_y = Mathf.FloorToInt(currFramePosition.y);
 
         // Allows us to preview a single tile (where the mouse is) of a drag-able input mode 
-        if (!Input.GetMouseButton(0))
+        if (!Input.GetMouseButton(0) && !Input.GetMouseButtonUp(0))
         {
             start_x = end_x;
             start_y = end_y;
