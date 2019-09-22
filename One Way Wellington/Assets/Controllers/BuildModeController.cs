@@ -75,7 +75,7 @@ public class BuildModeController : MonoBehaviour
                 {
 
                     // Check valid 
-                    if (t.GetTileType() == "Empty") hull_tiles.Add(t);
+                    // if (t.GetTileType() == "Empty") hull_tiles.Add(t);
 
                     // Check outlines if including walls 
                     if (includeWalls && (t.GetX() == start_x || t.GetX() == end_x || t.GetY() == start_y || t.GetY() == end_y))
@@ -88,6 +88,7 @@ public class BuildModeController : MonoBehaviour
                             wall_tiles.Add(t);
                             CreatePreview(validPreviewPrefab, "Wall", x, y);
                             estimatedCost += WALL_COST;
+                            estimatedCost += HULL_COST;
                         }
                         else CreatePreview(invalidPreviewPrefab, "Wall", x, y);
                     }
@@ -107,6 +108,7 @@ public class BuildModeController : MonoBehaviour
         }
 
         // Consider materials already in stock 
+        /*
         if (CargoController.Instance.unusedShipStock.ContainsKey("Hull")) {
             estimatedCost -= (CargoController.Instance.unusedShipStock["Hull"] * HULL_COST);
         }
@@ -115,6 +117,7 @@ public class BuildModeController : MonoBehaviour
         {
             estimatedCost -= (CargoController.Instance.unusedShipStock["Wall"] * WALL_COST);
         }
+        */
 
         // Check funds 
         if (estimatedCost > CurrencyController.Instance.GetBankBalance())
