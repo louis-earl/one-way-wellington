@@ -33,12 +33,12 @@ public class ObjectiveUI : MonoBehaviour
                 case "0":
                     panel_OnComplete.color = new Color(panel_OnComplete.color.r, panel_OnComplete.color.g, panel_OnComplete.color.b, 1);
                     //Play sound
-                    yield return new WaitForSeconds(0.5f);
+                    yield return new WaitForSecondsRealtime(0.5f);
                     break;
                 case "1":
                     panel_OnComplete.color = new Color(panel_OnComplete.color.r, panel_OnComplete.color.g, panel_OnComplete.color.b, 0);
                     //Play sound
-                    yield return new WaitForSeconds(0.5f);
+                    yield return new WaitForSecondsRealtime(0.5f);
                     break;
             }
         }
@@ -46,7 +46,6 @@ public class ObjectiveUI : MonoBehaviour
 
     public void StartBlinking()
     {
-        StopAllCoroutines();
         StartCoroutine("Blink");
     }
 

@@ -20,7 +20,8 @@ public class TimeController : MonoBehaviour
     public Toggle buttonFF;
     public Toggle buttonFFF;
 
-
+    // Time Display Panels
+    public Image[] imagesTimeDisplay;
 
 
     // Time text 
@@ -53,34 +54,28 @@ public class TimeController : MonoBehaviour
         {
             if (Time.timeScale == 0)
             {
-                ResumeTime();
                 buttonPlay.isOn = true;
             }
             else
             {
-                PauseTime();
                 buttonPause.isOn = true;
             }
         }
         // Time speed setting with alpha numeric keys
         else if (Input.GetKeyDown(KeyCode.Alpha0))
         {
-            PauseTime();
             buttonPause.isOn = true;
         }
         else if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            ResumeTime();
             buttonPlay.isOn = true;
         }
         else if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            DoubleTime();
             buttonFF.isOn = true;
         }
         else if (Input.GetKeyDown(KeyCode.Alpha3))
         {
-            QuadrupleTime();
             buttonFFF.isOn = true;
         }
     }
@@ -88,23 +83,70 @@ public class TimeController : MonoBehaviour
 
     public void PauseTime()
     {
-        Time.timeScale = 0;
-
+        StartBlinking();
+        Time.timeScale = 0; 
     }
 
     public void ResumeTime()
     {
+        StopBlinking();
         Time.timeScale = 1;
     }
 
     public void DoubleTime()
     {
+        StopBlinking();
         Time.timeScale = 2;
     }
 
     public void QuadrupleTime()
     {
+        StopBlinking();
         Time.timeScale = 4;
+    }
 
+    IEnumerator Blink()
+    {
+        while (true)
+        {
+            if (imagesTimeDisplay[0].color.g == 1)
+            {
+                foreach (Image image in imagesTimeDisplay)
+                {
+                    image.color = new Color(1, 0.8666667f, 0, 1);
+                    
+                }
+                Debug.Log("yellow");
+                //Play sound
+                yield return new WaitForSecondsRealtime(0.5f);
+            }
+            else
+            {
+                foreach (Image image in imagesTimeDisplay)
+                {
+                    image.color = new Color(1, 1, 1, 1);
+                    
+                }
+                Debug.Log("white");
+
+                //Play sound
+                yield return new WaitForSecondsRealtime(0.5f);
+            }
+        }
+    }
+
+    public void StartBlinking()
+    {
+        Debug.Log("start blinking");
+        StartCoroutine("Blink");
+    }
+
+    public void StopBlinking()
+    {
+        StopCoroutine("Blink");
+        foreach (Image image in imagesTimeDisplay)
+        {
+            image.color = new Color(1, 1, 1, 1);
+        }
     }
 }

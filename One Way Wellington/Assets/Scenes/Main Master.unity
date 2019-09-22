@@ -5942,6 +5942,12 @@ MonoBehaviour:
   buttonPlay: {fileID: 1478528629387365618}
   buttonFF: {fileID: 1478528629070908670}
   buttonFFF: {fileID: 1478528629108074880}
+  imagesTimeDisplay:
+  - {fileID: 516181339}
+  - {fileID: 1466507004}
+  - {fileID: 1566888161}
+  - {fileID: 1023044642}
+  - {fileID: 71807505}
   timeDisplayHour10: {fileID: 1478528627555811539}
   timeDisplayHour01: {fileID: 800401206}
   timeDisplayMinute10: {fileID: 1341087148}
@@ -17868,7 +17874,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1276906283}
         m_MethodName: DoubleTime
-        m_Mode: 6
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -18006,7 +18012,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1276906283}
         m_MethodName: QuadrupleTime
-        m_Mode: 6
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -18210,7 +18216,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1276906283}
         m_MethodName: PauseTime
-        m_Mode: 6
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -18327,7 +18333,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1276906283}
         m_MethodName: ResumeTime
-        m_Mode: 6
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
