@@ -5938,10 +5938,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timeOWW: 0
-  buttonPause: {fileID: 0}
-  buttonPlay: {fileID: 0}
-  buttonFF: {fileID: 0}
-  buttonFFF: {fileID: 0}
+  buttonPause: {fileID: 1478528629316688066}
+  buttonPlay: {fileID: 1478528629387365618}
+  buttonFF: {fileID: 1478528629070908670}
+  buttonFFF: {fileID: 1478528629108074880}
   timeDisplayHour10: {fileID: 1478528627555811539}
   timeDisplayHour01: {fileID: 800401206}
   timeDisplayMinute10: {fileID: 1341087148}
