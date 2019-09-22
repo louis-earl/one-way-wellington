@@ -843,7 +843,7 @@ public class BuildModeController : MonoBehaviour
             WorldController.Instance.staff.Add(staffGO);
 
             // TODO: Invoice depend on staff type
-            CurrencyController.Instance.ChangeBankBalance(-500);
+            CurrencyController.Instance.DeductBankBalance(1000);
         }
 
         ObjectiveController.Instance.CheckObjectives();

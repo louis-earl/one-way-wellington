@@ -67,7 +67,7 @@ public class World
             }
             else
             {
-                Debug.LogError("Couldn't find any empty hull tiles!");
+                Debug.LogWarning("Couldn't find any empty hull tiles!");
                 return null;
             }
         }

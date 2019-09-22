@@ -260,7 +260,7 @@ public class JourneyController : MonoBehaviour
         foreach (GameObject passengerGO in currentPassengers)
         {
             int payment = passengerGO.GetComponent<Passenger>().GetPassengerFare();
-            CurrencyController.Instance.ChangeBankBalance(payment);
+            CurrencyController.Instance.AddBankBalance(payment);
         }
         foreach (GameObject passengerGO in currentPassengers)
         {

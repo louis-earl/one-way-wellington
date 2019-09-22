@@ -88,7 +88,7 @@ public class ObjectiveController : MonoBehaviour
             AddObjective(allObjectives[nextObjective]);
         }
 
-        CurrencyController.Instance.ChangeBankBalance(objectiveGO.GetComponent<ObjectiveUI>().objectiveReference.reward);
+        CurrencyController.Instance.AddBankBalance(objectiveGO.GetComponent<ObjectiveUI>().objectiveReference.reward);
         Destroy(objectiveGO);
     }
 

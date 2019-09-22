@@ -16,7 +16,6 @@ public class CargoController : MonoBehaviour
     // For tutorial 
     private bool hasOrderedBefore;
 
-
     // Start is called before the first frame update
     void Start()
     {
@@ -32,16 +31,16 @@ public class CargoController : MonoBehaviour
     }
 
 
-    private void Update()
+
+    IEnumerator DeliveryDelay()
     {
-        if (undeliveredStock.Count > 0)
+        float delay = 5f;
+        while (delay > 0)
         {
-            if (JourneyController.Instance.isJourneyEditMode)
-            {
-                // We are at a planet and have stock to deliver 
-                DeliverItems();
-            }
+            delay -= Time.deltaTime;
+            yield return null;
         }
+        DeliverItems();
     }
 
     // Attempt to find placement for cargo that is not located to a hull tile 
@@ -86,8 +85,10 @@ public class CargoController : MonoBehaviour
 
     public void DeliverItems()
     {
+        string orderSummary = "";
+
         foreach (KeyValuePair<string, int> cargoTypeQuantityPair in undeliveredStock)
-        {          
+        {
             // Create jobs to move 
 
             // Find stairwell
@@ -97,28 +98,39 @@ public class CargoController : MonoBehaviour
             {
                 stairwellPos = new Vector3(BuildModeController.Instance.furnitureTileOWWMap["Stairwell"][0].GetX(), BuildModeController.Instance.furnitureTileOWWMap["Stairwell"][0].GetY(), 0);
 
-				// Cargo can be picked up and placed properly
-				TileOWW stairwellTile = WorldController.Instance.GetWorld().GetTileAt((int)stairwellPos.x, (int)stairwellPos.y);
-				Job collectJob = new Job(delegate () { CollectAllCargoFromStairs(); }, stairwellTile, 0.5f, "Collect Cargo", JobPriority.High, tileExcludeOtherJobs: false);
-				TileOWW dropTile = WorldController.Instance.GetWorld().GetRandomHullTile(avoidJobs: true);
-				Job dropJob = new Job(delegate () { DropCargo(dropTile, cargoTypeQuantityPair.Key, cargoTypeQuantityPair.Value); }, dropTile, 0.5f, "Drop Cargo", JobPriority.High, collectJob, tileExcludeOtherJobs: false);
-				JobQueueController.BuildersJobQueue.AddJob(dropJob);
-			}
+                // Cargo can be picked up and placed properly
+                TileOWW stairwellTile = WorldController.Instance.GetWorld().GetTileAt((int)stairwellPos.x, (int)stairwellPos.y);
+                Job collectJob = new Job(delegate () { CollectAllCargoFromStairs(); }, stairwellTile, 0.5f, "Collect Cargo", JobPriority.High, tileExcludeOtherJobs: false);
+                TileOWW dropTile = WorldController.Instance.GetWorld().GetRandomHullTile(avoidJobs: true);
+                Job dropJob = new Job(delegate () { DropCargo(dropTile, cargoTypeQuantityPair.Key, cargoTypeQuantityPair.Value); }, dropTile, 0.5f, "Drop Cargo", JobPriority.High, collectJob, tileExcludeOtherJobs: false);
+                JobQueueController.BuildersJobQueue.AddJob(dropJob);
+            }
             else
             {
-                // Debug.Log("Couldn't find a stairwell!!");
-                NotificationController.Instance.CreateNotification("Your ship needs a stairwell to accept deliveries properly. Your materials have been placed on a random exterior tile instead.", UrgencyLevel.High, true, null);
+                // Debug.Log("Couldn't find a stairwell!!");            
                 TileOWW randomEmptyTile = WorldController.Instance.GetWorld().GetRandomEmptyTile();
                 DropCargo(randomEmptyTile, cargoTypeQuantityPair.Key, cargoTypeQuantityPair.Value);
                 tempStockLocations.Enqueue(randomEmptyTile);
             }
 
-            // Order summary notification 
-            NotificationController.Instance.CreateNotification("Your order for " + cargoTypeQuantityPair.Value + " " + cargoTypeQuantityPair.Key + " has been delivered!", UrgencyLevel.Low, false);
+            orderSummary += "  - " + cargoTypeQuantityPair.Key + " X" + cargoTypeQuantityPair.Value + "\n";
+
+            
+
+            
         }
 
 		// All stock delivered 
 		undeliveredStock = new Dictionary<string, int>();
+
+        // Order summary notification 
+        NotificationController.Instance.CreateNotification("Your order for the following has been delivered: \n" + orderSummary, UrgencyLevel.Low, false);
+
+        // Stairwell notification last 
+        if (!BuildModeController.Instance.furnitureTileOWWMap.ContainsKey("Stairwell"))
+        {
+            NotificationController.Instance.CreateNotification("Your ship needs a stairwell to accept deliveries properly. Your materials have been placed on a random exterior tile instead.", UrgencyLevel.Medium, true, null);
+        }
     }
 
     public void CollectAllCargoFromStairs()
@@ -202,11 +214,19 @@ public class CargoController : MonoBehaviour
         {
             undeliveredStock.Add(itemType, quantity);
         }
-        NotificationController.Instance.CreateNotification("Your order for " + quantity + " " + itemType + " has been placed!", UrgencyLevel.Low, false);
+        // NotificationController.Instance.CreateNotification("Your order for " + quantity + " " + itemType + " has been placed!", UrgencyLevel.Low, false);
         // Debug.Log("Order placed for " + itemType + " x" + quantity);
 
         // if at a planet stop:
-        // Deliver items 
+        // Deliver items
+
+        // TODO: better way to track if we are at a planet 
+        if (JourneyController.Instance.isJourneyEditMode)
+        {
+                StopCoroutine("DeliveryDelay");
+                StartCoroutine("DeliveryDelay");
+        }
+        
     }
 
 

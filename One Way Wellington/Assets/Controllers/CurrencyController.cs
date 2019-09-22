@@ -38,7 +38,7 @@ public class CurrencyController : MonoBehaviour
 
     }
 
-    public void ChangeBankBalance(int amount)
+    public void AddBankBalance(int amount)
     {
         bankBalance += amount;
         text_BankBalance.text = string.Format("{0:C}", bankBalance);
