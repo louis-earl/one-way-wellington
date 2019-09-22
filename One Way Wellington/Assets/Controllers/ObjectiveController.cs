@@ -24,17 +24,19 @@ public class ObjectiveController : MonoBehaviour
         GameObject objectiveGO = Instantiate(objectiveUIPrefab);
         objectiveGO.transform.SetParent(objectiveUIParent.transform);
 		objectiveGO.transform.localScale = Vector3.one;
-        objectiveGO.GetComponent<ObjectiveUI>().title.text = objective.title;
-        objectiveGO.GetComponent<ObjectiveUI>().onComplete.text = string.Format("{0:C} when completed", objective.reward);
+        objectiveGO.GetComponent<ObjectiveUI>().text_Title.text = objective.title;
+        objectiveGO.GetComponent<ObjectiveUI>().text_OnComplete.text = string.Format("{0:C} when completed", objective.reward);
         objectiveGO.GetComponent<ObjectiveUI>().buttonClose.GetComponent<Button>().onClick.AddListener(delegate () { CloseObjective(objectiveGO); });
         objectiveGO.GetComponent<ObjectiveUI>().objectiveReference = objective;
 
+        // Create goals 
         foreach (Goal goal in objective.goals)
         {
             GameObject goalGO = Instantiate(goalUIPrefab);
             goalGO.transform.SetParent(objectiveGO.GetComponent<ObjectiveUI>().goalsParent);
 			goalGO.transform.localScale = Vector3.one;
 			goalGO.GetComponentInChildren<TextMeshProUGUI>().text = goal.title;
+            goalGO.GetComponentInChildren<Toggle>().isOn = false;
         }
     }
 
@@ -51,7 +53,7 @@ public class ObjectiveController : MonoBehaviour
             for (int i = 0; i < objectiveUIParent.transform.childCount; i++)
             {
                 Transform objectiveTransform = objectiveUIParent.transform.GetChild(i);
-                if (objective.title.Equals(objectiveTransform.GetComponent<ObjectiveUI>().title.text))
+                if (objective.title.Equals(objectiveTransform.GetComponent<ObjectiveUI>().text_Title.text))
                 {
                     objectiveGO = objectiveTransform.gameObject;
                     break;
@@ -63,9 +65,9 @@ public class ObjectiveController : MonoBehaviour
                 // Turn on close button
                 objectiveGO.GetComponent<ObjectiveUI>().buttonClose.SetActive(true);
 
-                
 
-                objectiveGO.GetComponent<ObjectiveUI>().onComplete.text = "Click to claim reward!";
+                objectiveGO.GetComponent<ObjectiveUI>().StartBlinking();
+                objectiveGO.GetComponent<ObjectiveUI>().text_OnComplete.text = "Click to claim reward!";
                 objectiveGO.GetComponent<Button>().onClick.AddListener(delegate () { CloseObjective(objectiveGO); });
 
                 objectivesToRemove.Add(objective);               

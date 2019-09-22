@@ -41,12 +41,14 @@ public class Objective
 
             if (goal.CheckComplete())
             {
-                // Update graphic               
+                // Update graphic       
+                goalGO.GetComponentInChildren<Toggle>().isOn = true;
                 goalGO.GetComponent<Image>().color = new Color(0.254902f, 0.6431373f, 0.2196078f);
             }
             else
             {
                 // Update graphic (in case the goal changed back to incomplete) 
+                goalGO.GetComponentInChildren<Toggle>().isOn = false;
                 goalGO.GetComponent<Image>().color = new Color(0f, 0.5254902f, 0.8117647f);
 
                 isAllGoalsComplete = false;

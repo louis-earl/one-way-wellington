@@ -34,8 +34,12 @@ public class Builder : Staff
                 // We are idle
                 // TODO: Go to storage and enter low power mode 
 
-                targetJob = new Job(delegate () { }, WorldController.Instance.GetWorld().GetRandomHullTile(), 1, "Wander", JobPriority.Low, tileExcludeOtherJobs: false);
-
+                // Get random hull tile 
+                TileOWW randomHullTile = WorldController.Instance.GetWorld().GetRandomHullTile();
+                if (randomHullTile != null)
+                {
+                    targetJob = new Job(delegate () { }, randomHullTile, 1, "Wander", JobPriority.Low, tileExcludeOtherJobs: false);
+                }
             }
 
  
