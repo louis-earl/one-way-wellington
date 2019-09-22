@@ -54,7 +54,7 @@ public class BuildModeController : MonoBehaviour
     }
 
     // Create build jobs for Hull 
-    public Tuple<List<TileOWW>, List<TileOWW>, List<TileOWW>> PreviewHull(int start_x, int end_x, int start_y, int end_y)
+    public Tuple<List<TileOWW>, List<TileOWW>, List<TileOWW>> PreviewHull(int start_x, int end_x, int start_y, int end_y, bool includeWalls)
     {
         List<TileOWW> hull_tiles = new List<TileOWW>();
         List<TileOWW> wall_tiles = new List<TileOWW>();
@@ -77,8 +77,8 @@ public class BuildModeController : MonoBehaviour
                     // Check valid 
                     if (t.GetTileType() == "Empty") hull_tiles.Add(t);
 
-                    // Check outlines
-                    if (t.GetX() == start_x || t.GetX() == end_x || t.GetY() == start_y || t.GetY() == end_y)
+                    // Check outlines if including walls 
+                    if (includeWalls && (t.GetX() == start_x || t.GetX() == end_x || t.GetY() == start_y || t.GetY() == end_y))
                     {
                         // Check valid 
                         if (t.GetInstalledFurniture() == null && 
@@ -551,8 +551,10 @@ public class BuildModeController : MonoBehaviour
 
         // Order stock
         CargoController.Instance.PlaceOrder("Hull", hullOrder);
-        CargoController.Instance.PlaceOrder("Wall", wallOrder);
-
+        if (wallOrder > 0)
+        {
+            CargoController.Instance.PlaceOrder("Wall", wallOrder);
+        }
     }
 
     // Overloaded method for planing multiple furniture jobs at once (e.g. walls, tanks, batteries, etc.)

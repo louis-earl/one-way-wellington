@@ -16,14 +16,18 @@ public class InputController : MonoBehaviour
     private Vector3 currFramePosition;
     private Vector3 dragStartPosition;
 
+    // Build modes 
     private bool buildModeIsObjects;
     private bool isMode_Hull;
+    private bool isMode_HullNoWalls;
     private bool isMode_RemoveHull;
     private bool isMode_Wall;
     private bool isMode_RemoveWall;
     private bool isMode_Staff;
     private bool isMode_Furniture;
     private bool isMode_FurnitureMulti;
+
+
     private FurnitureType furnitureTypeInUse;
     private bool isMode_RemoveFurniture;
     private bool isMode_Rooms;
@@ -193,6 +197,7 @@ public class InputController : MonoBehaviour
     public void SetMode_None()
     {
         isMode_Hull = false;
+        isMode_HullNoWalls = false;
         isMode_RemoveHull = false;
         isMode_Wall = false;
         isMode_RemoveWall = false;
@@ -216,6 +221,15 @@ public class InputController : MonoBehaviour
         bool temp = isMode_Hull;
         SetMode_None();
         isMode_Hull = !temp;
+
+        BuildModeController.Instance.SetGridVisible(true);
+    }
+
+    public void ToggleMode_HullNoWalls()
+    {
+        bool temp = isMode_HullNoWalls;
+        SetMode_None();
+        isMode_HullNoWalls = !temp;
 
         BuildModeController.Instance.SetGridVisible(true);
     }
@@ -364,7 +378,8 @@ public class InputController : MonoBehaviour
 
         // Previews for drag-able modes 
         
-            if (isMode_Hull) BuildModeController.Instance.PreviewHull(start_x, end_x, start_y, end_y);
+            if (isMode_Hull) BuildModeController.Instance.PreviewHull(start_x, end_x, start_y, end_y, true);
+            else if (isMode_HullNoWalls) BuildModeController.Instance.PreviewHull(start_x, end_x, start_y, end_y, false);
             else if (isMode_RemoveHull) BuildModeController.Instance.PreviewRemoveHull(start_x, end_x, start_y, end_y);
             else if (isMode_Wall) BuildModeController.Instance.PreviewWall(start_x, end_x, start_y, end_y);
             else if (isMode_RemoveWall) BuildModeController.Instance.PreviewRemoveWall(start_x, end_x, start_y, end_y);
@@ -393,7 +408,16 @@ public class InputController : MonoBehaviour
             if (isMode_Hull)
             {
                 Tuple<List<TileOWW>, List<TileOWW>, List<TileOWW>> hull_tuple;
-                hull_tuple = BuildModeController.Instance.PreviewHull(start_x, end_x, start_y, end_y);
+                hull_tuple = BuildModeController.Instance.PreviewHull(start_x, end_x, start_y, end_y, true);
+                if (hull_tuple != null)
+                {
+                    BuildModeController.Instance.PlanHull(hull_tuple.Item1, hull_tuple.Item2, hull_tuple.Item3);
+                }
+            }
+            if (isMode_HullNoWalls)
+            {
+                Tuple<List<TileOWW>, List<TileOWW>, List<TileOWW>> hull_tuple;
+                hull_tuple = BuildModeController.Instance.PreviewHull(start_x, end_x, start_y, end_y, false);
                 if (hull_tuple != null)
                 {
                     BuildModeController.Instance.PlanHull(hull_tuple.Item1, hull_tuple.Item2, hull_tuple.Item3);

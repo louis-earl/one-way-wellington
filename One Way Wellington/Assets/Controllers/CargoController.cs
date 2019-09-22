@@ -181,6 +181,12 @@ public class CargoController : MonoBehaviour
     // Assumes the payment has already been made !
     public void PlaceOrder(string itemType, int quantity)
     {
+        if (quantity == 0)
+        {
+            Debug.LogWarning("Just made an order with quantity of 0");
+            return;
+        }
+
         // Tutorial message 
         if (!hasOrderedBefore)
         {
