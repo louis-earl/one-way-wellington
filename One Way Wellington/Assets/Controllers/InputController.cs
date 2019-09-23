@@ -119,7 +119,20 @@ public class InputController : MonoBehaviour
 
     void UpdateTileInterface()
     {
-        if (Input.GetMouseButtonDown(0)) // LMB
+        // Abort if in any building mode
+        if (isMode_Hull ||
+            isMode_HullNoWalls ||
+            isMode_RemoveHull ||
+            isMode_Wall ||
+            isMode_RemoveWall||
+            isMode_Staff||
+            isMode_Furniture||
+            isMode_FurnitureMulti)
+        {
+            return;
+        }
+
+        if (Input.GetMouseButtonUp(0)) // LMB
         {
             // Check if player clicked on something other than a tile 
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
