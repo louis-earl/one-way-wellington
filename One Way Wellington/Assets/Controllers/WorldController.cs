@@ -54,12 +54,27 @@ public class WorldController : MonoBehaviour
     {
         foreach (TileOWW tile in world.GetAllTiles())
         {
+            // Build references to furniture locations
+            if (tile.GetInstalledFurniture() != null)
+            {
+                if (!BuildModeController.Instance.furnitureTileOWWMap.ContainsKey(tile.GetInstalledFurniture().GetFurnitureType()))
+                {
+                    BuildModeController.Instance.furnitureTileOWWMap.Add(tile.GetInstalledFurniture().GetFurnitureType(), new List<TileOWW>());
+                    BuildModeController.Instance.furnitureTileOWWMap[tile.GetInstalledFurniture().GetFurnitureType()].Add(tile);
+                }
+                else if (!BuildModeController.Instance.furnitureTileOWWMap[tile.GetInstalledFurniture().GetFurnitureType()].Contains(tile))
+                {
+                    BuildModeController.Instance.furnitureTileOWWMap[tile.GetInstalledFurniture().GetFurnitureType()].Add(tile);
+                }
+            }
+
+            // Reset furniture to their default state
             if (tile.GetInstalledFurniture()?.GetFurnitureType() == "Airlock Open")
             {
                 tile.SetInstalledFurniture(new InstalledFurniture("Airlock"));
             }
             else
-            {
+            {              
                 FurnitureSpriteController.Instance.UpdateFurniture(tile);
             }
 

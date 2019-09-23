@@ -38,6 +38,7 @@ public class JourneyController : MonoBehaviour
     public GameObject panel_FuelCost;
     public TextMeshProUGUI text_FuelCost;
 
+
     // Start is called before the first frame update
     void Start()
     {
@@ -193,6 +194,9 @@ public class JourneyController : MonoBehaviour
             // Charge for fuel 
             CurrencyController.Instance.DeductBankBalance((int)(fuelUsed * FUEL_COST));
             fuelUsed = 0;
+
+            // Refill oxygen
+            OxygenController.Instance.RestockOxygen();
         }
         else
         {

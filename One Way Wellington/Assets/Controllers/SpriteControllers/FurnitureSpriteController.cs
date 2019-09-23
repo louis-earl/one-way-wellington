@@ -70,19 +70,6 @@ public class FurnitureSpriteController : MonoBehaviour
                 }
                 tileNavBlockMap.Add(tileOWW, go);
             }
-
-            // Check references (for loading a game)
-            if (!BuildModeController.Instance.furnitureTileOWWMap.ContainsKey(tileOWW.GetInstalledFurniture().GetFurnitureType()))
-            {
-                BuildModeController.Instance.furnitureTileOWWMap.Add(tileOWW.GetInstalledFurniture().GetFurnitureType(), new List<TileOWW>());
-                BuildModeController.Instance.furnitureTileOWWMap[tileOWW.GetInstalledFurniture().GetFurnitureType()].Add(tileOWW);
-            }
-            else if (!BuildModeController.Instance.furnitureTileOWWMap[tileOWW.GetInstalledFurniture().GetFurnitureType()].Contains(tileOWW))
-            {
-                BuildModeController.Instance.furnitureTileOWWMap[tileOWW.GetInstalledFurniture().GetFurnitureType()].Add(tileOWW);
-            }
-            
-
         }
         else
         {
