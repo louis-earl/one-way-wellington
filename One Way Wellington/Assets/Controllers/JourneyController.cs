@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 public class JourneyController : MonoBehaviour
 {
@@ -27,8 +29,14 @@ public class JourneyController : MonoBehaviour
     public List<GameObject> currentPassengers;
 
     public float fuelRemaining;
+    public float fuelUsed;
+    private static float FUEL_COST = 2.30f;
 
     public GameObject passengerParent;
+
+    // Fuel UI
+    public GameObject panel_FuelCost;
+    public TextMeshProUGUI text_FuelCost;
 
     // Start is called before the first frame update
     void Start()
@@ -38,6 +46,7 @@ public class JourneyController : MonoBehaviour
         progressMarkerPrefab.transform.position = new Vector3(0, 0, 1020);
 
         currentPassengers = new List<GameObject>();
+        panel_FuelCost.SetActive(false);
     }
 
     // Update is called once per frame
@@ -97,7 +106,15 @@ public class JourneyController : MonoBehaviour
                     line.transform.parent = TransitionController.Instance.mapGO.transform;
                     nextPlanetVisit.linkLine = line;
 
+                    // Fuel usage
                     fuelRemaining -= Vector3.Distance(planet.transform.position, lastPlanet.transform.position);
+                    fuelUsed += Vector3.Distance(planet.transform.position, lastPlanet.transform.position);
+                    text_FuelCost.text = string.Format("{0:C}", fuelUsed * FUEL_COST);
+
+                    // Strange Unity glitch requires UI force update
+                    Canvas.ForceUpdateCanvases();
+                    text_FuelCost.transform.parent.GetComponent<ContentSizeFitter>().enabled = false;
+                    text_FuelCost.transform.parent.GetComponent<ContentSizeFitter>().enabled = true;
 
                     // Draw circle around planet 
                     Destroy(distanceRingInstance);
@@ -140,6 +157,18 @@ public class JourneyController : MonoBehaviour
             distanceRingInstance.GetComponent<DistanceRing>().yradius = fuelRemaining;
             distanceRingInstance.GetComponent<DistanceRing>().CreatePoints();
         }
+        // Fuel cost UI 
+        if (isJourneyEditMode)
+        {
+            panel_FuelCost.SetActive(true);
+            text_FuelCost.text = string.Format("{0:C}", 0);
+
+            // Strange Unity glitch requires UI force update
+            Canvas.ForceUpdateCanvases();
+            text_FuelCost.transform.parent.GetComponent<ContentSizeFitter>().enabled = false;
+            text_FuelCost.transform.parent.GetComponent<ContentSizeFitter>().enabled = true;
+            
+        }
     }
 
     public float GetShipSpeedCurrent()
@@ -159,6 +188,7 @@ public class JourneyController : MonoBehaviour
             StartCoroutine(TransitionController.Instance.TransitionLandingWithoutZoom());
             isJourneyEditMode = false;
             isAtOriginPlanet = true;
+            panel_FuelCost.SetActive(false);
         }
         else
         {

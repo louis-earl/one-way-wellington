@@ -121,6 +121,8 @@ public class TransitionController : MonoBehaviour
 
         Destroy(JourneyController.Instance.distanceRingInstance);
 
+        JourneyController.Instance.panel_FuelCost.SetActive(false);
+
         StartCoroutine(TransitionInMain());
         isMapMode = false;
         yield return null;
