@@ -109,7 +109,7 @@ public class JourneyController : MonoBehaviour
                     // Fuel usage
                     fuelRemaining -= Vector3.Distance(planet.transform.position, lastPlanet.transform.position);
                     fuelUsed += Vector3.Distance(planet.transform.position, lastPlanet.transform.position);
-                    text_FuelCost.text = string.Format("{0:C}", fuelUsed * FUEL_COST);
+                    text_FuelCost.text = string.Format("{0:C}", (int) fuelUsed * FUEL_COST);
 
                     // Strange Unity glitch requires UI force update
                     Canvas.ForceUpdateCanvases();
@@ -189,6 +189,10 @@ public class JourneyController : MonoBehaviour
             isJourneyEditMode = false;
             isAtOriginPlanet = true;
             panel_FuelCost.SetActive(false);
+
+            // Charge for fuel 
+            CurrencyController.Instance.DeductBankBalance((int)(fuelUsed * FUEL_COST));
+            fuelUsed = 0;
         }
         else
         {
