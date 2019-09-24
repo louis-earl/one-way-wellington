@@ -18,10 +18,14 @@ public class BuildModeController : MonoBehaviour
     public GameObject removePreviewPrefab;
 
     public GameObject furniturePreviewPrefab;
-    public GameObject hullParent;
-    public GameObject wallParent;
-    public GameObject furnitureParent;
-    public GameObject utilityParent;
+
+    // Content groups 
+    public GameObject hullListingParent;
+    public GameObject wallListingParent;
+    public GameObject utilityListingParent;
+    public GameObject furnitureListingParent;
+    public GameObject roomsListingParent;
+    public GameObject staffListingParent;
 
     List<GameObject> dragPreviewGameObjects;
 
@@ -917,28 +921,28 @@ public class BuildModeController : MonoBehaviour
         {
             if (furnitureEntry.Value.category == FurnitureType.BuildCategory.Furniture)
             {
-                GameObject furnitureEntryGO = Instantiate(furniturePreviewPrefab, furnitureParent.transform);
+                GameObject furnitureEntryGO = Instantiate(furniturePreviewPrefab, furnitureListingParent.transform);
                 furnitureEntryGO.transform.SetSiblingIndex(furnitureIndex);
                 furnitureIndex++;
                 furnitureEntryGO.GetComponent<FurnitureListing>().InputFurnitureType(furnitureEntry.Value);
             }
             else if (furnitureEntry.Value.category == FurnitureType.BuildCategory.Utility)
             {
-                GameObject furnitureEntryGO = Instantiate(furniturePreviewPrefab, utilityParent.transform);
+                GameObject furnitureEntryGO = Instantiate(furniturePreviewPrefab, utilityListingParent.transform);
                 furnitureEntryGO.transform.SetSiblingIndex(utilityIndex);
                 utilityIndex++;
                 furnitureEntryGO.GetComponent<FurnitureListing>().InputFurnitureType(furnitureEntry.Value);
             }
             else if (furnitureEntry.Value.category == FurnitureType.BuildCategory.Hull) 
             {
-                GameObject furnitureEntryGO = Instantiate(furniturePreviewPrefab, hullParent.transform);
+                GameObject furnitureEntryGO = Instantiate(furniturePreviewPrefab, hullListingParent.transform);
                 furnitureEntryGO.transform.SetSiblingIndex(hullIndex);
                 hullIndex++;
                 furnitureEntryGO.GetComponent<FurnitureListing>().InputFurnitureType(furnitureEntry.Value);
             }
             else if (furnitureEntry.Value.category == FurnitureType.BuildCategory.Wall)
             {
-                GameObject furnitureEntryGO = Instantiate(furniturePreviewPrefab, wallParent.transform);
+                GameObject furnitureEntryGO = Instantiate(furniturePreviewPrefab, wallListingParent.transform);
                 furnitureEntryGO.transform.SetSiblingIndex(wallIndex);
                 wallIndex++;
                 furnitureEntryGO.GetComponent<FurnitureListing>().InputFurnitureType(furnitureEntry.Value);
