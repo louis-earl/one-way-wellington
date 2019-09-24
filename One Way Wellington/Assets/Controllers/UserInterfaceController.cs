@@ -31,7 +31,8 @@ public class UserInterfaceController : MonoBehaviour
 
     public static UserInterfaceController Instance;
 
-
+    public GameObject NotificationPanel;
+    public GameObject ObjectivesPanel;
 
     // Start is called before the first frame update
     void Start()
@@ -49,6 +50,9 @@ public class UserInterfaceController : MonoBehaviour
         if (Instance == null) Instance = this;
 
         tooltipInstance.SetActive(false);
+
+        NotificationPanel.SetActive(false);
+        ObjectivesPanel.SetActive(false);
     }
 
     private void CloseAllBuilding()
