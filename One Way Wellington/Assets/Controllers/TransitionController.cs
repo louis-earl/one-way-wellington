@@ -42,6 +42,8 @@ public class TransitionController : MonoBehaviour
         InputController.Instance.cameraZoomEnabled = false;
         InputController.Instance.cameraSizeMax = 1000;
 
+        InputController.Instance.cameraBoundMin = -100000;
+        InputController.Instance.cameraBoundMax = 100000;
         float t = 0;
         while (t < 0.5)
         {
@@ -68,8 +70,7 @@ public class TransitionController : MonoBehaviour
         // TODO: Pause travel speed or time 
         UserInterfaceController.Instance.ShowMapUI();
         InputController.Instance.SetMode_None();
-        InputController.Instance.cameraBoundMin = -600;
-        InputController.Instance.cameraBoundMax = 600;
+        
 
         blackScreen.enabled = true;
         blackScreen.color = new Color(0, 0, 0, 1);
@@ -78,6 +79,7 @@ public class TransitionController : MonoBehaviour
         InputController.Instance.cameraSizeMax = 300;
         InputController.Instance.cameraPosZ = 1010;
         Camera.main.transform.position = new Vector3(0, 0, 1010);
+        InputController.Instance.desiredCameraPos = new Vector3(0, 0, 1010);
         Camera.main.orthographicSize = 0.1f;
         InputController.Instance.desiredCameraZoom = 0.1f;
 
@@ -92,6 +94,8 @@ public class TransitionController : MonoBehaviour
         }
         InputController.Instance.cameraSizeMin = 20;
         InputController.Instance.cameraZoomEnabled = true;
+        InputController.Instance.cameraBoundMin = -600;
+        InputController.Instance.cameraBoundMax = 600;
         yield return null;
     }
 
@@ -101,6 +105,9 @@ public class TransitionController : MonoBehaviour
     {
         blackScreen.enabled = true;
         blackScreen.color = new Color(0, 0, 0, 0);
+
+        InputController.Instance.cameraBoundMin = -100000;
+        InputController.Instance.cameraBoundMax = 100000;
 
         InputController.Instance.cameraZoomEnabled = false;
         InputController.Instance.cameraSizeMin = 0.1f;
@@ -138,6 +145,7 @@ public class TransitionController : MonoBehaviour
 
         InputController.Instance.cameraPosZ = -10;
         Camera.main.transform.position = new Vector3(50, 50, -10);
+        InputController.Instance.desiredCameraPos = new Vector3(50, 50, -10);
 
         InputController.Instance.cameraSizeMin = 3;
         InputController.Instance.cameraSizeMax = 1000;
@@ -146,21 +154,24 @@ public class TransitionController : MonoBehaviour
 
         // TODO: Resume travel speed or time here?
         UserInterfaceController.Instance.ShowMainUI();
-        InputController.Instance.cameraBoundMin = 0;
-        InputController.Instance.cameraBoundMax = 100;
+        
 
 
         float t = 0;
         while (t < 0.5)
         {
-            InputController.Instance.desiredCameraZoom -= 1550 * Time.deltaTime;
+            InputController.Instance.desiredCameraZoom -= 1540 * Time.deltaTime;
             InputController.Instance.UpdateBackgroundScale();
             blackScreen.color = new Color(0, 0, 0, blackScreen.color.a - 2 * Time.deltaTime);
             t += Time.deltaTime;
             yield return new WaitForSeconds(Time.deltaTime);
         }
-
+        InputController.Instance.desiredCameraZoom = 40;
+        yield return new WaitForSeconds(1);
+        InputController.Instance.cameraBoundMin = -10;
+        InputController.Instance.cameraBoundMax = 110;
         InputController.Instance.cameraSizeMax = 50;
+
         InputController.Instance.cameraZoomEnabled = true;
 
 
@@ -252,6 +263,7 @@ public class TransitionController : MonoBehaviour
         // Reset camera parameters
         InputController.Instance.cameraPosZ = -10;
         Camera.main.transform.position = new Vector3(50, 50, -10);
+        InputController.Instance.desiredCameraPos = new Vector3(50, 50, -10);
         InputController.Instance.cameraSizeMin = 3;
         InputController.Instance.cameraSizeMax = 50;
         InputController.Instance.cameraBoundMin = 0;
