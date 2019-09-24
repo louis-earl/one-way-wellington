@@ -240,6 +240,9 @@ public class InputController : MonoBehaviour
         BuildModeController.Instance.roomsTilemap.SetActive(false);
 
         BuildModeController.Instance.ClearPreviews();
+
+        currentBuildPrice = 0;
+        Destroy(buildPriceInstance);
     }
 
     public void ToggleMode_Hull()
@@ -457,8 +460,6 @@ public class InputController : MonoBehaviour
                 buildMeasureInstanceY.transform.localScale = Vector3.one / 60;
                 buildMeasureInstanceY.GetComponentInChildren<Image>().GetComponent<RectTransform>().sizeDelta = new Vector2((end_y - start_y + 1.13f) * 60, 100);
                 buildMeasureInstanceY.GetComponentInChildren<TextMeshProUGUI>().text = (end_y - start_y + 1).ToString() + "m";
-
-                Debug.Log(buildMeasureInstanceY.transform.rotation);
             }
             else
             {
@@ -466,15 +467,44 @@ public class InputController : MonoBehaviour
             }
 
             // Price indicator UI 
-            if (buildPriceInstance == null) buildPriceInstance = Instantiate(buildPricePrefab);
-            float pricePosX = ((start_x + end_x) / 2);
-            pricePosX += ((end_x - start_x) % 2 == 0) ? 0.5f : 1f;
-            float pricePosY = ((start_y + end_y) / 2);
-            pricePosY += ((end_y - start_y) % 2 == 0) ? 0.5f : 1f;
-            buildPriceInstance.transform.position = new Vector3(pricePosX, pricePosY);
-            buildPriceInstance.transform.localScale = Vector3.one / 60;
-            buildPriceInstance.GetComponentInChildren<TextMeshProUGUI>().text = string.Format("{0:C}", currentBuildPrice);
+            if (currentBuildPrice > 0)
+            {
+                if (buildPriceInstance == null) buildPriceInstance = Instantiate(buildPricePrefab);
+                float pricePosX = ((start_x + end_x) / 2);
+                pricePosX += ((end_x - start_x) % 2 == 0) ? 0.5f : 1f;
+                float pricePosY = ((start_y + end_y) / 2);
+                pricePosY += ((end_y - start_y) % 2 == 0) ? 0.5f : 1f;
+
+                // if not fitting within axis graphics 
+                if (end_y - start_y == 0 && end_x - start_x < 3)
+                {
+                    pricePosY += 1;
+                }
+                else if (end_y - start_y == 1 && end_x - start_x < 3)
+                {
+                    pricePosY += 0.5f;
+                    pricePosX += 1;
+                }
+                else if (end_x - start_x == 2)
+                {
+                    pricePosX += 0.5f;
+                }
+                else if (end_x - start_x == 1)
+                {
+                    pricePosX += 1;
+                }
+                else if (end_x - start_x == 0)
+                {
+                    pricePosX += 1.5f;
+                }
+
+                buildPriceInstance.transform.position = new Vector3(pricePosX, pricePosY);
+                buildPriceInstance.transform.localScale = Vector3.one / 60;
+                buildPriceInstance.GetComponentInChildren<TextMeshProUGUI>().text = string.Format("{0:C}", currentBuildPrice);
+            }
+            else Destroy(buildPriceInstance);
         }
+        else Destroy(buildPriceInstance);
 
         // Cancel drag
         if (Input.GetButtonDown("Cancel"))
@@ -483,6 +513,7 @@ public class InputController : MonoBehaviour
             BuildModeController.Instance.ClearPreviews();
             Destroy(buildMeasureInstanceX);
             Destroy(buildMeasureInstanceY);
+            Destroy(buildPriceInstance);
             return;
         }
 
