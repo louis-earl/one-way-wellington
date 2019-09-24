@@ -132,7 +132,7 @@ public class BuildModeController : MonoBehaviour
                     if (t != null)
                     {
                         // Check outlines
-                        if (t.GetX() == start_x || t.GetX() == end_x || t.GetY() == start_y || t.GetY() == end_y)
+                        if (includeWalls && (t.GetX() == start_x || t.GetX() == end_x || t.GetY() == start_y || t.GetY() == end_y))
                         {
                             CreatePreview(invalidPreviewPrefab, "Wall", x, y);
                         }

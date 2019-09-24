@@ -2,7 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using TMPro;
 
 public class InputController : MonoBehaviour
 {
@@ -12,12 +14,21 @@ public class InputController : MonoBehaviour
 
     public GameObject backgroundGO;
 
+    // Build measure interface
+    public GameObject buildMeasurePrefabX;
+    public GameObject buildMeasurePrefabY;
+    private GameObject buildMeasureInstanceX;
+    private GameObject buildMeasureInstanceY;
+
+    // Mouse positions 
     private Vector3 lastFramePosition;
     private Vector3 currFramePosition;
     private Vector3 dragStartPosition;
 
     // Build modes 
-    private bool buildModeIsObjects;
+    private bool isMode_Plopable;
+    private bool isMode_Dragable;
+
     private bool isMode_Hull;
     private bool isMode_HullNoWalls;
     private bool isMode_RemoveHull;
@@ -26,11 +37,13 @@ public class InputController : MonoBehaviour
     private bool isMode_Staff;
     private bool isMode_Furniture;
     private bool isMode_FurnitureMulti;
+    private bool isMode_RemoveFurniture;
+    private bool isMode_Rooms;
+
+
 
 
     private FurnitureType furnitureTypeInUse;
-    private bool isMode_RemoveFurniture;
-    private bool isMode_Rooms;
     private String roomTypeInUse;
 
     private GameObject staff;
@@ -55,7 +68,6 @@ public class InputController : MonoBehaviour
 
     // Tile Interface
     public static GameObject tileInterfaceGO;
-
     public GameObject tileInterfacePrefab;
     
 
@@ -120,14 +132,7 @@ public class InputController : MonoBehaviour
     void UpdateTileInterface()
     {
         // Abort if in any building mode
-        if (isMode_Hull ||
-            isMode_HullNoWalls ||
-            isMode_RemoveHull ||
-            isMode_Wall ||
-            isMode_RemoveWall||
-            isMode_Staff||
-            isMode_Furniture||
-            isMode_FurnitureMulti)
+        if (isMode_Plopable || isMode_Dragable)
         {
             return;
         }
@@ -209,6 +214,8 @@ public class InputController : MonoBehaviour
 
     public void SetMode_None()
     {
+        isMode_Plopable = false;
+        isMode_Dragable = false;
         isMode_Hull = false;
         isMode_HullNoWalls = false;
         isMode_RemoveHull = false;
@@ -234,6 +241,7 @@ public class InputController : MonoBehaviour
         bool temp = isMode_Hull;
         SetMode_None();
         isMode_Hull = !temp;
+        isMode_Dragable = !temp;
 
         BuildModeController.Instance.SetGridVisible(true);
     }
@@ -243,6 +251,7 @@ public class InputController : MonoBehaviour
         bool temp = isMode_HullNoWalls;
         SetMode_None();
         isMode_HullNoWalls = !temp;
+        isMode_Dragable = !temp;
 
         BuildModeController.Instance.SetGridVisible(true);
     }
@@ -252,6 +261,7 @@ public class InputController : MonoBehaviour
         bool temp = isMode_RemoveHull;
         SetMode_None();
         isMode_RemoveHull = !temp;
+        isMode_Dragable = !temp;
 
         BuildModeController.Instance.SetGridVisible(true);
     }
@@ -261,6 +271,7 @@ public class InputController : MonoBehaviour
         bool temp = isMode_Wall;
         SetMode_None();
         isMode_Wall = !temp;
+        isMode_Dragable = !temp;
 
         BuildModeController.Instance.SetGridVisible(true);
     }
@@ -270,6 +281,7 @@ public class InputController : MonoBehaviour
         bool temp = isMode_RemoveWall;
         SetMode_None();
         isMode_RemoveWall = !temp;
+        isMode_Dragable = !temp;
 
         BuildModeController.Instance.SetGridVisible(true);
     }
@@ -279,6 +291,7 @@ public class InputController : MonoBehaviour
         bool temp = isMode_Staff;
         SetMode_None();
         isMode_Staff = !temp;
+        isMode_Plopable = !temp;
 
         this.staff = staff;
         BuildModeController.Instance.SetGridVisible(true);
@@ -296,6 +309,7 @@ public class InputController : MonoBehaviour
             SetMode_None();
             isMode_Furniture = !temp;
             furnitureTypeInUse = furnitureType;
+            isMode_Plopable = !temp;
 
             BuildModeController.Instance.SetGridVisible(true);
         }
@@ -307,6 +321,7 @@ public class InputController : MonoBehaviour
         SetMode_None();
         isMode_FurnitureMulti = !temp;
         furnitureTypeInUse = furnitureType;
+        isMode_Dragable = !temp;
 
         BuildModeController.Instance.SetGridVisible(true);
 
@@ -317,6 +332,7 @@ public class InputController : MonoBehaviour
         bool temp = isMode_RemoveFurniture;
         SetMode_None();
         isMode_RemoveFurniture = !temp;
+        isMode_Dragable = !temp;
 
         BuildModeController.Instance.SetGridVisible(true);
 
@@ -328,6 +344,7 @@ public class InputController : MonoBehaviour
         SetMode_None();
         isMode_Rooms = !temp;
         roomTypeInUse = roomType;
+        isMode_Dragable = !temp;
 
         BuildModeController.Instance.roomsTilemap.SetActive(true);
         BuildModeController.Instance.SetGridVisible(true);
@@ -358,7 +375,7 @@ public class InputController : MonoBehaviour
         // Start Drag
         if (Input.GetMouseButtonDown(0))
         {
-            dragStartPosition = currFramePosition;          
+            dragStartPosition = currFramePosition;
         }
 
         int start_x = Mathf.FloorToInt(dragStartPosition.x);
@@ -387,30 +404,73 @@ public class InputController : MonoBehaviour
             start_y = tmp;
         }
 
-        
+
 
         // Previews for drag-able modes 
-        
-            if (isMode_Hull) BuildModeController.Instance.PreviewHull(start_x, end_x, start_y, end_y, true);
-            else if (isMode_HullNoWalls) BuildModeController.Instance.PreviewHull(start_x, end_x, start_y, end_y, false);
-            else if (isMode_RemoveHull) BuildModeController.Instance.PreviewRemoveHull(start_x, end_x, start_y, end_y);
-            else if (isMode_Wall) BuildModeController.Instance.PreviewWall(start_x, end_x, start_y, end_y);
-            else if (isMode_RemoveWall) BuildModeController.Instance.PreviewRemoveWall(start_x, end_x, start_y, end_y);
-            else if (isMode_FurnitureMulti) BuildModeController.Instance.PreviewFurniture(furnitureTypeInUse, start_x, end_x, start_y, end_y);
-            else if (isMode_RemoveFurniture) BuildModeController.Instance.PreviewRemoveFurniture(start_x, end_x, start_y, end_y);
-            else if (isMode_Rooms) BuildModeController.Instance.PreviewRoom(roomTypeInUse, start_x, end_x, start_y, end_y);
-        
+
+        if (isMode_Hull) BuildModeController.Instance.PreviewHull(start_x, end_x, start_y, end_y, true);
+        else if (isMode_HullNoWalls) BuildModeController.Instance.PreviewHull(start_x, end_x, start_y, end_y, false);
+        else if (isMode_RemoveHull) BuildModeController.Instance.PreviewRemoveHull(start_x, end_x, start_y, end_y);
+        else if (isMode_Wall) BuildModeController.Instance.PreviewWall(start_x, end_x, start_y, end_y);
+        else if (isMode_RemoveWall) BuildModeController.Instance.PreviewRemoveWall(start_x, end_x, start_y, end_y);
+        else if (isMode_FurnitureMulti) BuildModeController.Instance.PreviewFurniture(furnitureTypeInUse, start_x, end_x, start_y, end_y);
+        else if (isMode_RemoveFurniture) BuildModeController.Instance.PreviewRemoveFurniture(start_x, end_x, start_y, end_y);
+        else if (isMode_Rooms) BuildModeController.Instance.PreviewRoom(roomTypeInUse, start_x, end_x, start_y, end_y);
+
         // Previews for plop-able modes 
-        
-            if (isMode_Furniture) BuildModeController.Instance.PreviewFurniture(furnitureTypeInUse, (int)currFramePosition.x, (int)currFramePosition.y);
-            else if (isMode_Staff) BuildModeController.Instance.PreviewStaff("builder", (int)currFramePosition.x, (int)currFramePosition.y);
-        
+
+        if (isMode_Furniture) BuildModeController.Instance.PreviewFurniture(furnitureTypeInUse, (int)currFramePosition.x, (int)currFramePosition.y);
+        else if (isMode_Staff) BuildModeController.Instance.PreviewStaff("builder", (int)currFramePosition.x, (int)currFramePosition.y);
+
+        if (isMode_Dragable)
+        {
+            // Price & size indicator UI (X Axis)
+            if (start_x != end_x)
+            {
+                if (buildMeasureInstanceX == null) buildMeasureInstanceX = Instantiate(buildMeasurePrefabX);
+                float xPos = ((start_x + end_x) / 2);
+                xPos += ((end_x - start_x) % 2 == 0) ? 0.5f : 1f;
+
+                buildMeasureInstanceX.transform.position = new Vector3(xPos, start_y);
+                buildMeasureInstanceX.transform.localScale = Vector3.one / 60;
+                buildMeasureInstanceX.GetComponentInChildren<Image>().GetComponent<RectTransform>().sizeDelta = new Vector2((end_x - start_x + 1.13f) * 60, 100);
+                buildMeasureInstanceX.GetComponentInChildren<TextMeshProUGUI>().text = (end_x - start_x + 1).ToString() + "m";
+            }
+            else
+            {
+                Destroy(buildMeasureInstanceX);
+            }
+            // Price & size indicator UI (Y Axis)
+            if (start_y != end_y)
+            {
+                if (buildMeasureInstanceY == null)
+                {
+                    buildMeasureInstanceY = Instantiate(buildMeasurePrefabY);
+
+                }
+                float yPos = ((start_y + end_y) / 2);
+                yPos += ((end_y - start_y) % 2 == 0) ? 0.5f : 1f;
+
+                buildMeasureInstanceY.transform.position = new Vector3(start_x, yPos);
+                buildMeasureInstanceY.transform.localScale = Vector3.one / 60;
+                buildMeasureInstanceY.GetComponentInChildren<Image>().GetComponent<RectTransform>().sizeDelta = new Vector2((end_y - start_y + 1.13f) * 60, 100);
+                buildMeasureInstanceY.GetComponentInChildren<TextMeshProUGUI>().text = (end_y - start_y + 1).ToString() + "m";
+
+                Debug.Log(buildMeasureInstanceY.transform.rotation);
+            }
+            else
+            {
+                Destroy(buildMeasureInstanceY);
+            }
+        }
 
         // Cancel drag
         if (Input.GetButtonDown("Cancel"))
         {
             SetMode_None();
             BuildModeController.Instance.ClearPreviews();
+            Destroy(buildMeasureInstanceX);
+            Destroy(buildMeasureInstanceY);
             return;
         }
 
@@ -467,7 +527,7 @@ public class InputController : MonoBehaviour
                     }
                     foreach (GameObject staffGO in WorldController.Instance.staff)
                     {
-                        if (staffGO.name.Contains(staffNumber.ToString())) 
+                        if (staffGO.name.Contains(staffNumber.ToString()))
                         {
                             staffNumberCollides = true;
                             break;
