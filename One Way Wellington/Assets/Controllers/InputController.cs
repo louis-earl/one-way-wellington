@@ -63,6 +63,7 @@ public class InputController : MonoBehaviour
 
     // Camera 
     public float desiredCameraZoom;
+    public Vector3 desiredCameraPos;
 
     public bool cameraZoomEnabled;
     public float cameraSizeMin;
@@ -100,6 +101,7 @@ public class InputController : MonoBehaviour
         cameraBoundMax = 100;
 
         desiredCameraZoom = Camera.main.orthographicSize;
+        desiredCameraPos = Camera.main.transform.position;
     }
 
     // Update is called once per frame
@@ -179,23 +181,7 @@ public class InputController : MonoBehaviour
 
     void UpdateCameraMovement()
     {
-        // Handle screen panning
-        if (Input.GetMouseButton(1) || Input.GetMouseButton(2))
-        {  // Right or Middle Mouse Button
-
-            Vector3 diff = lastFramePosition - currFramePosition;
-
-            Camera.main.transform.Translate(diff);
-
-
-            // Camera bounds 
-            if (Camera.main.transform.position.x < cameraBoundMin) Camera.main.transform.position = new Vector3(cameraBoundMin, Camera.main.transform.position.y, cameraPosZ);
-            else if (Camera.main.transform.position.x > cameraBoundMax) Camera.main.transform.position = new Vector3(cameraBoundMax, Camera.main.transform.position.y, cameraPosZ);
-
-            // Not contained in the same block because x and y camera bounds could be breached at the same time. 
-            if (Camera.main.transform.position.y < cameraBoundMin) Camera.main.transform.position = new Vector3(Camera.main.transform.position.x, cameraBoundMin, cameraPosZ);
-            else if (Camera.main.transform.position.y > cameraBoundMax) Camera.main.transform.position = new Vector3(Camera.main.transform.position.x, cameraBoundMax, cameraPosZ);
-        }
+        
 
         float currentCameraZoom = Camera.main.orthographicSize;
 
@@ -204,12 +190,42 @@ public class InputController : MonoBehaviour
             // If mouse is NOT over UI element 
             if (!EventSystem.current.IsPointerOverGameObject())
             {
-                desiredCameraZoom -= desiredCameraZoom * Input.GetAxis("Mouse ScrollWheel");
-            }
-            
+                // Zoom camera 
+                desiredCameraZoom -= desiredCameraZoom * Input.GetAxis("Mouse ScrollWheel") * 2.5f;                
+            }           
         }
         desiredCameraZoom = Mathf.Clamp(desiredCameraZoom, cameraSizeMin, cameraSizeMax);
-        Camera.main.orthographicSize = Mathf.Lerp(desiredCameraZoom, currentCameraZoom, 0.5f);
+        Camera.main.orthographicSize = Mathf.Lerp(desiredCameraZoom, currentCameraZoom, 0.95f);
+
+        // zoom into mouse 
+        if (Input.GetAxis("Mouse ScrollWheel") > 0)
+        {
+            desiredCameraPos = new Vector3(currFramePosition.x, currFramePosition.y, Camera.main.transform.position.z);
+        }
+
+        // Handle screen panning
+        // Right or Middle Mouse Button
+        if (Input.GetMouseButton(1) || Input.GetMouseButton(2))
+        {
+            Camera.main.transform.Translate(lastFramePosition - currFramePosition);
+            desiredCameraPos = Camera.main.transform.position;
+
+        }
+        else
+        {
+            float melerp = 1 - ((currentCameraZoom - desiredCameraZoom) / (100 * (currentCameraZoom/5)));
+            Camera.main.transform.position = Vector3.Lerp(desiredCameraPos, Camera.main.transform.position, melerp);
+        }
+
+        // Camera bounds 
+        if (Camera.main.transform.position.x < cameraBoundMin + currentCameraZoom) Camera.main.transform.position = new Vector3(cameraBoundMin + currentCameraZoom, Camera.main.transform.position.y, cameraPosZ);
+        else if (Camera.main.transform.position.x > cameraBoundMax - currentCameraZoom) Camera.main.transform.position = new Vector3(cameraBoundMax - currentCameraZoom, Camera.main.transform.position.y, cameraPosZ);
+
+        // Not contained in the same block because x and y camera bounds could be breached at the same time. 
+        if (Camera.main.transform.position.y < cameraBoundMin + currentCameraZoom) Camera.main.transform.position = new Vector3(Camera.main.transform.position.x, cameraBoundMin + currentCameraZoom, cameraPosZ);
+        else if (Camera.main.transform.position.y > cameraBoundMax - currentCameraZoom) Camera.main.transform.position = new Vector3(Camera.main.transform.position.x, cameraBoundMax - currentCameraZoom, cameraPosZ);
+
+
 
         // Always update background scale, camera orthographic size may be controlled elsewhere 
         UpdateBackgroundScale();

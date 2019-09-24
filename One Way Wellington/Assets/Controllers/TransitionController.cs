@@ -68,8 +68,8 @@ public class TransitionController : MonoBehaviour
         // TODO: Pause travel speed or time 
         UserInterfaceController.Instance.ShowMapUI();
         InputController.Instance.SetMode_None();
-        InputController.Instance.cameraBoundMin = -350;
-        InputController.Instance.cameraBoundMax = 350;
+        InputController.Instance.cameraBoundMin = -600;
+        InputController.Instance.cameraBoundMax = 600;
 
         blackScreen.enabled = true;
         blackScreen.color = new Color(0, 0, 0, 1);
