@@ -119,6 +119,9 @@ public class BuildModeController : MonoBehaviour
         }
         */
 
+        // Display price UI
+        InputController.Instance.currentBuildPrice = estimatedCost;
+
         // Check funds 
         if (estimatedCost > CurrencyController.Instance.GetBankBalance())
         {
@@ -184,6 +187,10 @@ public class BuildModeController : MonoBehaviour
                 }
             }
         }
+
+        // Display price UI
+        InputController.Instance.currentBuildPrice = estimatedCost;
+
         if (estimatedCost > CurrencyController.Instance.GetBankBalance())
         {
             ClearPreviews();
@@ -290,6 +297,9 @@ public class BuildModeController : MonoBehaviour
                 }
             }
         }
+        // Display price UI
+        InputController.Instance.currentBuildPrice = estimatedCost;
+
         if (estimatedCost > CurrencyController.Instance.GetBankBalance())
         {
             ClearPreviews();

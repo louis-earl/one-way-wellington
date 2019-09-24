@@ -14,11 +14,17 @@ public class InputController : MonoBehaviour
 
     public GameObject backgroundGO;
 
-    // Build measure interface
+    // Build measure / price interface
     public GameObject buildMeasurePrefabX;
     public GameObject buildMeasurePrefabY;
+    public GameObject buildPricePrefab;
+
     private GameObject buildMeasureInstanceX;
     private GameObject buildMeasureInstanceY;
+    private GameObject buildPriceInstance;
+
+    public int currentBuildPrice;
+
 
     // Mouse positions 
     private Vector3 lastFramePosition;
@@ -424,7 +430,7 @@ public class InputController : MonoBehaviour
 
         if (isMode_Dragable)
         {
-            // Price & size indicator UI (X Axis)
+            // Size indicator UI (X Axis)
             if (start_x != end_x)
             {
                 if (buildMeasureInstanceX == null) buildMeasureInstanceX = Instantiate(buildMeasurePrefabX);
@@ -440,14 +446,10 @@ public class InputController : MonoBehaviour
             {
                 Destroy(buildMeasureInstanceX);
             }
-            // Price & size indicator UI (Y Axis)
+            // Size indicator UI (Y Axis)
             if (start_y != end_y)
             {
-                if (buildMeasureInstanceY == null)
-                {
-                    buildMeasureInstanceY = Instantiate(buildMeasurePrefabY);
-
-                }
+                if (buildMeasureInstanceY == null) buildMeasureInstanceY = Instantiate(buildMeasurePrefabY);
                 float yPos = ((start_y + end_y) / 2);
                 yPos += ((end_y - start_y) % 2 == 0) ? 0.5f : 1f;
 
@@ -462,6 +464,16 @@ public class InputController : MonoBehaviour
             {
                 Destroy(buildMeasureInstanceY);
             }
+
+            // Price indicator UI 
+            if (buildPriceInstance == null) buildPriceInstance = Instantiate(buildPricePrefab);
+            float pricePosX = ((start_x + end_x) / 2);
+            pricePosX += ((end_x - start_x) % 2 == 0) ? 0.5f : 1f;
+            float pricePosY = ((start_y + end_y) / 2);
+            pricePosY += ((end_y - start_y) % 2 == 0) ? 0.5f : 1f;
+            buildPriceInstance.transform.position = new Vector3(pricePosX, pricePosY);
+            buildPriceInstance.transform.localScale = Vector3.one / 60;
+            buildPriceInstance.GetComponentInChildren<TextMeshProUGUI>().text = string.Format("{0:C}", currentBuildPrice);
         }
 
         // Cancel drag

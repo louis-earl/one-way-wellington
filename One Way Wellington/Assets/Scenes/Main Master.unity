@@ -3832,6 +3832,9 @@ MonoBehaviour:
     type: 3}
   buildMeasurePrefabY: {fileID: 4408079604442949160, guid: bd20b8438f0d1964a9ac43fcbb665f43,
     type: 3}
+  buildPricePrefab: {fileID: 4408079604442949160, guid: 0f959e5b0f9691f4e86747c121cac1d1,
+    type: 3}
+  currentBuildPrice: 0
   desiredCameraZoom: 0
   cameraZoomEnabled: 0
   cameraSizeMin: 0
