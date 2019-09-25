@@ -349,6 +349,10 @@ public class Character : MonoBehaviour
 
 	protected void PickUpCargo(string cargoType, int quantity)
 	{
+        if (this.inventory != null)
+        {
+            Debug.LogError("Replacing existing inventory!!");
+        }
 		TileOWW cargoTile = CargoController.Instance.FindCargo(cargoType);
 		if (cargoTile != null)
 		{
