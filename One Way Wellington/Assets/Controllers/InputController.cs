@@ -218,11 +218,11 @@ public class InputController : MonoBehaviour
             if (!EventSystem.current.IsPointerOverGameObject())
             {
                 // Zoom camera 
-                desiredCameraZoom -= desiredCameraZoom * Input.GetAxis("Mouse ScrollWheel") * 2.5f;                
+                desiredCameraZoom -= desiredCameraZoom * Input.GetAxis("Mouse ScrollWheel") * 1.25f;                
             }           
         }
         desiredCameraZoom = Mathf.Clamp(desiredCameraZoom, cameraSizeMin, cameraSizeMax);
-        Camera.main.orthographicSize = Mathf.Lerp(desiredCameraZoom, currentCameraZoom, 0.95f);
+        Camera.main.orthographicSize = Mathf.Lerp(desiredCameraZoom, currentCameraZoom, 0.90f);
 
         // zoom into mouse 
         if (Input.GetAxis("Mouse ScrollWheel") > 0)

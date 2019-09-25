@@ -18,6 +18,14 @@ public class ObjectiveUI : MonoBehaviour
 
     public bool isComplete;
 
+    private void OnEnable()
+    {
+        if (isComplete)
+        {
+            StartBlinking();
+        }
+    }
+
     private void Start()
     {
         buttonClose.SetActive(false);

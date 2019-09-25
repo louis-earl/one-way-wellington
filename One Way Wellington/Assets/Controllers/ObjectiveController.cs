@@ -65,7 +65,7 @@ public class ObjectiveController : MonoBehaviour
                 // Turn on close button
                 objectiveGO.GetComponent<ObjectiveUI>().buttonClose.SetActive(true);
 
-
+                objectiveGO.GetComponent<ObjectiveUI>().isComplete = true;
                 objectiveGO.GetComponent<ObjectiveUI>().StartBlinking();
                 objectiveGO.GetComponent<ObjectiveUI>().text_OnComplete.text = "Click to claim reward!";
                 objectiveGO.GetComponent<Button>().onClick.AddListener(delegate () { CloseObjective(objectiveGO); });
