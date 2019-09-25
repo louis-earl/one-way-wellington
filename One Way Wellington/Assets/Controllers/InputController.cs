@@ -127,6 +127,8 @@ public class InputController : MonoBehaviour
             Destroy(buildPriceInstance);
             ClearUI();
             isCanceled = true;
+            UserInterfaceController.Instance.tooltipInstance.GetComponentInChildren<TextMeshProUGUI>().text = UserInterfaceController.Instance.toolTipText;
+
         }
         // We want to stop building selected 
         else if (Input.GetButtonDown("Cancel") && (isMode_Dragable || isMode_Plopable))
@@ -149,6 +151,8 @@ public class InputController : MonoBehaviour
         else if (Input.GetMouseButtonUp(0))
         {
             isCanceled = false;
+            UserInterfaceController.Instance.tooltipInstance.GetComponentInChildren<TextMeshProUGUI>().text = UserInterfaceController.Instance.toolTipText;
+
         }
 
         UpdateCameraMovement();
@@ -423,6 +427,7 @@ public class InputController : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             dragStartPosition = currFramePosition;
+            UserInterfaceController.Instance.tooltipInstance.GetComponentInChildren<TextMeshProUGUI>().text = "Press ESC to cancel.";
         }
 
         int start_x = Mathf.FloorToInt(dragStartPosition.x);
@@ -548,6 +553,7 @@ public class InputController : MonoBehaviour
         // End Drag
         if (Input.GetMouseButtonUp(0))
         {
+            UserInterfaceController.Instance.tooltipInstance.GetComponentInChildren<TextMeshProUGUI>().text = UserInterfaceController.Instance.toolTipText;
 
             if (isMode_Hull)
             {
