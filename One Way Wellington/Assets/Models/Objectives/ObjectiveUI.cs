@@ -46,7 +46,10 @@ public class ObjectiveUI : MonoBehaviour
 
     public void StartBlinking()
     {
-        StartCoroutine("Blink");
+        if (gameObject.activeInHierarchy)
+        {
+            StartCoroutine("Blink");
+        }
     }
 
     public void StopBlinking()

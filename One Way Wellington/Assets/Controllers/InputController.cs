@@ -104,6 +104,8 @@ public class InputController : MonoBehaviour
         desiredCameraPos = Camera.main.transform.position;
     }
 
+    private bool isCanceled = false;
+
     // Update is called once per frame
     void Update()
     {
@@ -111,24 +113,45 @@ public class InputController : MonoBehaviour
         currFramePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         currFramePosition.z = 0;
 
-        if (Input.GetButtonDown("Cancel"))
-        {
-            // Clear build modes 
-            SetMode_None();
-
-            // Clear pop-up interfaces 
-            ClearUI();
-        }
-
         if (Input.GetMouseButtonDown(0))
         {
             ClearUI();
         }
 
-        UpdateDragging();
+        // We are building something and only want to cancel that 
+        if (Input.GetButtonDown("Cancel") && Input.GetMouseButton(0))
+        {       
+            BuildModeController.Instance.ClearPreviews();
+            Destroy(buildMeasureInstanceX);
+            Destroy(buildMeasureInstanceY);
+            Destroy(buildPriceInstance);
+            ClearUI();
+            isCanceled = true;
+        }
+        // We want to stop building selected 
+        else if (Input.GetButtonDown("Cancel") && (isMode_Dragable || isMode_Plopable))
+        {
+            BuildModeController.Instance.SetAllListingTogglesOff();
+            SetMode_None();
+            ClearUI();
+        }
+        // We want to exit build mode 
+        else if (Input.GetButtonDown("Cancel"))
+        {
+            UserInterfaceController.Instance.CloseAllBuilding();
+            UserInterfaceController.Instance.panel_Building.GetComponent<ToggleGroup>().SetAllTogglesOff(false);
+        }
+        // Allow building 
+        else if (!isCanceled)
+        {
+            UpdateDragging();          
+        }
+        else if (Input.GetMouseButtonUp(0))
+        {
+            isCanceled = false;
+        }
 
         UpdateCameraMovement();
-
         UpdateTileInterface();
 
         lastFramePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -254,7 +277,6 @@ public class InputController : MonoBehaviour
 
         BuildModeController.Instance.SetGridVisible(false);
         BuildModeController.Instance.roomsTilemap.SetActive(false);
-
         BuildModeController.Instance.ClearPreviews();
 
         currentBuildPrice = 0;
@@ -522,16 +544,6 @@ public class InputController : MonoBehaviour
         }
         else Destroy(buildPriceInstance);
 
-        // Cancel drag
-        if (Input.GetButtonDown("Cancel"))
-        {
-            SetMode_None();
-            BuildModeController.Instance.ClearPreviews();
-            Destroy(buildMeasureInstanceX);
-            Destroy(buildMeasureInstanceY);
-            Destroy(buildPriceInstance);
-            return;
-        }
 
         // End Drag
         if (Input.GetMouseButtonUp(0))

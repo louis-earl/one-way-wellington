@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.Tilemaps;
 
 
@@ -949,6 +950,16 @@ public class BuildModeController : MonoBehaviour
             }
 
         }
+    }
+
+    public void SetAllListingTogglesOff()
+    {
+        hullListingParent.GetComponent<ToggleGroup>().SetAllTogglesOff();
+        wallListingParent.GetComponent<ToggleGroup>().SetAllTogglesOff();
+        utilityListingParent.GetComponent<ToggleGroup>().SetAllTogglesOff();
+        furnitureListingParent.GetComponent<ToggleGroup>().SetAllTogglesOff();
+        roomsListingParent.GetComponent<ToggleGroup>().SetAllTogglesOff();
+        staffListingParent.GetComponent<ToggleGroup>().SetAllTogglesOff();
     }
 
 }

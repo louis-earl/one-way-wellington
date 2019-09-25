@@ -336,10 +336,12 @@ MonoBehaviour:
     type: 3}
   furniturePreviewPrefab: {fileID: 2902878881519650208, guid: a9061c87b69309242aa154c5f26a486e,
     type: 3}
-  hullParent: {fileID: 1176169960530145281}
-  wallParent: {fileID: 1176169959581298093}
-  furnitureParent: {fileID: 1176169959886268149}
-  utilityParent: {fileID: 1176169959757573492}
+  hullListingParent: {fileID: 1176169960530145281}
+  wallListingParent: {fileID: 1176169959581298093}
+  utilityListingParent: {fileID: 1176169959757573492}
+  furnitureListingParent: {fileID: 1176169959886268149}
+  roomsListingParent: {fileID: 1176169959106627926}
+  staffListingParent: {fileID: 1176169959215156867}
   emptyHullTiles: []
   allHullTiles: []
   staffParent: {fileID: 1366393713}
@@ -3024,7 +3026,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 0, y: -50.00006}
+  m_AnchoredPosition: {x: 0, y: -50}
   m_SizeDelta: {x: 120, y: 100}
   m_Pivot: {x: 1, y: 0}
 --- !u!114 &612572990
@@ -3730,7 +3732,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 0, y: -50.00006}
+  m_AnchoredPosition: {x: 0, y: -50}
   m_SizeDelta: {x: 120, y: 100}
   m_Pivot: {x: 1, y: 0}
 --- !u!114 &760162971
@@ -12757,7 +12759,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 0, y: -50.00006}
+  m_AnchoredPosition: {x: 0, y: -50}
   m_SizeDelta: {x: 120, y: 100}
   m_Pivot: {x: 1, y: 0}
 --- !u!114 &2052710394
@@ -13213,7 +13215,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 0, y: -50.00006}
+  m_AnchoredPosition: {x: 0, y: -50}
   m_SizeDelta: {x: 120, y: 100}
   m_Pivot: {x: 1, y: 0}
 --- !u!114 &2120902615
