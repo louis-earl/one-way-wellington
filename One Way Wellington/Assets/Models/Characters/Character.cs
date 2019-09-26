@@ -38,6 +38,30 @@ public class Character : MonoBehaviour
         failedJobs = new List<Job>();
     }
 
+    private void Update()
+    {
+        // Draw path 
+        if (currentSelectedCharacter == this)
+        {
+            lineRenderer.enabled = true;
+            lineRenderer.material.SetTextureOffset("_MainTex", Vector2.right * Time.time);
+            path = gameObject.GetComponent<NavMeshAgent>().path.corners;
+
+            if (path != null && path.Length > 1)
+            {
+                lineRenderer.positionCount = path.Length;
+                for (int i = 0; i < path.Length; i++)
+                {
+                    lineRenderer.SetPosition(i, path[i]);
+                }
+            }
+        }
+        else
+        {
+            lineRenderer.enabled = false;
+        }
+    }
+
     protected virtual void Init()
     {
         navMeshAgent = GetComponent<NavMeshAgent>();
@@ -162,28 +186,7 @@ public class Character : MonoBehaviour
                     return;
                 }
             }
-        }
-
-        // Draw path 
-        if (currentSelectedCharacter == this)
-        {
-            lineRenderer.enabled = true;
-            path = gameObject.GetComponent<NavMeshAgent>().path.corners;
-
-            if (path != null && path.Length > 1)
-            {
-                lineRenderer.positionCount = path.Length;
-                for (int i = 0; i < path.Length; i++)
-                {
-                    lineRenderer.SetPosition(i, path[i]);
-                }
-            }
-        }
-        else
-        {
-            lineRenderer.enabled = false;
-
-        }
+        }      
     }
 
     public void ReturnFailedJob()
