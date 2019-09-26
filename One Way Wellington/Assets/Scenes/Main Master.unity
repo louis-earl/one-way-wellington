@@ -2924,7 +2924,7 @@ MonoBehaviour:
   shipSpeedMax: 0
   shipSpeedCurrent: 0
   isJourneyEditMode: 1
-  orangeLinePrefab: {fileID: 3056036187540819868, guid: 7241a5a4fff295042b8c3b105975ce43,
+  distanceLinePrefab: {fileID: 3056036187540819868, guid: 7241a5a4fff295042b8c3b105975ce43,
     type: 3}
   progressMarkerPrefab: {fileID: 3056036187540819868, guid: 3b11112ff6744a34b8f47f9941d14736,
     type: 3}
@@ -16314,7 +16314,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1176169960426177809}
   m_HandleRect: {fileID: 1176169960426177808}
   m_Direction: 2
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -19265,7 +19265,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 20, y: -24.000153}
+  m_AnchoredPosition: {x: 20, y: -24.000122}
   m_SizeDelta: {x: 530, y: 145}
   m_Pivot: {x: 0, y: 0}
 --- !u!114 &1176169960702684375
@@ -21792,7 +21792,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 747, y: -24.000153}
+  m_AnchoredPosition: {x: 747, y: -24.000122}
   m_SizeDelta: {x: 375, y: 145}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!1001 &8602115663895365808

@@ -19,7 +19,7 @@ public class JourneyController : MonoBehaviour
     public float shipSpeedCurrent;
     public bool isJourneyEditMode; // TODO: set ONLY after Wellington arrival
 
-    public GameObject orangeLinePrefab;
+    public GameObject distanceLinePrefab;
     public GameObject progressMarkerPrefab;
     public GameObject PlanetUIPrefab;
 
@@ -99,9 +99,10 @@ public class JourneyController : MonoBehaviour
                     UserInterfaceController.Instance.panel_GoToShip.SetActive(false);
 
                     // Draw line between planets 
-                    GameObject line = Instantiate(orangeLinePrefab);
+                    GameObject line = Instantiate(distanceLinePrefab);
                     line.transform.position = Vector3.Lerp(planet.transform.position, lastPlanet.transform.position, 0.5f);
-                    line.transform.localScale = new Vector3(Vector3.Distance(planet.transform.position, lastPlanet.transform.position) * 100, 500, 1);
+                    line.transform.localScale = new Vector3(12, 12, 1);
+                    line.GetComponent<SpriteRenderer>().size = new Vector2(Vector3.Distance(planet.transform.position, lastPlanet.transform.position)/12, 0.31f);
                     line.transform.LookAt(planet.transform.position);
                     line.transform.Rotate(new Vector3(0, 90, 0));
                     line.transform.parent = TransitionController.Instance.mapGO.transform;
