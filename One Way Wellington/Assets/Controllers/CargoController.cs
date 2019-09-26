@@ -151,10 +151,17 @@ public class CargoController : MonoBehaviour
 
     public void DropCargo(TileOWW tile, string cargoType, int quantity)
     {
-        // Add to tile
-        BuildModeController.Instance.PlaceFurniture(tile, "Cargo");
-        tile.looseItem = new LooseItem(cargoType, quantity);
-
+        // Does tile already have cargo? 
+        if (tile.looseItem?.itemType == cargoType)
+        {
+            tile.looseItem.quantity += quantity;
+        }
+        else
+        {
+            // Add to tile
+            BuildModeController.Instance.PlaceFurniture(tile, "Cargo");
+            tile.looseItem = new LooseItem(cargoType, quantity);
+        }
         // Add to ship inventory 
         if (unusedShipStock.ContainsKey(cargoType))
         {

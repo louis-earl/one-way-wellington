@@ -8,7 +8,6 @@ public class Character : MonoBehaviour
 {
     protected float currentX;
     protected float currentY;
-    protected Sprite sprite;
 
     protected float health;
 
@@ -18,16 +17,24 @@ public class Character : MonoBehaviour
     public Job targetJob; // The base job object
     public Job currentJob; // Any prerequisite jobs of the base object must be completed first 
     public List<Job> failedJobs;
+    protected JobQueue jobQueue;
 
-    protected NavMeshAgent navMeshAgent;
+    // Rendering 
+    protected Sprite sprite;
     protected SpriteRenderer spriteRenderer;
 
-    protected JobQueue jobQueue;
+
+    // Pathfinding 
+    public static Vector3[] path = new Vector3[0];
+    protected LineRenderer lineRenderer;
+    protected NavMeshAgent navMeshAgent;
+    public static Character currentSelectedCharacter;
+
 
     private void Start()
     {
         Init();
-
+        lineRenderer = GetComponent<LineRenderer>();
         failedJobs = new List<Job>();
     }
 
@@ -155,6 +162,27 @@ public class Character : MonoBehaviour
                     return;
                 }
             }
+        }
+
+        // Draw path 
+        if (currentSelectedCharacter == this)
+        {
+            lineRenderer.enabled = true;
+            path = gameObject.GetComponent<NavMeshAgent>().path.corners;
+
+            if (path != null && path.Length > 1)
+            {
+                lineRenderer.positionCount = path.Length;
+                for (int i = 0; i < path.Length; i++)
+                {
+                    lineRenderer.SetPosition(i, path[i]);
+                }
+            }
+        }
+        else
+        {
+            lineRenderer.enabled = false;
+
         }
     }
 
@@ -379,4 +407,5 @@ public class Character : MonoBehaviour
 			// ReturnFailedJob();
 		}
 	}
+
 }
