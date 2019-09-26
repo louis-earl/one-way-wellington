@@ -43,7 +43,7 @@ public class CargoController : MonoBehaviour
         DeliverItems();
     }
 
-    // Attempt to find placement for cargo that is not located to a hull tile 
+    // Attempt to find placement for cargo that is not located to a hull tile (floating out in space) 
     public void CheckTempStockLocations()
     {
         if (tempStockLocations.Count > 0)

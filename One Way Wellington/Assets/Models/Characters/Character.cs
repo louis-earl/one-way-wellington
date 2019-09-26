@@ -168,6 +168,20 @@ public class Character : MonoBehaviour
             jobQueue.AddJob(targetJob);
         }
         targetJob = currentJob = null;
+        if (inventory != null)
+        {
+            // Return cargo to existing stash if possible 
+            TileOWW returnTile = CargoController.Instance.FindCargo(inventory.itemType);
+            if (returnTile == null)
+            {
+                // Put cargo down at random tile
+                returnTile = WorldController.Instance.GetWorld().GetRandomHullTile(avoidJobs: true);
+
+            }
+            
+            targetJob = new Job(delegate () { CargoController.Instance.DropCargo(returnTile, inventory.itemType, inventory.quantity); }, returnTile, 0.5f, "Drop Cargo", JobPriority.High, tileExcludeOtherJobs: false);
+
+        }
     }
 
     // Do job until finished 

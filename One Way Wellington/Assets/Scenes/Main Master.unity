@@ -1255,6 +1255,17 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 76273093}
+        m_MethodName: CheckObjectives
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Toggle+ToggleEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
   m_IsOn: 0
@@ -5543,7 +5554,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1123265780
 RectTransform:
   m_ObjectHideFlags: 0
@@ -9962,7 +9973,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1682267655
 RectTransform:
   m_ObjectHideFlags: 0
@@ -16090,7 +16101,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1176169960426177809}
   m_HandleRect: {fileID: 1176169960426177808}
   m_Direction: 2
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -19041,7 +19052,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 20, y: -24.000092}
+  m_AnchoredPosition: {x: 20, y: -24.000122}
   m_SizeDelta: {x: 530, y: 145}
   m_Pivot: {x: 0, y: 0}
 --- !u!114 &1176169960702684375
@@ -21568,7 +21579,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 747, y: -24.000092}
+  m_AnchoredPosition: {x: 747, y: -24.000122}
   m_SizeDelta: {x: 375, y: 145}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!1001 &8602115663895365808
