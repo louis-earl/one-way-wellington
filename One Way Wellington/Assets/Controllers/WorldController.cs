@@ -198,9 +198,8 @@ public class WorldController : MonoBehaviour
 
 
             // Initialise sprites
-            planet.GetComponent<PlanetSpin>().InitSprites(
-                Resources.Load<Sprite>("Images/Planets/Surfaces/Surface" + planetData[i].planetGraphic.ToString()),
-                Resources.Load<Sprite>("Images/Planets/Clouds/Cloud" + planetData[i].planetGraphic.ToString()));
+            planet.GetComponent<Planet>().SetSurface(Resources.Load<Sprite>("Images/Planets/Surfaces/Surface" + planetData[i].planetGraphic.ToString()));
+            planet.GetComponent<Planet>().SetClouds(Resources.Load<Sprite>("Images/Planets/Clouds/Cloud" + planetData[i].planetGraphic.ToString()));
 
             planets.Add(planet);
 
