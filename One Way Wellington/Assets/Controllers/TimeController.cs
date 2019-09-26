@@ -52,7 +52,7 @@ public class TimeController : MonoBehaviour
         // Pause or resume with spacebar
         if (Input.GetButtonDown("Jump"))
         {
-            if (Time.timeScale == 0)
+            if (Time.timeScale <= 0.1f)
             {
                 buttonPlay.isOn = true;
             }
@@ -65,6 +65,7 @@ public class TimeController : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.Alpha0))
         {
             buttonPause.isOn = true;
+
         }
         else if (Input.GetKeyDown(KeyCode.Alpha1))
         {
@@ -81,28 +82,40 @@ public class TimeController : MonoBehaviour
     }
 
 
-    public void PauseTime()
+    public void PauseTime(bool isOn)
     {
-        StartBlinking();
-        Time.timeScale = 0; 
+        if (isOn)
+        {
+            StartBlinking();
+            Time.timeScale = 0;
+        }
     }
 
-    public void ResumeTime()
+    public void ResumeTime(bool isOn)
     {
-        StopBlinking();
-        Time.timeScale = 1;
+        if (isOn)
+        {
+            StopBlinking();
+            Time.timeScale = 1;
+        }
     }
 
-    public void DoubleTime()
+    public void DoubleTime(bool isOn)
     {
-        StopBlinking();
-        Time.timeScale = 2;
+        if (isOn)
+        {
+            StopBlinking();
+            Time.timeScale = 2;
+        }
     }
 
-    public void QuadrupleTime()
+    public void QuadrupleTime(bool isOn)
     {
-        StopBlinking();
-        Time.timeScale = 4;
+        if (isOn)
+        {
+            StopBlinking();
+            Time.timeScale = 4;
+        }
     }
 
     IEnumerator Blink()
@@ -116,7 +129,6 @@ public class TimeController : MonoBehaviour
                     image.color = new Color(1, 0.8666667f, 0, 1);
                     
                 }
-                Debug.Log("yellow");
                 //Play sound
                 yield return new WaitForSecondsRealtime(0.5f);
             }
@@ -127,7 +139,6 @@ public class TimeController : MonoBehaviour
                     image.color = new Color(1, 1, 1, 1);
                     
                 }
-                Debug.Log("white");
 
                 //Play sound
                 yield return new WaitForSecondsRealtime(0.5f);
@@ -137,7 +148,7 @@ public class TimeController : MonoBehaviour
 
     public void StartBlinking()
     {
-        Debug.Log("start blinking");
+        StopCoroutine("Blink");
         StartCoroutine("Blink");
     }
 

@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class Staff : Character
 {
@@ -33,6 +34,7 @@ public class Staff : Character
         staffUIInstance.transform.localScale = Vector3.one / 500;
         staffUIInstance.GetComponent<StaffInterface>().staff = this;
 
+        currentSelectedCharacter = this;
     }
 
     protected override void Refresh()

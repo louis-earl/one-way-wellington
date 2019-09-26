@@ -8,7 +8,6 @@ public class Character : MonoBehaviour
 {
     protected float currentX;
     protected float currentY;
-    protected Sprite sprite;
 
     protected float health;
 
@@ -18,17 +17,49 @@ public class Character : MonoBehaviour
     public Job targetJob; // The base job object
     public Job currentJob; // Any prerequisite jobs of the base object must be completed first 
     public List<Job> failedJobs;
+    protected JobQueue jobQueue;
 
-    protected NavMeshAgent navMeshAgent;
+    // Rendering 
+    protected Sprite sprite;
     protected SpriteRenderer spriteRenderer;
 
-    protected JobQueue jobQueue;
+
+    // Pathfinding 
+    public static Vector3[] path = new Vector3[0];
+    protected LineRenderer lineRenderer;
+    protected NavMeshAgent navMeshAgent;
+    public static Character currentSelectedCharacter;
+
 
     private void Start()
     {
         Init();
-
+        lineRenderer = GetComponent<LineRenderer>();
         failedJobs = new List<Job>();
+    }
+
+    private void Update()
+    {
+        // Draw path 
+        if (currentSelectedCharacter == this)
+        {
+            lineRenderer.enabled = true;
+            lineRenderer.material.SetTextureOffset("_MainTex", Vector2.right * Time.time);
+            path = gameObject.GetComponent<NavMeshAgent>().path.corners;
+
+            if (path != null && path.Length > 1)
+            {
+                lineRenderer.positionCount = path.Length;
+                for (int i = 0; i < path.Length; i++)
+                {
+                    lineRenderer.SetPosition(i, path[i]);
+                }
+            }
+        }
+        else
+        {
+            lineRenderer.enabled = false;
+        }
     }
 
     protected virtual void Init()
@@ -155,19 +186,58 @@ public class Character : MonoBehaviour
                     return;
                 }
             }
-        }
+        }      
     }
 
     public void ReturnFailedJob()
     {
-        if (targetJob.GetJobType() != "Wander")
+        
+        if (targetJob.GetJobType() == "Collect All Cargo")
+        {
+            // Prevent cargo being lost forever 
+            inventory = CargoController.Instance.stockInTransit[targetJob.GetTileOWW()];
+            CargoController.Instance.stockInTransit.Remove(targetJob.GetTileOWW());
+
+            // Notification 
+            NotificationController.Instance.CreateNotification("A builder just got stuck trying to move some cargo, consider building more Airlock doors.", UrgencyLevel.Medium, true, null);
+
+        }
+        else if (targetJob.GetJobType() == "Return Cargo")
+        {
+            Debug.LogWarning("Failed to return the failed job");
+            NotificationController.Instance.CreateNotification("A builder just got stuck trying to move some cargo, consider building more Airlock doors.", UrgencyLevel.Medium, true, null);
+
+
+        }
+        else if (targetJob.GetJobType() != "Wander" && !targetJob.GetJobType().Contains("Drop"))
         {
             Debug.Log("Returning failed job: " + targetJob.GetJobType());
 
             failedJobs.Add(targetJob);
             jobQueue.AddJob(targetJob);
         }
+
+        // Clear the job 
         targetJob = currentJob = null;
+
+        if (inventory != null)
+        {
+            // Return cargo to existing stash if possible 
+            TileOWW returnTile = CargoController.Instance.FindCargo(inventory.itemType);
+            if (returnTile == null)
+            {
+                // Put cargo down at random tile
+                returnTile = WorldController.Instance.GetWorld().GetRandomHullTile(avoidJobs: true);
+
+            }
+            navMeshAgent.ResetPath();
+            targetJob = new Job(delegate () {
+                if (inventory == null) return;
+                CargoController.Instance.DropCargo(returnTile, inventory.itemType, inventory.quantity, clearFailedJobs: false);
+                inventory = null;}, 
+                returnTile, 0.5f, "Return Cargo", JobPriority.High, tileExcludeOtherJobs: false);
+
+        }
     }
 
     // Do job until finished 
@@ -351,7 +421,7 @@ public class Character : MonoBehaviour
 	{
         if (this.inventory != null)
         {
-            Debug.LogError("Replacing existing inventory!!");
+            Debug.LogError("Replacing existing inventory!! New: " + cargoType + " " + quantity + " Existing: " + inventory.itemType + " " + inventory.quantity);
         }
 		TileOWW cargoTile = CargoController.Instance.FindCargo(cargoType);
 		if (cargoTile != null)
@@ -365,4 +435,5 @@ public class Character : MonoBehaviour
 			// ReturnFailedJob();
 		}
 	}
+
 }

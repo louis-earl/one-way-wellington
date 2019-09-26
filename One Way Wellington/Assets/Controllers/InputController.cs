@@ -405,6 +405,7 @@ public class InputController : MonoBehaviour
     {
         if (Passenger.passengerUIInstance != null) Destroy(Passenger.passengerUIInstance);
         if (Staff.staffUIInstance != null) Destroy(Staff.staffUIInstance);
+        Character.currentSelectedCharacter = null;
         if (Planet.planetUI != null)
         {
             if (!Planet.planetUI.GetComponent<PlanetInterface>().isMouseOver)

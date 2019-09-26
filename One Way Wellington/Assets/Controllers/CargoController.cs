@@ -43,7 +43,7 @@ public class CargoController : MonoBehaviour
         DeliverItems();
     }
 
-    // Attempt to find placement for cargo that is not located to a hull tile 
+    // Attempt to find placement for cargo that is not located to a hull tile (floating out in space) 
     public void CheckTempStockLocations()
     {
         if (tempStockLocations.Count > 0)
@@ -57,7 +57,7 @@ public class CargoController : MonoBehaviour
                 TileOWW dropTile = WorldController.Instance.GetWorld().GetRandomHullTile(avoidJobs: true);
                 if (dropTile != null)
                 {
-                    Job collectJob = new Job(delegate () { CollectAllCargoFromTile(tileOWW, dropTile); }, tileOWW, 0.5f, "Collect Cargo", JobPriority.High, tileExcludeOtherJobs: false);
+                    Job collectJob = new Job(delegate () { CollectAllCargoFromTile(tileOWW, dropTile); }, tileOWW, 0.5f, "Collect All Cargo", JobPriority.High, tileExcludeOtherJobs: false);
 
                     // Store reference - what stock is going where 
                     Job dropJob = new Job(delegate ()
@@ -149,12 +149,19 @@ public class CargoController : MonoBehaviour
         return true;
     }
 
-    public void DropCargo(TileOWW tile, string cargoType, int quantity)
+    public void DropCargo(TileOWW tile, string cargoType, int quantity, bool clearFailedJobs = true)
     {
-        // Add to tile
-        BuildModeController.Instance.PlaceFurniture(tile, "Cargo");
-        tile.looseItem = new LooseItem(cargoType, quantity);
-
+        // Does tile already have cargo? 
+        if (tile.looseItem?.itemType == cargoType)
+        {
+            tile.looseItem.quantity += quantity;
+        }
+        else
+        {
+            // Add to tile
+            BuildModeController.Instance.PlaceFurniture(tile, "Cargo");
+            tile.looseItem = new LooseItem(cargoType, quantity);
+        }
         // Add to ship inventory 
         if (unusedShipStock.ContainsKey(cargoType))
         {
@@ -173,9 +180,12 @@ public class CargoController : MonoBehaviour
         shipStockLocations[cargoType].Add(tile);
 
         // Clear all failed jobs 
-        foreach (GameObject characterGO in WorldController.Instance.staff)
+        if (clearFailedJobs)
         {
-            characterGO.GetComponent<Character>().failedJobs = new List<Job>();
+            foreach (GameObject characterGO in WorldController.Instance.staff)
+            {
+                characterGO.GetComponent<Character>().failedJobs = new List<Job>();
+            }
         }
 
         // Remove transit reference 
@@ -254,5 +264,54 @@ public class CargoController : MonoBehaviour
             return smallestQuantityTile;
         }
         return null;
+    }
+
+    // DEBUG function 
+    public void ShowCargoSummary()
+    {
+        string output = "CARGO SUMMARY \n Click this message to read \n";
+
+        output += "Undelivered Stock: \n";
+        foreach (KeyValuePair<string, int> keyValuePair in undeliveredStock)
+        {
+            output += " - " + keyValuePair.Key + " " + keyValuePair.Value + "\n";
+        }
+        output += "\n";
+
+        output += "Ship Stock \n";
+        foreach (KeyValuePair<string, int> keyValuePair in unusedShipStock)
+        {
+            output += " - " + keyValuePair.Key + " " + keyValuePair.Value + "\n";
+        }
+        output += "\n";
+
+        output += "Ship Stock Locations \n";
+        foreach (KeyValuePair<string, List<TileOWW>> keyValuePair in shipStockLocations)
+        {
+            output += " - " + keyValuePair.Key + "\n";
+            foreach (TileOWW tileOWW in keyValuePair.Value)
+            {
+                output += "    - " + tileOWW.ToString() + "\n";
+            }
+        }
+        output += "\n";
+
+        output += "Temp Stock Locations \n";
+        foreach (TileOWW tileOWW in tempStockLocations)
+        {
+            output += " - " + tileOWW.ToString() + "\n";
+        }
+        output += "\n";
+
+        output += "Stock In Transit";
+        foreach (KeyValuePair<TileOWW, LooseItem> keyValuePair in stockInTransit)
+        {
+            output += " - " + keyValuePair.Key.ToString() + "\n";
+            output += "    - " + keyValuePair.Value.itemType + " " + keyValuePair.Value.quantity + "\n";
+        }
+        output += "\n";
+
+
+        Debug.Log(output);
     }
 }
