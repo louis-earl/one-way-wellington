@@ -121,7 +121,7 @@ public class Job
         jobTime -= deltaTime;
         if (jobTime <= 0)
         {
-        
+
             action?.Invoke();
 
             // Prevent wander jobs removing build jobs 

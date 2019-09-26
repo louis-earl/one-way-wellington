@@ -191,14 +191,35 @@ public class Character : MonoBehaviour
 
     public void ReturnFailedJob()
     {
-        if (targetJob.GetJobType() != "Wander")
+        
+        if (targetJob.GetJobType() == "Collect All Cargo")
+        {
+            // Prevent cargo being lost forever 
+            inventory = CargoController.Instance.stockInTransit[targetJob.GetTileOWW()];
+            CargoController.Instance.stockInTransit.Remove(targetJob.GetTileOWW());
+
+            // Notification 
+            NotificationController.Instance.CreateNotification("A builder just got stuck trying to move some cargo, consider building more Airlock doors.", UrgencyLevel.Medium, true, null);
+
+        }
+        else if (targetJob.GetJobType() == "Return Cargo")
+        {
+            Debug.LogWarning("Failed to return the failed job");
+            NotificationController.Instance.CreateNotification("A builder just got stuck trying to move some cargo, consider building more Airlock doors.", UrgencyLevel.Medium, true, null);
+
+
+        }
+        else if (targetJob.GetJobType() != "Wander" && !targetJob.GetJobType().Contains("Drop"))
         {
             Debug.Log("Returning failed job: " + targetJob.GetJobType());
 
             failedJobs.Add(targetJob);
             jobQueue.AddJob(targetJob);
         }
+
+        // Clear the job 
         targetJob = currentJob = null;
+
         if (inventory != null)
         {
             // Return cargo to existing stash if possible 
@@ -209,8 +230,12 @@ public class Character : MonoBehaviour
                 returnTile = WorldController.Instance.GetWorld().GetRandomHullTile(avoidJobs: true);
 
             }
-            
-            targetJob = new Job(delegate () { CargoController.Instance.DropCargo(returnTile, inventory.itemType, inventory.quantity); }, returnTile, 0.5f, "Drop Cargo", JobPriority.High, tileExcludeOtherJobs: false);
+            navMeshAgent.ResetPath();
+            targetJob = new Job(delegate () {
+                if (inventory == null) return;
+                CargoController.Instance.DropCargo(returnTile, inventory.itemType, inventory.quantity, clearFailedJobs: false);
+                inventory = null;}, 
+                returnTile, 0.5f, "Return Cargo", JobPriority.High, tileExcludeOtherJobs: false);
 
         }
     }
@@ -396,7 +421,7 @@ public class Character : MonoBehaviour
 	{
         if (this.inventory != null)
         {
-            Debug.LogError("Replacing existing inventory!!");
+            Debug.LogError("Replacing existing inventory!! New: " + cargoType + " " + quantity + " Existing: " + inventory.itemType + " " + inventory.quantity);
         }
 		TileOWW cargoTile = CargoController.Instance.FindCargo(cargoType);
 		if (cargoTile != null)
