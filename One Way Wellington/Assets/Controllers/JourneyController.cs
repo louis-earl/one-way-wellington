@@ -30,7 +30,7 @@ public class JourneyController : MonoBehaviour
 
     public float fuelRemaining;
     public float fuelUsed;
-    private static float FUEL_COST = 2.30f;
+    public static readonly float FUEL_COST = 2.30f;
 
     public GameObject passengerParent;
 
@@ -106,6 +106,7 @@ public class JourneyController : MonoBehaviour
                     line.transform.LookAt(planet.transform.position);
                     line.transform.Rotate(new Vector3(0, 90, 0));
                     line.transform.parent = TransitionController.Instance.mapGO.transform;
+                    line.GetComponentInChildren<Canvas>().GetComponentInChildren<TextMeshProUGUI>().text = string.Format("{0:C}", (int)Vector3.Distance(planet.transform.position, lastPlanet.transform.position) * FUEL_COST);
                     nextPlanetVisit.linkLine = line;
 
                     // Fuel usage

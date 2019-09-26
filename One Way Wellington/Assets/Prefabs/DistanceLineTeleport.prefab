@@ -10,8 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 8416423636837258732}
   - component: {fileID: 4876718555476660918}
+  - component: {fileID: 7349841035937173272}
   m_Layer: 0
-  m_Name: OrangeLine
+  m_Name: DistanceLineTeleport
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -48,7 +49,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 59040314848bd5e458700e1528d3ccd6, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -69,7 +70,7 @@ SpriteRenderer:
   m_SortingLayerID: 278408897
   m_SortingLayer: -2
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 4de6b2cd8072627459c03644616e3122, type: 3}
+  m_Sprite: {fileID: 21300000, guid: b3d8e98ef888f448cb011f353ef689a7, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -80,3 +81,16 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &7349841035937173272
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3056036187540819868}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c7f9b8cdac5d80499c2a4d56afefc1b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ScrollSpeed: {x: -5, y: 0}
