@@ -158,20 +158,21 @@ public class WorldController : MonoBehaviour
 
         // Initialise sprites
 
-        int planetGraphic;
+        int planetGraphicSuffix;
         if (name == "Earth")
         {
-            planetGraphic = 0;
+            planetGraphicSuffix = 0;
         }
         else
         {
-            planetGraphic = Random.Range(1, 4);
+            planetGraphicSuffix = Random.Range(1, 4);
         }
-        planet.GetComponent<Planet>().planetGraphic = planetGraphic;
-        planet.GetComponent<PlanetSpin>().InitSprites(
-            
-            Resources.Load<Sprite>("Images/Planets/Surfaces/Surface" + planetGraphic.ToString()),
-            Resources.Load<Sprite>("Images/Planets/Clouds/Cloud" + planetGraphic.ToString())) ;
+        planet.GetComponent<Planet>().SetPlanetGraphicSuffix(planetGraphicSuffix);
+        planet.GetComponent<Planet>().SetSurface(Resources.Load < Sprite > ("Images/Planets/Surfaces/Surface" + planetGraphicSuffix.ToString()));
+        planet.GetComponent<Planet>().SetClouds(Resources.Load < Sprite > ("Images/Planets/Clouds/Cloud" + planetGraphicSuffix.ToString()));
+
+
+
 
         return planet;
     }

@@ -6,9 +6,9 @@ public class Planet : MonoBehaviour
 {
     private string planetName;
 
-    public int planetGraphic;
-    private Sprite surface;
-    private Sprite clouds;
+    private int planetGraphicSuffix;
+    public SpriteRenderer surface;
+    public SpriteRenderer clouds;
     public Planet nextPlanet; // further from earth 
     public Planet previousPlanet; // closer to earth 
     public float planetScale;
@@ -80,6 +80,11 @@ public class Planet : MonoBehaviour
         else return nextPlanet.GetNextPlanet();
     }
 
+    public void SetPlanetGraphicSuffix (int planetGraphicSuffix)
+    {
+        this.planetGraphicSuffix = planetGraphicSuffix;
+    }
+
     public Planet GetPreviousPlanet()
     {
         return previousPlanet;
@@ -87,22 +92,22 @@ public class Planet : MonoBehaviour
 
     public Sprite GetSurface()
     {
-        return surface;
+        return surface.sprite;
     }
 
     public void SetSurface(Sprite surface)
     {
-        this.surface = surface;
+        this.surface.sprite = surface;
     }
 
     public Sprite GetClouds()
     {
-        return clouds;
+        return clouds.sprite;
     }
 
     public void SetClouds(Sprite clouds)
     {
-        this.clouds = clouds;
+        this.clouds.sprite = clouds;
     }
 
     public string GetPlanetName()
@@ -155,7 +160,7 @@ public class Planet : MonoBehaviour
             
         }
 
-        return new PlanetData(planetName, planetGraphic, nextPlanet, planetScale, planetCoordinates.x, planetCoordinates.y);
+        return new PlanetData(planetName, planetGraphicSuffix, nextPlanet, planetScale, planetCoordinates.x, planetCoordinates.y);
     }
 
 }
