@@ -149,6 +149,10 @@ public class TransitionController : MonoBehaviour
 
         InputController.Instance.cameraSizeMin = 3;
         InputController.Instance.cameraSizeMax = 1000;
+
+        InputController.Instance.cameraBoundMin = -100000;
+        InputController.Instance.cameraBoundMax = 100000;
+
         Camera.main.orthographicSize = 850;
         InputController.Instance.desiredCameraZoom = 850;
 
@@ -260,14 +264,17 @@ public class TransitionController : MonoBehaviour
 
     public IEnumerator TransitionDeparture()
     {
+
+        InputController.Instance.cameraBoundMin = -100000;
+        InputController.Instance.cameraBoundMax = 100000;
+
         // Reset camera parameters
         InputController.Instance.cameraPosZ = -10;
         Camera.main.transform.position = new Vector3(50, 50, -10);
         InputController.Instance.desiredCameraPos = new Vector3(50, 50, -10);
         InputController.Instance.cameraSizeMin = 3;
         InputController.Instance.cameraSizeMax = 50;
-        InputController.Instance.cameraBoundMin = 0;
-        InputController.Instance.cameraBoundMax = 100;
+        
 
         isMapMode = false;
 
@@ -280,7 +287,8 @@ public class TransitionController : MonoBehaviour
             yield return new WaitForSeconds(Time.deltaTime);
         }
         blackScreen.enabled = false;
-
+        InputController.Instance.cameraBoundMin = -10;
+        InputController.Instance.cameraBoundMax = 110;
         yield return null;
     }
 

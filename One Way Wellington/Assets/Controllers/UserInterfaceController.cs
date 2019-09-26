@@ -12,7 +12,6 @@ public class UserInterfaceController : MonoBehaviour
     public GameObject panel_LaunchJourney;
     public GameObject panel_LandShip;
 
-
     // Prefabs 
     public GameObject passengerUIPrefab;
     public GameObject staffUIPrefab;
@@ -31,7 +30,8 @@ public class UserInterfaceController : MonoBehaviour
 
     public static UserInterfaceController Instance;
 
-
+    public GameObject NotificationPanel;
+    public GameObject ObjectivesPanel;
 
     // Start is called before the first frame update
     void Start()
@@ -49,15 +49,19 @@ public class UserInterfaceController : MonoBehaviour
         if (Instance == null) Instance = this;
 
         tooltipInstance.SetActive(false);
+
+        NotificationPanel.SetActive(false);
+        ObjectivesPanel.SetActive(false);
     }
 
-    private void CloseAllBuilding()
+    public void CloseAllBuilding()
     {
+        BuildModeController.Instance.SetAllListingTogglesOff();
+
         foreach (GameObject g in subPanels)
         {
             g.SetActive(false);
         }
-
         BuildModeController.Instance.roomsTilemap.SetActive(false);
         tooltipInstance.SetActive(false);
 
@@ -65,16 +69,18 @@ public class UserInterfaceController : MonoBehaviour
 
     private void CloseOtherBuilding(int ignore)
     {
+        BuildModeController.Instance.SetAllListingTogglesOff();
+
         foreach (GameObject g in subPanels)
         {
             if (g != subPanels[ignore]) g.SetActive(false);
         }
-
         BuildModeController.Instance.roomsTilemap.SetActive(false);
         tooltipInstance.SetActive(false);
 
 
     }
+
 
     public void ToggleHullPanel()
     {

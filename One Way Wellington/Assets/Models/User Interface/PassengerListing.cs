@@ -8,7 +8,7 @@ public class PassengerListing : MonoBehaviour
 {
 
     public Image image_PassengerPreview;
-    public Button button_BoardPassenger;
+    public Toggle toggle_BoardPassenger;
     public TextMeshProUGUI text_PassengerName;
     public TextMeshProUGUI text_PassengerFare;
 
@@ -44,6 +44,6 @@ public class PassengerListing : MonoBehaviour
     // Sow/hide board button 
     public void SetBoardButtonActive(bool isActive)
     {
-        button_BoardPassenger.gameObject.SetActive(isActive);
+        toggle_BoardPassenger.gameObject.SetActive(isActive);
     }
 }

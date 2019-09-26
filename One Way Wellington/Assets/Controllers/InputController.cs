@@ -104,6 +104,8 @@ public class InputController : MonoBehaviour
         desiredCameraPos = Camera.main.transform.position;
     }
 
+    private bool isCanceled = false;
+
     // Update is called once per frame
     void Update()
     {
@@ -111,24 +113,49 @@ public class InputController : MonoBehaviour
         currFramePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         currFramePosition.z = 0;
 
-        if (Input.GetButtonDown("Cancel"))
-        {
-            // Clear build modes 
-            SetMode_None();
-
-            // Clear pop-up interfaces 
-            ClearUI();
-        }
-
         if (Input.GetMouseButtonDown(0))
         {
             ClearUI();
         }
 
-        UpdateDragging();
+        // We are building something and only want to cancel that 
+        if (Input.GetButtonDown("Cancel") && Input.GetMouseButton(0))
+        {       
+            BuildModeController.Instance.ClearPreviews();
+            Destroy(buildMeasureInstanceX);
+            Destroy(buildMeasureInstanceY);
+            Destroy(buildPriceInstance);
+            ClearUI();
+            isCanceled = true;
+            UserInterfaceController.Instance.tooltipInstance.GetComponentInChildren<TextMeshProUGUI>().text = UserInterfaceController.Instance.toolTipText;
+
+        }
+        // We want to stop building selected 
+        else if (Input.GetButtonDown("Cancel") && (isMode_Dragable || isMode_Plopable))
+        {
+            BuildModeController.Instance.SetAllListingTogglesOff();
+            SetMode_None();
+            ClearUI();
+        }
+        // We want to exit build mode 
+        else if (Input.GetButtonDown("Cancel"))
+        {
+            UserInterfaceController.Instance.CloseAllBuilding();
+            UserInterfaceController.Instance.panel_Building.GetComponent<ToggleGroup>().SetAllTogglesOff(false);
+        }
+        // Allow building 
+        else if (!isCanceled)
+        {
+            UpdateDragging();          
+        }
+        else if (Input.GetMouseButtonUp(0))
+        {
+            isCanceled = false;
+            UserInterfaceController.Instance.tooltipInstance.GetComponentInChildren<TextMeshProUGUI>().text = UserInterfaceController.Instance.toolTipText;
+
+        }
 
         UpdateCameraMovement();
-
         UpdateTileInterface();
 
         lastFramePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -191,11 +218,11 @@ public class InputController : MonoBehaviour
             if (!EventSystem.current.IsPointerOverGameObject())
             {
                 // Zoom camera 
-                desiredCameraZoom -= desiredCameraZoom * Input.GetAxis("Mouse ScrollWheel") * 2.5f;                
+                desiredCameraZoom -= desiredCameraZoom * Input.GetAxis("Mouse ScrollWheel") * 1.25f;                
             }           
         }
         desiredCameraZoom = Mathf.Clamp(desiredCameraZoom, cameraSizeMin, cameraSizeMax);
-        Camera.main.orthographicSize = Mathf.Lerp(desiredCameraZoom, currentCameraZoom, 0.95f);
+        Camera.main.orthographicSize = Mathf.Lerp(desiredCameraZoom, currentCameraZoom, 0.90f);
 
         // zoom into mouse 
         if (Input.GetAxis("Mouse ScrollWheel") > 0)
@@ -254,7 +281,6 @@ public class InputController : MonoBehaviour
 
         BuildModeController.Instance.SetGridVisible(false);
         BuildModeController.Instance.roomsTilemap.SetActive(false);
-
         BuildModeController.Instance.ClearPreviews();
 
         currentBuildPrice = 0;
@@ -401,6 +427,7 @@ public class InputController : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             dragStartPosition = currFramePosition;
+            UserInterfaceController.Instance.tooltipInstance.GetComponentInChildren<TextMeshProUGUI>().text = "Press ESC to cancel.";
         }
 
         int start_x = Mathf.FloorToInt(dragStartPosition.x);
@@ -522,20 +549,11 @@ public class InputController : MonoBehaviour
         }
         else Destroy(buildPriceInstance);
 
-        // Cancel drag
-        if (Input.GetButtonDown("Cancel"))
-        {
-            SetMode_None();
-            BuildModeController.Instance.ClearPreviews();
-            Destroy(buildMeasureInstanceX);
-            Destroy(buildMeasureInstanceY);
-            Destroy(buildPriceInstance);
-            return;
-        }
 
         // End Drag
         if (Input.GetMouseButtonUp(0))
         {
+            UserInterfaceController.Instance.tooltipInstance.GetComponentInChildren<TextMeshProUGUI>().text = UserInterfaceController.Instance.toolTipText;
 
             if (isMode_Hull)
             {

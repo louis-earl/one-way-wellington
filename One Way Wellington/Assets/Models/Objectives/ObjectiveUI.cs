@@ -18,6 +18,14 @@ public class ObjectiveUI : MonoBehaviour
 
     public bool isComplete;
 
+    private void OnEnable()
+    {
+        if (isComplete)
+        {
+            StartBlinking();
+        }
+    }
+
     private void Start()
     {
         buttonClose.SetActive(false);
@@ -46,7 +54,10 @@ public class ObjectiveUI : MonoBehaviour
 
     public void StartBlinking()
     {
-        StartCoroutine("Blink");
+        if (gameObject.activeInHierarchy)
+        {
+            StartCoroutine("Blink");
+        }
     }
 
     public void StopBlinking()
