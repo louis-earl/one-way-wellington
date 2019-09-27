@@ -2926,6 +2926,8 @@ MonoBehaviour:
   isJourneyEditMode: 1
   distanceLinePrefab: {fileID: 3056036187540819868, guid: 7241a5a4fff295042b8c3b105975ce43,
     type: 3}
+  distanceLineTeleportPrefab: {fileID: 3056036187540819868, guid: e655e6cd47cb94d0faecc07c924ac751,
+    type: 3}
   progressMarkerPrefab: {fileID: 3056036187540819868, guid: 3b11112ff6744a34b8f47f9941d14736,
     type: 3}
   PlanetUIPrefab: {fileID: 4408079604442949160, guid: 8a86a898d62284c0db0c164f26e3d54b,
@@ -2936,7 +2938,7 @@ MonoBehaviour:
   currentPassengers: []
   fuelRemaining: 0
   fuelUsed: 0
-  passengerParent: {fileID: 0}
+  passengerParent: {fileID: 1662751545}
   panel_FuelCost: {fileID: 1688548486}
   text_FuelCost: {fileID: 1873326996}
 --- !u!1 &585255238

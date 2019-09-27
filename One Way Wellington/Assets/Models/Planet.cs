@@ -29,14 +29,6 @@ public class Planet : MonoBehaviour
         GeneratePotentialPassengers();
     }
 
-    private void Update()
-    {
-        if (linkLine != null)
-        {
-            linkLine.GetComponent<SpriteRenderer>().material.SetTextureOffset("_MainTex", Vector2.right * Time.time);
-        }
-    }
-
     private void OnMouseUpAsButton()
     {
         if (planetName != "Earth")

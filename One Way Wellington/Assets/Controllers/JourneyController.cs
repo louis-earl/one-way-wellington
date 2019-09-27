@@ -20,6 +20,8 @@ public class JourneyController : MonoBehaviour
     public bool isJourneyEditMode; // TODO: set ONLY after Wellington arrival
 
     public GameObject distanceLinePrefab;
+    public GameObject distanceLineTeleportPrefab;
+    private GameObject distanceLineTeleportInstance;
     public GameObject progressMarkerPrefab;
     public GameObject PlanetUIPrefab;
 
@@ -98,7 +100,7 @@ public class JourneyController : MonoBehaviour
                     UserInterfaceController.Instance.panel_LaunchJourney.SetActive(true);
                     UserInterfaceController.Instance.panel_GoToShip.SetActive(false);
 
-                    // Draw line between planets 
+                    // Draw new distance line between planets 
                     GameObject line = Instantiate(distanceLinePrefab);
                     line.transform.position = Vector3.Lerp(planet.transform.position, lastPlanet.transform.position, 0.5f);
                     line.transform.localScale = new Vector3(12, 12, 1);
@@ -112,13 +114,39 @@ public class JourneyController : MonoBehaviour
                     Debug.Log("line.transform.localRotation.eulerAngles.y): " + line.transform.localRotation.eulerAngles.y);
                     if (Mathf.Abs(line.transform.localRotation.eulerAngles.y % 360) >= 90)
                     {
-                        Debug.Log("Backwards text");
                         line.GetComponentInChildren<Canvas>().GetComponentInChildren<RectTransform>().localRotation = Quaternion.Euler(new Vector3(0, -180, 0));
                     }
-                    
-
 
                     nextPlanetVisit.linkLine = line;
+
+
+                    // Update existing teleport line 
+                    if (distanceLineTeleportInstance == null) distanceLineTeleportInstance = Instantiate(distanceLineTeleportPrefab);
+                    distanceLineTeleportInstance.transform.position = Vector3.Lerp(earth.transform.position, lastPlanetVisit.transform.position, 0.5f);
+                    distanceLineTeleportInstance.transform.localScale = new Vector3(12, 12, 1);
+                    distanceLineTeleportInstance.GetComponent<SpriteRenderer>().size = new Vector2(Vector3.Distance(earth.transform.position, lastPlanetVisit.transform.position) / 12, 0.31f);
+                    distanceLineTeleportInstance.transform.LookAt(earth.transform.position);
+                    distanceLineTeleportInstance.transform.Rotate(new Vector3(0, 90, 0));
+                    distanceLineTeleportInstance.transform.parent = TransitionController.Instance.mapGO.transform;
+
+                    // Rotate fuel cost text 
+                    if (Mathf.Abs(distanceLineTeleportInstance.transform.localRotation.eulerAngles.y % 360) >= 90)
+                    {
+                        distanceLineTeleportInstance.GetComponentInChildren<Canvas>().GetComponentInChildren<RectTransform>().localRotation = Quaternion.Euler(new Vector3(0, -180, 0));
+                    }
+
+                    // Offset if journey is only 1 planet
+                    if (lastPlanet == earth)
+                    {
+                        line.transform.Translate(Vector3.up * 2, line.transform);
+                        distanceLineTeleportInstance.transform.Translate(Vector3.down * 2, distanceLineTeleportInstance.transform);
+                    }
+                    else
+                    {
+                        earth.GetComponent<Planet>().linkLine.transform.position = Vector3.Lerp(lastPlanet.transform.position, earth.transform.position, 0.5f);
+
+                    }
+
 
                     // Fuel usage
                     fuelRemaining -= Vector3.Distance(planet.transform.position, lastPlanet.transform.position);

@@ -198,8 +198,14 @@ public class OxygenController : MonoBehaviour
     public void RestockOxygen()
     {
         float currentOxygenLevel = shipOxygenLevel;
-        float maxOxygenLevel = BuildModeController.Instance.furnitureTileOWWMap["Oxygen Tank"].Count * 10;
-		Debug.Log("Found oxygen tanks: " + BuildModeController.Instance.furnitureTileOWWMap["Oxygen Tank"].Count);
+        float maxOxygenLevel = 0;
+        if (BuildModeController.Instance.furnitureTileOWWMap.ContainsKey("Oxygen Tank"))
+        {
+            maxOxygenLevel = BuildModeController.Instance.furnitureTileOWWMap["Oxygen Tank"].Count * 10;
+            Debug.Log("Found oxygen tanks: " + BuildModeController.Instance.furnitureTileOWWMap["Oxygen Tank"].Count);
+
+        }
+
 
         shipOxygenLevel = maxOxygenLevel;
         CurrencyController.Instance.DeductBankBalance((int)((maxOxygenLevel - currentOxygenLevel) * OXYGEN_COST));
