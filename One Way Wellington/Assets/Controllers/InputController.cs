@@ -12,7 +12,7 @@ public class InputController : MonoBehaviour
 
     public GameObject circleCursorPrefab;
 
-    public GameObject backgroundGO;
+    // public GameObject backgroundGO;
 
     // Build measure / price interface
     public GameObject buildMeasurePrefabX;
@@ -90,8 +90,8 @@ public class InputController : MonoBehaviour
         // Background scale
         orthoOrg = Camera.main.orthographicSize;
         orthoCurr = orthoOrg;
-        scaleOrg = backgroundGO.transform.localScale;
-        posOrg = Camera.main.WorldToViewportPoint(backgroundGO.transform.position);
+        // scaleOrg = backgroundGO.transform.localScale;
+        // posOrg = Camera.main.WorldToViewportPoint(backgroundGO.transform.position);
 
         cameraZoomEnabled = true;
         cameraSizeMin = 3f;
@@ -225,11 +225,12 @@ public class InputController : MonoBehaviour
         Camera.main.orthographicSize = Mathf.Lerp(desiredCameraZoom, currentCameraZoom, 0.90f);
 
         // zoom into mouse 
+        /*
         if (Input.GetAxis("Mouse ScrollWheel") > 0)
         {
             desiredCameraPos = new Vector3(currFramePosition.x, currFramePosition.y, Camera.main.transform.position.z);
         }
-
+        */
         // Handle screen panning
         // Right or Middle Mouse Button
         if (Input.GetMouseButton(1) || Input.GetMouseButton(2))
@@ -240,8 +241,9 @@ public class InputController : MonoBehaviour
         }
         else
         {
-            float melerp = 1 - ((currentCameraZoom - desiredCameraZoom) / (100 * (currentCameraZoom/5)));
-            Camera.main.transform.position = Vector3.Lerp(desiredCameraPos, Camera.main.transform.position, melerp);
+            
+            //float melerp = 1 - ((currentCameraZoom - desiredCameraZoom) / (100 * (currentCameraZoom/5)));
+            //Camera.main.transform.position = Vector3.Lerp(desiredCameraPos, Camera.main.transform.position, melerp);
         }
 
         // Camera bounds 
@@ -255,7 +257,7 @@ public class InputController : MonoBehaviour
 
 
         // Always update background scale, camera orthographic size may be controlled elsewhere 
-        UpdateBackgroundScale();
+        // UpdateBackgroundScale();
 
         // Check objectives
         ObjectiveController.Instance.CheckObjectives();
@@ -643,6 +645,7 @@ public class InputController : MonoBehaviour
         }
     }
 
+    /*
     public void UpdateBackgroundScale()
     {
         var osize = Camera.main.orthographicSize;
@@ -653,6 +656,7 @@ public class InputController : MonoBehaviour
             backgroundGO.transform.position = Camera.main.ViewportToWorldPoint(posOrg);
         }
     }
+    */ 
 
     public IEnumerator MoveCameraTo(float cameraPosX, float cameraPosY, float cameraZoom = -1)
     {

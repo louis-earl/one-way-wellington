@@ -48,7 +48,7 @@ public class TransitionController : MonoBehaviour
         while (t < 0.5)
         {
             InputController.Instance.desiredCameraZoom += 500 * Time.deltaTime;
-            InputController.Instance.UpdateBackgroundScale();
+            // InputController.Instance.UpdateBackgroundScale();
             blackScreen.color = new Color(0, 0, 0, blackScreen.color.a + 2 * Time.deltaTime);
             t += Time.deltaTime;
             yield return new WaitForSeconds(Time.deltaTime);
@@ -87,7 +87,7 @@ public class TransitionController : MonoBehaviour
         while (t < 0.66)
         {
             InputController.Instance.desiredCameraZoom += 350 * Time.deltaTime;
-            InputController.Instance.UpdateBackgroundScale();
+            // InputController.Instance.UpdateBackgroundScale();
             blackScreen.color = new Color(0, 0, 0, blackScreen.color.a - 2 * Time.deltaTime);
             t += Time.deltaTime;
             yield return new WaitForSeconds(Time.deltaTime);
@@ -118,7 +118,7 @@ public class TransitionController : MonoBehaviour
         {
             InputController.Instance.desiredCameraZoom -= zoomPerFrame * Time.deltaTime;
             if (InputController.Instance.desiredCameraZoom < 1) InputController.Instance.desiredCameraZoom = 1; // Things get weird when orthographic size < 0
-            InputController.Instance.UpdateBackgroundScale();
+            // InputController.Instance.UpdateBackgroundScale();
 
             blackScreen.color = new Color(0, 0, 0, blackScreen.color.a + 2 * Time.deltaTime);
             t += Time.deltaTime;
@@ -165,7 +165,7 @@ public class TransitionController : MonoBehaviour
         while (t < 0.5)
         {
             InputController.Instance.desiredCameraZoom -= 1540 * Time.deltaTime;
-            InputController.Instance.UpdateBackgroundScale();
+            // InputController.Instance.UpdateBackgroundScale();
             blackScreen.color = new Color(0, 0, 0, blackScreen.color.a - 2 * Time.deltaTime);
             t += Time.deltaTime;
             yield return new WaitForSeconds(Time.deltaTime);
@@ -193,17 +193,17 @@ public class TransitionController : MonoBehaviour
             yield break;
         }
         
-        planetLandGO.transform.localScale = new Vector3(10 * BackgroundController.Instance.parallax.transform.localScale.x, 10 * BackgroundController.Instance.parallax.transform.localScale.x, 1);
-        planetLandGO.transform.parent = Camera.main.transform.GetChild(0);
+        planetLandGO.transform.localScale = new Vector3(10, 10, 1);
+        planetLandGO.transform.parent = gameObject.transform;
         planetLandGO.transform.localPosition = new Vector3(150, 0, 0);
 
-        planetLandGO.GetComponent<PlanetSpin>().InitSprites(planet.GetSurface(), planet.GetClouds());
+        //planetLandGO.GetComponent<PlanetSpin>().InitSprites(planet.GetSurface(), planet.GetClouds());
 
         
         while (planetLandGO.transform.localPosition.x > 80f) 
         {
             // Slow down as planet approaches target position 
-            float speed = (40 - Mathf.Clamp(120 - planetLandGO.transform.localPosition.x, 0, 40)) * BackgroundController.Instance.parallax.transform.localScale.x;
+            float speed = (40 - Mathf.Clamp(120 - planetLandGO.transform.localPosition.x, 0, 40));
             planetLandGO.transform.position = new Vector3(planetLandGO.transform.position.x - (speed * Time.deltaTime), planetLandGO.transform.position.y, planetLandGO.transform.position.z);
             
 
@@ -223,7 +223,7 @@ public class TransitionController : MonoBehaviour
         while (time < 1)
         {
             InputController.Instance.desiredCameraZoom += 500 * Time.deltaTime;
-            InputController.Instance.UpdateBackgroundScale();
+            // InputController.Instance.UpdateBackgroundScale();
             blackScreen.color = new Color(0, 0, 0, blackScreen.color.a + 1 * Time.deltaTime);
 
             planetLandGO.transform.localScale = new Vector3(planetLandGO.transform.localScale.x + (10 * Time.deltaTime), planetLandGO.transform.localScale.y + (10 * Time.deltaTime), 1);
