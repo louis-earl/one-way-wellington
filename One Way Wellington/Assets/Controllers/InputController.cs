@@ -654,13 +654,25 @@ public class InputController : MonoBehaviour
         }
     }
 
-    public IEnumerator MoveCameraTo(float cameraPosX, float cameraPosY)
+    public IEnumerator MoveCameraTo(float cameraPosX, float cameraPosY, float cameraZoom = -1)
     {
-        Vector3 newCameraPos = new Vector3(cameraPosX, cameraPosY, -10);
-    
-        while (Vector3.Distance(Camera.main.transform.position, newCameraPos) > 0.1f)
+        if (cameraZoom == -1) cameraZoom = Camera.main.orthographicSize;
+
+        Vector3 newCameraPos = new Vector3(cameraPosX, cameraPosY, cameraPosZ);
+        float t = 0;
+        while (t < 0.4f)
         {
-            Camera.main.transform.position = Vector3.Lerp(newCameraPos, Camera.main.transform.position, 0.5f);
+            Camera.main.transform.position = Vector3.Lerp(newCameraPos, Camera.main.transform.position, 0.85f);
+            Camera.main.orthographicSize = desiredCameraZoom = Mathf.Lerp(cameraZoom, Camera.main.orthographicSize, 0.85f);
+            // Camera bounds 
+            if (Camera.main.transform.position.x < cameraBoundMin + desiredCameraZoom) Camera.main.transform.position = new Vector3(cameraBoundMin + desiredCameraZoom, Camera.main.transform.position.y, cameraPosZ);
+            else if (Camera.main.transform.position.x > cameraBoundMax - desiredCameraZoom) Camera.main.transform.position = new Vector3(cameraBoundMax - desiredCameraZoom, Camera.main.transform.position.y, cameraPosZ);
+
+            // Not contained in the same block because x and y camera bounds could be breached at the same time. 
+            if (Camera.main.transform.position.y < cameraBoundMin + desiredCameraZoom) Camera.main.transform.position = new Vector3(Camera.main.transform.position.x, cameraBoundMin + desiredCameraZoom, cameraPosZ);
+            else if (Camera.main.transform.position.y > cameraBoundMax - desiredCameraZoom) Camera.main.transform.position = new Vector3(Camera.main.transform.position.x, cameraBoundMax - desiredCameraZoom, cameraPosZ);
+
+            t += Time.deltaTime;
             yield return new WaitForSeconds(Time.deltaTime);
         }
         

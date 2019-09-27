@@ -152,8 +152,6 @@ public class WorldController : MonoBehaviour
         planet.transform.position = new Vector3(temp.x, temp.y, 1020);
         planet.name = name;
         planet.GetComponent<Planet>().SetPlanetName(name);
-        planet.GetComponent<Planet>().planetScale = Random.Range(1f, 1.85f);
-        planet.transform.localScale = new Vector3(planet.GetComponent<Planet>().planetScale, planet.GetComponent<Planet>().planetScale, 1);
 
 
         // Initialise sprites
@@ -162,11 +160,19 @@ public class WorldController : MonoBehaviour
         if (name == "Earth")
         {
             planetGraphicSuffix = 0;
+            planet.GetComponent<Planet>().planetScale = 1.7f;
+
+
         }
         else
         {
             planetGraphicSuffix = Random.Range(1, 4);
+            planet.GetComponent<Planet>().planetScale = Random.Range(1f, 2f);
+
         }
+        planet.transform.localScale = new Vector3(planet.GetComponent<Planet>().planetScale, planet.GetComponent<Planet>().planetScale, 1);
+
+
         planet.GetComponent<Planet>().SetPlanetGraphicSuffix(planetGraphicSuffix);
         planet.GetComponent<Planet>().SetSurface(Resources.Load < Sprite > ("Images/Planets/Surfaces/Surface" + planetGraphicSuffix.ToString()));
         planet.GetComponent<Planet>().SetClouds(Resources.Load < Sprite > ("Images/Planets/Clouds/Cloud" + planetGraphicSuffix.ToString()));

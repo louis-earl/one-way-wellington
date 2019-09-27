@@ -40,7 +40,9 @@ public class Planet : MonoBehaviour
             planetUI.GetComponent<PlanetInterface>().SetPlanet(this, false);
             planetUI.GetComponent<PlanetInterface>().button_ContinueJourney.gameObject.SetActive(false);
             planetUI.GetComponent<PlanetInterface>().SetMoveWithPlanet(true);
+
         }
+        StartCoroutine(InputController.Instance.MoveCameraTo(transform.position.x, transform.position.y));
     }
 
     public Vector2 GetPlanetCoordinates()
