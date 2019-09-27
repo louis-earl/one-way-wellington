@@ -107,6 +107,17 @@ public class JourneyController : MonoBehaviour
                     line.transform.Rotate(new Vector3(0, 90, 0));
                     line.transform.parent = TransitionController.Instance.mapGO.transform;
                     line.GetComponentInChildren<Canvas>().GetComponentInChildren<TextMeshProUGUI>().text = string.Format("{0:C}", (int)Vector3.Distance(planet.transform.position, lastPlanet.transform.position) * FUEL_COST);
+
+                    // Rotate fuel cost text 
+                    Debug.Log("line.transform.localRotation.eulerAngles.y): " + line.transform.localRotation.eulerAngles.y);
+                    if (Mathf.Abs(line.transform.localRotation.eulerAngles.y % 360) >= 90)
+                    {
+                        Debug.Log("Backwards text");
+                        line.GetComponentInChildren<Canvas>().GetComponentInChildren<RectTransform>().localRotation = Quaternion.Euler(new Vector3(0, -180, 0));
+                    }
+                    
+
+
                     nextPlanetVisit.linkLine = line;
 
                     // Fuel usage
