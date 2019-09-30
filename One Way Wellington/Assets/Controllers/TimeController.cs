@@ -30,6 +30,10 @@ public class TimeController : MonoBehaviour
     public TextMeshProUGUI timeDisplayMinute10;
     public TextMeshProUGUI timeDisplayMinute01;
 
+    // Audio 
+    public AudioSource audio_TimePause;
+    public AudioSource audio_TimeButton;
+
 
     // Start is called before the first frame update
     void Start()
@@ -86,6 +90,7 @@ public class TimeController : MonoBehaviour
     {
         if (isOn)
         {
+            audio_TimePause.Play();
             StartBlinking();
             Time.timeScale = 0;
         }
@@ -95,6 +100,7 @@ public class TimeController : MonoBehaviour
     {
         if (isOn)
         {
+            audio_TimeButton.Play();
             StopBlinking();
             Time.timeScale = 1;
         }
@@ -104,6 +110,7 @@ public class TimeController : MonoBehaviour
     {
         if (isOn)
         {
+            audio_TimeButton.Play();
             StopBlinking();
             Time.timeScale = 2;
         }
@@ -113,6 +120,7 @@ public class TimeController : MonoBehaviour
     {
         if (isOn)
         {
+            audio_TimeButton.Play();
             StopBlinking();
             Time.timeScale = 4;
         }

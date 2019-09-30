@@ -27,6 +27,9 @@ public class UserInterfaceController : MonoBehaviour
     public GameObject tooltipInstance;
     public string toolTipText;
 
+    // Audio 
+    public AudioSource audio_OpenBuildPanel;
+    public AudioSource audio_SelectBuildItem;
 
     public static UserInterfaceController Instance;
 
@@ -69,6 +72,10 @@ public class UserInterfaceController : MonoBehaviour
 
     private void CloseOtherBuilding(int ignore)
     {
+
+        audio_SelectBuildItem.Play();
+        audio_OpenBuildPanel.PlayDelayed(0.04f);
+        
         BuildModeController.Instance.SetAllListingTogglesOff();
 
         foreach (GameObject g in subPanels)
@@ -80,6 +87,7 @@ public class UserInterfaceController : MonoBehaviour
 
 
     }
+
 
 
     public void ToggleHullPanel()

@@ -76,11 +76,15 @@ public class InputController : MonoBehaviour
     // Tile Interface
     public static GameObject tileInterfaceGO;
     public GameObject tileInterfacePrefab;
+
+
+    // Audio 
+    public AudioSource audio_Button_SelectBuild;
+    public AudioSource audio_Button_CloseBuild;
+
+
+
     
-
-
-
-
 
     // Start is called before the first frame update
     void Start()
@@ -97,8 +101,8 @@ public class InputController : MonoBehaviour
         cameraSizeMin = 3f;
         cameraSizeMax = 50f;
         cameraPosZ = -10;
-        cameraBoundMin = 0;
-        cameraBoundMax = 100;
+        cameraBoundMin = -20;
+        cameraBoundMax = 120;
 
         desiredCameraZoom = Camera.main.orthographicSize;
         desiredCameraPos = Camera.main.transform.position;
@@ -128,7 +132,7 @@ public class InputController : MonoBehaviour
             ClearUI();
             isCanceled = true;
             UserInterfaceController.Instance.tooltipInstance.GetComponentInChildren<TextMeshProUGUI>().text = UserInterfaceController.Instance.toolTipText;
-
+            audio_Button_CloseBuild.Play();
         }
         // We want to stop building selected 
         else if (Input.GetButtonDown("Cancel") && (isMode_Dragable || isMode_Plopable))
@@ -136,12 +140,16 @@ public class InputController : MonoBehaviour
             BuildModeController.Instance.SetAllListingTogglesOff();
             SetMode_None();
             ClearUI();
+            audio_Button_CloseBuild.Play();
+
         }
         // We want to exit build mode 
         else if (Input.GetButtonDown("Cancel"))
         {
             UserInterfaceController.Instance.CloseAllBuilding();
             UserInterfaceController.Instance.panel_Building.GetComponent<ToggleGroup>().SetAllTogglesOff(false);
+            audio_Button_CloseBuild.Play();
+
         }
         // Allow building 
         else if (!isCanceled)
@@ -225,12 +233,12 @@ public class InputController : MonoBehaviour
         Camera.main.orthographicSize = Mathf.Lerp(desiredCameraZoom, currentCameraZoom, 0.90f);
 
         // zoom into mouse 
-        /*
+        
         if (Input.GetAxis("Mouse ScrollWheel") > 0)
         {
             desiredCameraPos = new Vector3(currFramePosition.x, currFramePosition.y, Camera.main.transform.position.z);
         }
-        */
+        
         // Handle screen panning
         // Right or Middle Mouse Button
         if (Input.GetMouseButton(1) || Input.GetMouseButton(2))
@@ -242,8 +250,8 @@ public class InputController : MonoBehaviour
         else
         {
             
-            //float melerp = 1 - ((currentCameraZoom - desiredCameraZoom) / (100 * (currentCameraZoom/5)));
-            //Camera.main.transform.position = Vector3.Lerp(desiredCameraPos, Camera.main.transform.position, melerp);
+            float melerp = 1 - ((currentCameraZoom - desiredCameraZoom) / (100 * (currentCameraZoom/5)));
+            Camera.main.transform.position = Vector3.Lerp(desiredCameraPos, Camera.main.transform.position, melerp);
         }
 
         // Camera bounds 
@@ -295,6 +303,7 @@ public class InputController : MonoBehaviour
         SetMode_None();
         isMode_Hull = !temp;
         isMode_Dragable = !temp;
+        if (isMode_Hull) audio_Button_SelectBuild.Play();
 
         BuildModeController.Instance.SetGridVisible(true);
     }
@@ -305,6 +314,7 @@ public class InputController : MonoBehaviour
         SetMode_None();
         isMode_HullNoWalls = !temp;
         isMode_Dragable = !temp;
+        if (isMode_HullNoWalls) audio_Button_SelectBuild.Play();
 
         BuildModeController.Instance.SetGridVisible(true);
     }
@@ -315,6 +325,7 @@ public class InputController : MonoBehaviour
         SetMode_None();
         isMode_RemoveHull = !temp;
         isMode_Dragable = !temp;
+        if (isMode_RemoveHull) audio_Button_SelectBuild.Play();
 
         BuildModeController.Instance.SetGridVisible(true);
     }
@@ -325,6 +336,7 @@ public class InputController : MonoBehaviour
         SetMode_None();
         isMode_Wall = !temp;
         isMode_Dragable = !temp;
+        if (isMode_Wall) audio_Button_SelectBuild.Play();
 
         BuildModeController.Instance.SetGridVisible(true);
     }
@@ -335,6 +347,7 @@ public class InputController : MonoBehaviour
         SetMode_None();
         isMode_RemoveWall = !temp;
         isMode_Dragable = !temp;
+        if (isMode_RemoveWall) audio_Button_SelectBuild.Play();
 
         BuildModeController.Instance.SetGridVisible(true);
     }
@@ -345,6 +358,7 @@ public class InputController : MonoBehaviour
         SetMode_None();
         isMode_Staff = !temp;
         isMode_Plopable = !temp;
+        if (isMode_Staff) audio_Button_SelectBuild.Play();
 
         this.staff = staff;
         BuildModeController.Instance.SetGridVisible(true);
@@ -363,6 +377,7 @@ public class InputController : MonoBehaviour
             isMode_Furniture = !temp;
             furnitureTypeInUse = furnitureType;
             isMode_Plopable = !temp;
+            if (isMode_Furniture) audio_Button_SelectBuild.Play();
 
             BuildModeController.Instance.SetGridVisible(true);
         }
@@ -375,6 +390,7 @@ public class InputController : MonoBehaviour
         isMode_FurnitureMulti = !temp;
         furnitureTypeInUse = furnitureType;
         isMode_Dragable = !temp;
+        if (isMode_FurnitureMulti) audio_Button_SelectBuild.Play();
 
         BuildModeController.Instance.SetGridVisible(true);
 
@@ -386,6 +402,7 @@ public class InputController : MonoBehaviour
         SetMode_None();
         isMode_RemoveFurniture = !temp;
         isMode_Dragable = !temp;
+        if (isMode_RemoveFurniture) audio_Button_SelectBuild.Play();
 
         BuildModeController.Instance.SetGridVisible(true);
 
@@ -398,6 +415,7 @@ public class InputController : MonoBehaviour
         isMode_Rooms = !temp;
         roomTypeInUse = roomType;
         isMode_Dragable = !temp;
+        if (isMode_Rooms) audio_Button_SelectBuild.Play();
 
         BuildModeController.Instance.roomsTilemap.SetActive(true);
         BuildModeController.Instance.SetGridVisible(true);

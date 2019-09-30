@@ -172,8 +172,8 @@ public class TransitionController : MonoBehaviour
         }
         InputController.Instance.desiredCameraZoom = 40;
         yield return new WaitForSeconds(1);
-        InputController.Instance.cameraBoundMin = -10;
-        InputController.Instance.cameraBoundMax = 110;
+        InputController.Instance.cameraBoundMin = -20;
+        InputController.Instance.cameraBoundMax = 120;
         InputController.Instance.cameraSizeMax = 50;
 
         InputController.Instance.cameraZoomEnabled = true;
@@ -287,8 +287,8 @@ public class TransitionController : MonoBehaviour
             yield return new WaitForSeconds(Time.deltaTime);
         }
         blackScreen.enabled = false;
-        InputController.Instance.cameraBoundMin = -10;
-        InputController.Instance.cameraBoundMax = 110;
+        InputController.Instance.cameraBoundMin = -20;
+        InputController.Instance.cameraBoundMax = 120;
         yield return null;
     }
 
