@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class PanelAlpha : MonoBehaviour
 {
 
-    private Image image;
+    Image image;
     [Range(0,1)]
     public float alpha;
     private List<Transform> currentChildren;
@@ -15,7 +15,7 @@ public class PanelAlpha : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        image = GetComponent<Image>();
+        image = gameObject.GetComponent<Image>();
     }
 
     // Update is called once per frame
@@ -43,7 +43,7 @@ public class PanelAlpha : MonoBehaviour
     {
         foreach(Transform child in currentChildren)
         {
-            if (child.gameObject.TryGetComponent<Image>(out image))
+            if (child.gameObject.TryGetComponent<Image>(out Image image))
             {
                 image.color = new Color(image.color.r, image.color.g, image.color.b, alpha);
             }

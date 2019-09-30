@@ -32,7 +32,7 @@ public class ScrollingTextureGroup : MonoBehaviour
 
         for (int i = 1; i < spriteRenderers.Length; i++)
         {
-            spriteRenderers[i].transform.localPosition = new Vector3(Camera.main.transform.position.x * i * 0.2f, Camera.main.transform.position.y * i * 0.2f, 0);
+            spriteRenderers[i].transform.localPosition = new Vector3(Camera.main.transform.position.x * i * 0.05f, Camera.main.transform.position.y * i * 0.05f, 0);
         }
     }
 
