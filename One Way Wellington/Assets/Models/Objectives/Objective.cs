@@ -43,13 +43,13 @@ public class Objective
             {
                 // Update graphic       
                 goalGO.GetComponentInChildren<Toggle>().isOn = true;
-                goalGO.GetComponent<Image>().color = new Color(0.254902f, 0.6431373f, 0.2196078f);
+                goalGO.GetComponent<Image>().color = new Color(0.145098f, 0.8666667f, 0.827451f); // green
             }
             else
             {
                 // Update graphic (in case the goal changed back to incomplete) 
                 goalGO.GetComponentInChildren<Toggle>().isOn = false;
-                goalGO.GetComponent<Image>().color = new Color(0.2313726f, 0.1529412f, 0.7294118f);
+                goalGO.GetComponent<Image>().color = new Color(0.2313726f, 0.1529412f, 0.7294118f); //purple
 
                 isAllGoalsComplete = false;
             }

@@ -84,7 +84,7 @@ public class ObjectiveController : MonoBehaviour
                 // UI pop-up if Objectives panel not already open 
                 if (!objectiveUIParent.activeInHierarchy)
                 {
-                    NotificationController.Instance.CreateNotification("Objective Complete!", UrgencyLevel.Low, true, false, new List<System.Action>() { new System.Action(delegate () { toggle_Objectives.GetComponent<Toggle>().isOn = true; }) });
+                    NotificationController.Instance.CreateNotification("Objective Complete! (" + objective.title + ")", UrgencyLevel.Low, true, false, new List<string>() { "Open Objectives Panel" }, new List<System.Action>() { new System.Action(delegate () { toggle_Objectives.GetComponent<Toggle>().isOn = true; }) });
                 }
             }
         }

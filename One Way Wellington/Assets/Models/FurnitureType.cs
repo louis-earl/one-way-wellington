@@ -207,8 +207,8 @@ public class FurnitureType
             FurnitureType.BuildCategory.Utility,
             500,
             5,
-            sizeX: 2,
-            sizeY: 3,
+            sizeX: 1,
+            sizeY: 2,
             fixedRotation: true,
             requireElectricity: true
             ));

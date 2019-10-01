@@ -10,6 +10,10 @@ public class InputController : MonoBehaviour
 {
     public static InputController Instance;
 
+    // Background 
+    public GameObject backgroundGO_Ship;
+    public GameObject backgroundGO_Map;
+
     // Build measure / price interface
     public GameObject buildMeasurePrefabX;
     public GameObject buildMeasurePrefabY;
@@ -46,7 +50,7 @@ public class InputController : MonoBehaviour
 
 
     private FurnitureType furnitureTypeInUse;
-    private String roomTypeInUse;
+    private string roomTypeInUse;
 
     private GameObject staff;
 
@@ -108,6 +112,10 @@ public class InputController : MonoBehaviour
 
         desiredCameraZoom = Camera.main.orthographicSize;
         desiredCameraPos = Camera.main.transform.position;
+
+        // Switch background GO 
+        InputController.Instance.backgroundGO_Ship.SetActive(true);
+        InputController.Instance.backgroundGO_Map.SetActive(false);
     }
 
     private bool isCanceled = false;

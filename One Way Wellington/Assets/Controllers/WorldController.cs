@@ -160,14 +160,14 @@ public class WorldController : MonoBehaviour
         if (name == "Earth")
         {
             planetGraphicSuffix = 0;
-            planet.GetComponent<Planet>().planetScale = 1.7f;
+            planet.GetComponent<Planet>().planetScale = 1.9f;
 
 
         }
         else
         {
             planetGraphicSuffix = Random.Range(1, 4);
-            planet.GetComponent<Planet>().planetScale = Random.Range(1f, 2f);
+            planet.GetComponent<Planet>().planetScale = Random.Range(1.4f, 2.2f);
 
         }
         planet.transform.localScale = new Vector3(planet.GetComponent<Planet>().planetScale, planet.GetComponent<Planet>().planetScale, 1);

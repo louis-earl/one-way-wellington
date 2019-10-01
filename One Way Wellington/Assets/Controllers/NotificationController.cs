@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 
 public enum UrgencyLevel
@@ -32,7 +33,7 @@ public class NotificationController : MonoBehaviour
         notifications = new List<GameObject>();
     }
 
-    public void CreateNotification(string description, UrgencyLevel urgencyLevel, bool destroyExisting, bool saveToNotifications = true, List<Action> buttonActions = null)
+    public void CreateNotification(string description, UrgencyLevel urgencyLevel, bool destroyExisting, bool saveToNotifications = true, List<string> buttonTitles = null, List<Action> buttonActions = null)
     {
         // Remove older occurances of the same notification 
         if (destroyExisting)
@@ -42,13 +43,13 @@ public class NotificationController : MonoBehaviour
 
         if (saveToNotifications)
         {
-            GameObject notificationGO = CreateNotificationGO(notificationParent.transform, false, description, urgencyLevel, destroyExisting, buttonActions);
+            GameObject notificationGO = CreateNotificationGO(notificationParent.transform, false, description, urgencyLevel, destroyExisting, buttonTitles, buttonActions);
             notifications.Add(notificationGO);
         }
         // Add to event feed if notifications panel not already open 
         if (!notificationParent.activeInHierarchy && !ObjectiveController.Instance.objectiveUIParent.activeInHierarchy)
         {
-            GameObject eventFeedGO = CreateNotificationGO(eventFeedParent.transform, true, description, urgencyLevel, destroyExisting, buttonActions);
+            GameObject eventFeedGO = CreateNotificationGO(eventFeedParent.transform, true, description, urgencyLevel, destroyExisting, buttonTitles, buttonActions);
             Canvas.ForceUpdateCanvases();
             eventFeedGO.transform.parent.GetComponent<ContentSizeFitter>().enabled = false;
             eventFeedGO.transform.parent.GetComponent<ContentSizeFitter>().enabled = true;
@@ -56,7 +57,7 @@ public class NotificationController : MonoBehaviour
         }
     }
 
-    private GameObject CreateNotificationGO(Transform parent, bool destroyOnClick, string description, UrgencyLevel urgencyLevel, bool destroyExisting, List<Action> buttonActions)
+    private GameObject CreateNotificationGO(Transform parent, bool destroyOnClick, string description, UrgencyLevel urgencyLevel, bool destroyExisting, List<string> buttonTitles, List<Action> buttonActions)
     {
         GameObject notificationGO = Instantiate(notificationPrefab);
 
@@ -67,6 +68,10 @@ public class NotificationController : MonoBehaviour
         notification.descriptionGO.text = description;
         if (buttonActions != null)
         {
+            if (buttonActions.Count != buttonTitles.Count)
+            {
+                Debug.LogError("Unmatched number of button titles to actions!");
+            }
             foreach (Action action in buttonActions)
             {
                 GameObject buttonGO = Instantiate(buttonPrefab);
@@ -81,6 +86,11 @@ public class NotificationController : MonoBehaviour
                 {
                     buttonGO.GetComponent<Button>().onClick.AddListener(() => action.Invoke());
                 }
+
+                // Button texts
+                buttonGO.GetComponentInChildren<TextMeshProUGUI>().text = buttonTitles[buttonActions.IndexOf(action)];
+
+                
             }
         }
 

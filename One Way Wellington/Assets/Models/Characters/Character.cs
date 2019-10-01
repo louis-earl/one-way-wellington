@@ -373,7 +373,7 @@ public class Character : MonoBehaviour
                 {
                     delegate () { StartCoroutine(InputController.Instance.MoveCameraTo(currentX, currentY)); }
                 };
-                NotificationController.Instance.CreateNotification("Your " + gameObject.tag + ", '" + gameObject.name + "' is low on health!", UrgencyLevel.Medium, false, buttonActions: actions);
+                NotificationController.Instance.CreateNotification("Your " + gameObject.tag + ", '" + gameObject.name + "' is low on health!", UrgencyLevel.Medium, false, buttonTitles: new List<string>() { "Go To" }, buttonActions: actions);
             }
         }
         

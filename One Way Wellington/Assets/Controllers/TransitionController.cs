@@ -20,6 +20,8 @@ public class TransitionController : MonoBehaviour
     {
         blackScreen.enabled = false;
         if (Instance == null) Instance = this;
+
+        
     }
 
     // Called from UI button
@@ -83,6 +85,10 @@ public class TransitionController : MonoBehaviour
         Camera.main.orthographicSize = 0.1f;
         InputController.Instance.desiredCameraZoom = 0.1f;
 
+        // Switch background GO 
+        InputController.Instance.backgroundGO_Ship.SetActive(false);
+        InputController.Instance.backgroundGO_Map.SetActive(true);
+
         float t = 0;
         while (t < 0.66)
         {
@@ -145,6 +151,11 @@ public class TransitionController : MonoBehaviour
 
         InputController.Instance.cameraPosZ = -10;
         Camera.main.transform.position = new Vector3(50, 50, -10);
+
+        // Switch background GO 
+        InputController.Instance.backgroundGO_Ship.SetActive(true);
+        InputController.Instance.backgroundGO_Map.SetActive(false);
+
         InputController.Instance.desiredCameraPos = new Vector3(50, 50, -10);
 
         InputController.Instance.cameraSizeMin = 3;
@@ -274,7 +285,10 @@ public class TransitionController : MonoBehaviour
         InputController.Instance.desiredCameraPos = new Vector3(50, 50, -10);
         InputController.Instance.cameraSizeMin = 3;
         InputController.Instance.cameraSizeMax = 50;
-        
+
+        // Switch background GO 
+        InputController.Instance.backgroundGO_Ship.SetActive(true);
+        InputController.Instance.backgroundGO_Map.SetActive(false);
 
         isMapMode = false;
 
