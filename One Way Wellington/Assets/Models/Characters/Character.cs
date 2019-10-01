@@ -149,25 +149,8 @@ public class Character : MonoBehaviour
 		}
 
 
-        // Set path 
-        if (currentJob != null)
-        {
-
-            NavMeshPath navpath = new NavMeshPath();
-            NavMesh.CalculatePath(new Vector3(currentX, currentY, 0), currentJob.GetLocation(), -1, navpath);
-            if (navpath.status == NavMeshPathStatus.PathComplete)
-            {
-                navMeshAgent.SetDestination(currentJob.GetLocation());
-            }
-            else
-            {
-                Debug.Log("Couldn't make a path");
-                ReturnFailedJob();
-                return;
-            }
-        }
-
         // Check if at job location
+        // Ordered before setting a path, incase already at location 
         if (currentJob != null)
         {
             // For tile based job
@@ -186,7 +169,26 @@ public class Character : MonoBehaviour
                     return;
                 }
             }
-        }      
+        }
+
+
+        // Set path 
+        if (currentJob != null)
+        {
+
+            NavMeshPath navpath = new NavMeshPath();
+            NavMesh.CalculatePath(new Vector3(currentX, currentY, 0), currentJob.GetLocation(), -1, navpath);
+            if (navpath.status == NavMeshPathStatus.PathComplete)
+            {
+                navMeshAgent.SetDestination(currentJob.GetLocation());
+            }
+            else
+            {
+                Debug.Log("Couldn't make a path");
+                ReturnFailedJob();
+                return;
+            }
+        }
     }
 
     public void ReturnFailedJob()
@@ -199,13 +201,13 @@ public class Character : MonoBehaviour
             CargoController.Instance.stockInTransit.Remove(targetJob.GetTileOWW());
 
             // Notification 
-            NotificationController.Instance.CreateNotification("A builder just got stuck trying to move some cargo, consider building more Airlock doors.", UrgencyLevel.Medium, true, null);
+            NotificationController.Instance.CreateNotification("A builder just got stuck trying to move some cargo, consider building more Airlock doors.", UrgencyLevel.Medium, true, buttonActions: null);
 
         }
         else if (targetJob.GetJobType() == "Return Cargo")
         {
             Debug.LogWarning("Failed to return the failed job");
-            NotificationController.Instance.CreateNotification("A builder just got stuck trying to move some cargo, consider building more Airlock doors.", UrgencyLevel.Medium, true, null);
+            NotificationController.Instance.CreateNotification("A builder just got stuck trying to move some cargo, consider building more Airlock doors.", UrgencyLevel.Medium, true, buttonActions: null);
 
 
         }
@@ -321,7 +323,7 @@ public class Character : MonoBehaviour
                 }
 
                 // Create new notification
-                NotificationController.Instance.CreateNotification("Your " + gameObject.tag + ", '" + gameObject.name + "' has died!", UrgencyLevel.High, false, null);
+                NotificationController.Instance.CreateNotification("Your " + gameObject.tag + ", '" + gameObject.name + "' has died!", UrgencyLevel.High, false, buttonActions: null);
             }
 
             // Remove other references 
@@ -346,7 +348,7 @@ public class Character : MonoBehaviour
                 {
                     delegate () { StartCoroutine(InputController.Instance.MoveCameraTo(currentX, currentY)); }
                 };
-                NotificationController.Instance.CreateNotification("Your " + gameObject.tag + ", '" + gameObject.name + "' is low on health!", UrgencyLevel.Medium, false, actions);
+                NotificationController.Instance.CreateNotification("Your " + gameObject.tag + ", '" + gameObject.name + "' is low on health!", UrgencyLevel.Medium, false, buttonActions: actions);
             }
         }
         

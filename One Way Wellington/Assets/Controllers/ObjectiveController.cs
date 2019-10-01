@@ -11,10 +11,16 @@ public class ObjectiveController : MonoBehaviour
     public GameObject objectiveUIParent;
     public GameObject objectiveUIPrefab;
     public GameObject goalUIPrefab;
+    public GameObject toggle_Objectives;
 
     private List<Objective> currentObjectives;
 
     private Dictionary<string, Objective> allObjectives;
+
+    // audio 
+    public AudioSource audio_ObjectiveComplete;
+    public AudioSource audio_ObjectiveRemove;
+
 
     public void AddObjective(Objective objective)
     {
@@ -70,7 +76,16 @@ public class ObjectiveController : MonoBehaviour
                 objectiveGO.GetComponent<ObjectiveUI>().text_OnComplete.text = "Click to claim reward!";
                 objectiveGO.GetComponent<Button>().onClick.AddListener(delegate () { CloseObjective(objectiveGO); });
 
-                objectivesToRemove.Add(objective);               
+                objectivesToRemove.Add(objective);
+
+                // Play sound 
+                audio_ObjectiveComplete.Play();
+
+                // UI pop-up if Objectives panel not already open 
+                if (!objectiveUIParent.activeInHierarchy)
+                {
+                    NotificationController.Instance.CreateNotification("Objective Complete!", UrgencyLevel.Low, true, false, new List<System.Action>() { new System.Action(delegate () { toggle_Objectives.GetComponent<Toggle>().isOn = true; }) });
+                }
             }
         }
 
@@ -88,6 +103,10 @@ public class ObjectiveController : MonoBehaviour
             AddObjective(allObjectives[nextObjective]);
         }
 
+        // Play sound 
+        audio_ObjectiveRemove.timeSamples = 5000;
+        audio_ObjectiveRemove.Play();
+
         CurrencyController.Instance.AddBankBalance(objectiveGO.GetComponent<ObjectiveUI>().objectiveReference.reward);
         Destroy(objectiveGO);
     }
@@ -101,9 +120,9 @@ public class ObjectiveController : MonoBehaviour
         currentObjectives = new List<Objective>();
 
 
-        allObjectives.Add("Getting Started",
+        allObjectives.Add("Wellywood Cinematographer",
             new Objective(
-                "Getting Started",
+                "Wellywood Cinematographer",
                 new List<Goal>
                 {
                     new Goal_CameraPan("Hold the right mouse button and drag to pan the camera", new Vector2(Camera.main.transform.position.x, Camera.main.transform.position.y), 10),
@@ -297,7 +316,7 @@ public class ObjectiveController : MonoBehaviour
 
 
         // Initial Objective 
-        AddObjective(allObjectives["Getting Started"]);
+        AddObjective(allObjectives["Wellywood Cinematographer"]);
         
     }
 

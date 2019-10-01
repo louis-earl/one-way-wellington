@@ -49,7 +49,7 @@ public class Objective
             {
                 // Update graphic (in case the goal changed back to incomplete) 
                 goalGO.GetComponentInChildren<Toggle>().isOn = false;
-                goalGO.GetComponent<Image>().color = new Color(0f, 0.5254902f, 0.8117647f);
+                goalGO.GetComponent<Image>().color = new Color(0.2313726f, 0.1529412f, 0.7294118f);
 
                 isAllGoalsComplete = false;
             }

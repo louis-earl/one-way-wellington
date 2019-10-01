@@ -129,7 +129,7 @@ public class CargoController : MonoBehaviour
         // Stairwell notification last 
         if (!BuildModeController.Instance.furnitureTileOWWMap.ContainsKey("Stairwell"))
         {
-            NotificationController.Instance.CreateNotification("Your ship needs a stairwell to accept deliveries properly. Your materials have been placed on a random exterior tile instead.", UrgencyLevel.Medium, true, null);
+            NotificationController.Instance.CreateNotification("Your ship needs a stairwell to accept deliveries properly. Your materials have been placed on a random exterior tile instead.", UrgencyLevel.Medium, true, buttonActions: null);
         }
     }
 

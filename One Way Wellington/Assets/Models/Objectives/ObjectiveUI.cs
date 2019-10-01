@@ -20,6 +20,9 @@ public class ObjectiveUI : MonoBehaviour
 
     private void OnEnable()
     {
+        panel_OnComplete.color = new Color(panel_OnComplete.color.r, panel_OnComplete.color.g, panel_OnComplete.color.b, 0);
+        buttonClose.SetActive(isComplete);
+
         if (isComplete)
         {
             StartBlinking();
@@ -28,7 +31,7 @@ public class ObjectiveUI : MonoBehaviour
 
     private void Start()
     {
-        buttonClose.SetActive(false);
+        buttonClose.SetActive(isComplete);
         panel_OnComplete.color = new Color(panel_OnComplete.color.r, panel_OnComplete.color.g, panel_OnComplete.color.b, 0);
     }
 

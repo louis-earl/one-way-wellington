@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 
 public class PanelAlpha : MonoBehaviour
@@ -43,9 +44,18 @@ public class PanelAlpha : MonoBehaviour
     {
         foreach(Transform child in currentChildren)
         {
-            if (child.gameObject.TryGetComponent<Image>(out Image image))
+            float childAlpha = alpha;
+            if (child.gameObject.TryGetComponent(out PanelAlphaOriginal panelAlphaOriginal))
             {
-                image.color = new Color(image.color.r, image.color.g, image.color.b, alpha);
+                childAlpha = panelAlphaOriginal.alpha;
+            }
+            if (child.gameObject.TryGetComponent(out TextMeshProUGUI textMeshProUGUI))
+            {
+                textMeshProUGUI.color = new Color(textMeshProUGUI.color.r, textMeshProUGUI.color.g, textMeshProUGUI.color.b, childAlpha);
+            }
+            if (child.gameObject.TryGetComponent<Image>(out Image image))
+            {               
+                image.color = new Color(image.color.r, image.color.g, image.color.b, childAlpha);
             }
         }
     }
