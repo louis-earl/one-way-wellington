@@ -10,10 +10,6 @@ public class InputController : MonoBehaviour
 {
     public static InputController Instance;
 
-    public GameObject circleCursorPrefab;
-
-    // public GameObject backgroundGO;
-
     // Build measure / price interface
     public GameObject buildMeasurePrefabX;
     public GameObject buildMeasurePrefabY;
@@ -81,6 +77,12 @@ public class InputController : MonoBehaviour
     // Audio 
     public AudioSource audio_Button_SelectBuild;
     public AudioSource audio_Button_CloseBuild;
+    public GameObject audio_Blueprint_Drag; // Gameobject because we want multiple instances playing at once 
+    private float timeOfPlay_BlueprintDrag = 0f;
+    public AudioSource audio_Blueprint_DragComplete;
+    public GameObject audio_Blueprint_Plop;
+    private float timeOfPlay_BlueprintPlop = 0f;
+    public AudioSource audio_Blueprint_PlopComplete;
 
 
 
@@ -530,6 +532,22 @@ public class InputController : MonoBehaviour
                 Destroy(buildMeasureInstanceY);
             }
 
+            // Dragging audio
+            if (Input.GetMouseButton(0))
+            {
+                if ((int)currFramePosition.x != (int)lastFramePosition.x || (int)currFramePosition.y != (int)lastFramePosition.y)
+                {
+                    if (timeOfPlay_BlueprintDrag + 0.1f < Time.unscaledTime)
+                    {
+                        GameObject audioGO = Instantiate(audio_Blueprint_Drag);
+                        audioGO.GetComponent<AudioSource>().pitch = UnityEngine.Random.Range(0.85f, 1.3f);
+                        timeOfPlay_BlueprintDrag = Time.unscaledTime;
+                        audioGO.GetComponent<AudioSource>().Play();
+                        Destroy(audioGO, audioGO.GetComponent<AudioSource>().clip.length);
+                    }
+                }
+            }
+
             // Price indicator UI 
             if (currentBuildPrice > 0)
             {
@@ -568,8 +586,30 @@ public class InputController : MonoBehaviour
             }
             else Destroy(buildPriceInstance);
         }
-        else Destroy(buildPriceInstance);
+        else if (isMode_Plopable)
+        {
+            // play sound 
+            if ((int)currFramePosition.x != (int)lastFramePosition.x || (int)currFramePosition.y != (int)lastFramePosition.y)
+            {
+                if (timeOfPlay_BlueprintPlop + 0.075f < Time.unscaledTime)
+                {
+                    GameObject audioGO = Instantiate(audio_Blueprint_Plop);
+                    audioGO.GetComponent<AudioSource>().pitch = UnityEngine.Random.Range(0.85f, 1.3f);
+                    timeOfPlay_BlueprintPlop = Time.unscaledTime;
+                    audioGO.GetComponent<AudioSource>().Play();
+                    Destroy(audioGO, audioGO.GetComponent<AudioSource>().clip.length);
+                }
+            }
 
+            // update price graphic 
+            if (currentBuildPrice > 0)
+            {
+                if (buildPriceInstance == null) buildPriceInstance = Instantiate(buildPricePrefab);
+                buildPriceInstance.transform.position = new Vector3((int)currFramePosition.x + 0.5f, (int)currFramePosition.y + 1.5f);
+                buildPriceInstance.transform.localScale = Vector3.one / 60;
+                buildPriceInstance.GetComponentInChildren<TextMeshProUGUI>().text = string.Format("{0:C}", currentBuildPrice);
+            }
+        }
 
         // End Drag
         if (Input.GetMouseButtonUp(0))
@@ -657,6 +697,16 @@ public class InputController : MonoBehaviour
             {
                 List<TileOWW> roomTiles = BuildModeController.Instance.PreviewRoom(roomTypeInUse, start_x, end_x, start_y, end_y);
                 BuildModeController.Instance.PlaceRoom(roomTiles, roomTypeInUse);
+            }
+
+            // audio 
+            if (isMode_Plopable)
+            {
+                audio_Blueprint_PlopComplete.Play();
+            }
+            else if (isMode_Dragable)
+            {
+                audio_Blueprint_DragComplete.Play();
             }
 
             BuildModeController.Instance.ClearPreviews();

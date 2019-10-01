@@ -17,7 +17,7 @@ public class CurrencyController : MonoBehaviour
     {
         if (Instance == null) Instance = this;
         // TODO: Load/save
-        SetBankBalance(50000);
+        SetBankBalance(60000);
     }
 
     // Update is called once per frame

@@ -349,6 +349,8 @@ public class BuildModeController : MonoBehaviour
             else CreatePreview(invalidPreviewPrefab, furnitureType.title, posX, posY);
 
         }
+        // Display price UI
+        InputController.Instance.currentBuildPrice = furnitureType.cost;
 
         return furnitureTileReturn;
     }
@@ -506,6 +508,9 @@ public class BuildModeController : MonoBehaviour
         {
             CreatePreview(invalidPreviewPrefab, staffType, posX, posY);
         }
+
+        // Display price UI
+        InputController.Instance.currentBuildPrice = 1000;
     }
 
     public void PlanHull(List<TileOWW> hull_tiles, List<TileOWW> furniture_tiles, List<TileOWW> floor_tiles)

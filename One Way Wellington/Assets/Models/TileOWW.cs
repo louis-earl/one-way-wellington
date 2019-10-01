@@ -120,7 +120,7 @@ public class TileOWW
 
     public override string ToString()
     {
-        return ("Tile: (" + x + ", " + y + "); TileType: " + tileType + "; InstalledFurniture: " + installedFurniture);
+        return ("Tile: (" + x + ", " + y + "); TileType: " + tileType + "; InstalledFurniture: " + installedFurniture?.GetFurnitureType());
     }
 
     // Job-less and furniture-less

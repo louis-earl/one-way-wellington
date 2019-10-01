@@ -148,7 +148,7 @@ public class ObjectiveController : MonoBehaviour
                 {
                     "Staff Basics",
                     "Get Moving",
-                    "Habitable"
+                    "Most Livable City"
                 }
          ));
 
@@ -182,9 +182,9 @@ public class ObjectiveController : MonoBehaviour
                 new List<string>()
          ));
 
-        allObjectives.Add("Habitable",
+        allObjectives.Add("Most Livable City",
             new Objective(
-                "Habitable",
+                "Most Livable City",
                 new List<Goal>
                 {
                     new Goal_Furniture("Build an Oxygen Vent", 1, "Oxygen Vent"),

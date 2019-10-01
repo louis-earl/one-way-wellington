@@ -46,10 +46,20 @@ public class CargoController : MonoBehaviour
     // Attempt to find placement for cargo that is not located to a hull tile (floating out in space) 
     public void CheckTempStockLocations()
     {
+        Debug.Log("Checking temp stock locations (floating stock to be moved to a hull tile)");
         if (tempStockLocations.Count > 0)
         {
             TileOWW tileOWW = tempStockLocations.Peek();
 
+            // Is there any stock left on this tile?
+            if (tileOWW.looseItem == null)
+            {
+                tempStockLocations.Dequeue();
+                CheckTempStockLocations();
+                return;
+            }
+
+            // Does this stock still need to be moved?
             if (tileOWW.GetTileType() == "Empty")
             {
                 // Find appropriate place to place cargo first 
@@ -80,6 +90,7 @@ public class CargoController : MonoBehaviour
                     Debug.Log("Move job added for cargo on empty tile");
                 }
             }
+
         }
     }
 
