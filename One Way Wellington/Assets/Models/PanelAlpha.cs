@@ -56,6 +56,10 @@ public class PanelAlpha : MonoBehaviour
             if (child.gameObject.TryGetComponent<Image>(out Image image))
             {               
                 image.color = new Color(image.color.r, image.color.g, image.color.b, childAlpha);
+                if (image.material.name == "Line Renderer Orange")
+                {
+                    child.GetComponent<RectTransform>().sizeDelta = new Vector2(600, childAlpha * 30);
+                }
             }
         }
     }

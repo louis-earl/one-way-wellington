@@ -4,7 +4,7 @@ public class ScrollingTextureGroup : MonoBehaviour
 {
     public static ScrollingTextureGroup Instance;
 
-    private float scrollSpeed;
+    public float scrollSpeed;
     public SpriteRenderer[] spriteRenderers;
 
 

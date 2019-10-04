@@ -227,7 +227,7 @@ public class JourneyController : MonoBehaviour
             shipCoordinates = earth.GetNextPlanet().GetPlanetCoordinates();
             //shipSpeedCurrent = shipSpeedMax;
             //TransitionController.Instance.StartTransitionToMain();
-            StartCoroutine(TransitionController.Instance.TransitionLandingWithoutZoom());
+            StartCoroutine(TransitionController.Instance.TransitionWormhole());
             isJourneyEditMode = false;
             isAtOriginPlanet = true;
             panel_FuelCost.SetActive(false);

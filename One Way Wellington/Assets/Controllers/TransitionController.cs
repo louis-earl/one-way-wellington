@@ -15,10 +15,17 @@ public class TransitionController : MonoBehaviour
 
     public bool isMapMode;
 
+    public GameObject wormholeScreen;
+    public GameObject backgroundRainbow;
+
     // Start is called before the first frame update
     void Start()
     {
         blackScreen.enabled = false;
+        wormholeScreen.GetComponent<PanelAlpha>().alpha = 0;
+        wormholeScreen.SetActive(false);
+        backgroundRainbow.SetActive(false);
+
         if (Instance == null) Instance = this;
 
         
@@ -267,6 +274,58 @@ public class TransitionController : MonoBehaviour
             yield return new WaitForSeconds(Time.deltaTime);
         }
         mapGO.SetActive(false);
+
+        JourneyController.Instance.OnLandComplete();
+
+        yield return null;
+    }
+
+    // Called when first launching journey to board passengers at first planet 
+    public IEnumerator TransitionWormhole()
+    {
+        // Activate wormhole screen
+        wormholeScreen.SetActive(true);
+        wormholeScreen.GetComponent<PanelAlpha>().alpha = 0;
+        while (wormholeScreen.GetComponent<PanelAlpha>().alpha < 1)
+        {
+            wormholeScreen.GetComponent<PanelAlpha>().alpha += Time.unscaledDeltaTime * 1.3f;
+            yield return new WaitForSeconds(Time.unscaledDeltaTime);
+        }
+
+        // Set scene to rainbow-wormhole travel 
+        backgroundRainbow.SetActive(true);
+        backgroundRainbow.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
+        StartCoroutine(TransitionInMain());
+        isMapMode = false;
+        JourneyController.Instance.shipSpeedCurrent = 30;
+
+        // Wait for wormhole screen 
+        yield return new WaitForSeconds(1.5f);
+
+
+        // Deactivate wormhole screen
+        while (wormholeScreen.GetComponent<Image>().color.a > 0)
+        {
+            wormholeScreen.GetComponent<PanelAlpha>().alpha -= Time.unscaledDeltaTime * 1.3f;
+            yield return new WaitForSeconds(Time.unscaledDeltaTime);
+        }
+        wormholeScreen.SetActive(false);
+
+        // Wait for rainow-wormhole travel 
+        yield return new WaitForSeconds(3);
+
+        // Finish rainow-wormhole travel 
+        while (backgroundRainbow.GetComponent<SpriteRenderer>().color.a > 0)
+        {
+            backgroundRainbow.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, backgroundRainbow.GetComponent<SpriteRenderer>().color.a - Time.unscaledDeltaTime);
+            JourneyController.Instance.shipSpeedCurrent = backgroundRainbow.GetComponent<SpriteRenderer>().color.a * 30;
+            yield return new WaitForSeconds(Time.unscaledDeltaTime);
+
+        }
+
+
+
+        // Board passengers 
 
         JourneyController.Instance.OnLandComplete();
 

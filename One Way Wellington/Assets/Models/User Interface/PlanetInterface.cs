@@ -95,7 +95,14 @@ public class PlanetInterface : MonoBehaviour
             passengerGO.GetComponent<Passenger>().SetPassengerInformation(
                 potentialPassenger.GetPassengerFirstName() + " " + potentialPassenger.GetPassengerLastName() + ".",
                 potentialPassenger.GetPassengerOccupation(),
-                (100 + distance * 5));
+                (100 + distance * 5),
+                potentialPassenger.hair,
+                potentialPassenger.skin,
+                potentialPassenger.decal,
+                potentialPassenger.shirt,
+                potentialPassenger.pants,
+                potentialPassenger.shoes,
+                potentialPassenger.shades);
 
             JourneyController.Instance.currentPassengers.Add(passengerGO);
 

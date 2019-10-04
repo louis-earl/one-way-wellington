@@ -68,7 +68,6 @@ public class Character : MonoBehaviour
         navMeshAgent.radius = 0.15f;
 
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
-        spriteRenderer.transform.localPosition = new Vector3(0f, 0f, 0.25f);
     }
 
     private void FixedUpdate()

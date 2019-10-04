@@ -21,6 +21,8 @@ public class Staff : Character
         // Setup from here onwards
         //energy = 100f;
         //health = 100f;
+        spriteRenderer.transform.localPosition = new Vector3(0f, 0f, 0.25f);
+
 
     }
 
