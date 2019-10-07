@@ -154,4 +154,51 @@ public class JobQueue
         }
     }
 
+    public bool TryDestroyJob(TileOWW tileOWW, JobPriority jobPriority)
+    {
+        List<Job> jobList = new List<Job>();
+        if (jobPriority == JobPriority.User) jobList = jobs_user;
+        else if (jobPriority == JobPriority.High) jobList = jobs_high;
+        else if (jobPriority == JobPriority.Medium) jobList = jobs_med;
+        else if (jobPriority == JobPriority.Low) jobList = jobs_low;
+
+        // Check the jobList first
+        foreach (Job job in jobList)
+        {
+            if (job.GetTileOWW() == tileOWW)
+            {
+                jobList.Remove(job);
+                tileOWW.currentJobType = null;
+                JobSpriteController.Instance.UpdateJob(tileOWW);
+                return true;
+            }
+        }
+        // Now check all staff 
+        foreach (GameObject staffGO in WorldController.Instance.staff)
+        {
+            if (staffGO.GetComponent<Staff>().currentJob != null)
+            {
+                if (staffGO.GetComponent<Staff>().currentJob.GetTileOWW() == tileOWW)
+                {
+                    staffGO.GetComponent<Staff>().currentJob = staffGO.GetComponent<Staff>().targetJob = null;
+                    tileOWW.currentJobType = null;
+                    JobSpriteController.Instance.UpdateJob(tileOWW);
+                    return true;
+                }
+            }
+            if (staffGO.GetComponent<Staff>().targetJob != null)
+            {
+                if (staffGO.GetComponent<Staff>().targetJob.GetTileOWW() == tileOWW)
+                {
+                    staffGO.GetComponent<Staff>().currentJob = staffGO.GetComponent<Staff>().targetJob = null;
+                    tileOWW.currentJobType = null;
+                    JobSpriteController.Instance.UpdateJob(tileOWW);
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
 }
