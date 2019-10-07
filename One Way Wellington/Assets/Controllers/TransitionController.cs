@@ -210,21 +210,18 @@ public class TransitionController : MonoBehaviour
         {
             yield break;
         }
-        
-        planetLandGO.transform.localScale = new Vector3(10, 10, 1);
+        planet.allowClick = false;
+
+        planetLandGO.transform.localScale = new Vector3(8, 8, 1);
         planetLandGO.transform.parent = gameObject.transform;
-        planetLandGO.transform.localPosition = new Vector3(150, 0, 0);
-
-        //planetLandGO.GetComponent<PlanetSpin>().InitSprites(planet.GetSurface(), planet.GetClouds());
-
+        planetLandGO.transform.localPosition = new Vector3(180, 50, 0);
         
-        while (planetLandGO.transform.localPosition.x > 80f) 
+        while (planetLandGO.transform.localPosition.x > 115f) 
         {
             // Slow down as planet approaches target position 
             float speed = (40 - Mathf.Clamp(120 - planetLandGO.transform.localPosition.x, 0, 40));
             planetLandGO.transform.position = new Vector3(planetLandGO.transform.position.x - (speed * Time.deltaTime), planetLandGO.transform.position.y, planetLandGO.transform.position.z);
-            
-
+           
             yield return new WaitForSeconds(Time.deltaTime);
         }
         yield return null;
@@ -235,8 +232,8 @@ public class TransitionController : MonoBehaviour
     {
         InputController.Instance.cameraSizeMax = 1000;
 
-        blackScreen.enabled = true;
-        blackScreen.color = new Color(0, 0, 0, 0);
+        // blackScreen.enabled = true;
+        // blackScreen.color = new Color(0, 0, 0, 0);
         float time = 0f;
         while (time < 1)
         {
@@ -248,16 +245,7 @@ public class TransitionController : MonoBehaviour
             time += Time.deltaTime;
             yield return new WaitForSeconds(Time.deltaTime);
         }
-
-        // Return planet to map
-        mapGO.SetActive(true);
-
-        planetLandGO.transform.parent = mapGO.transform;
-        planetLandGO.transform.localScale = new Vector3(planetLandGO.GetComponent<Planet>().planetScale, planetLandGO.GetComponent<Planet>().planetScale, 1);
-        planetLandGO.transform.localPosition = new Vector3(planetLandGO.GetComponent<Planet>().GetPlanetCoordinates().x, planetLandGO.GetComponent<Planet>().GetPlanetCoordinates().y, 0);
-
-        mapGO.SetActive(false);
-
+      
         JourneyController.Instance.OnLandComplete();
 
         yield return null;
@@ -281,8 +269,12 @@ public class TransitionController : MonoBehaviour
     }
 
     // Called when first launching journey to board passengers at first planet 
-    public IEnumerator TransitionWormhole()
+    public IEnumerator TransitionWormhole(Planet planet)
     {
+        // Note: Replaces TransitionLanding() and TransitionArrival() 
+
+        JourneyController.Instance.nextPlanetVisit = planet;
+
         // Activate wormhole screen
         wormholeScreen.SetActive(true);
         wormholeScreen.GetComponent<PanelAlpha>().alpha = 0;
@@ -292,12 +284,17 @@ public class TransitionController : MonoBehaviour
             yield return new WaitForSeconds(Time.unscaledDeltaTime);
         }
 
+        
+
         // Set scene to rainbow-wormhole travel 
         backgroundRainbow.SetActive(true);
         backgroundRainbow.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
         StartCoroutine(TransitionInMain());
         isMapMode = false;
+
+        // Move ship (with disengaged position) 
         JourneyController.Instance.shipSpeedCurrent = 30;
+        JourneyController.Instance.shipCoordinates = Vector2.positiveInfinity;
 
         // Wait for wormhole screen 
         yield return new WaitForSeconds(1.5f);
@@ -318,16 +315,29 @@ public class TransitionController : MonoBehaviour
         while (backgroundRainbow.GetComponent<SpriteRenderer>().color.a > 0)
         {
             backgroundRainbow.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, backgroundRainbow.GetComponent<SpriteRenderer>().color.a - Time.unscaledDeltaTime);
-            JourneyController.Instance.shipSpeedCurrent = backgroundRainbow.GetComponent<SpriteRenderer>().color.a * 30;
+            // JourneyController.Instance.shipSpeedCurrent = backgroundRainbow.GetComponent<SpriteRenderer>().color.a * 30;
             yield return new WaitForSeconds(Time.unscaledDeltaTime);
 
         }
 
+        // Position ship at planet
+        JourneyController.Instance.shipSpeedCurrent = 0;
+        JourneyController.Instance.shipCoordinates = planet.GetPlanetCoordinates();
 
+
+        // Planet graphic
+        planetLandGO = planet.gameObject;
+        planetLandGO.transform.localScale = new Vector3(8, 8, 1);
+        planetLandGO.transform.parent = gameObject.transform;
+        planetLandGO.transform.localPosition = new Vector3(115, 50, 0);
+        planet.allowClick = false;
 
         // Board passengers 
-
         JourneyController.Instance.OnLandComplete();
+
+
+        // Remove map journey line
+        Destroy(JourneyController.Instance.distanceLineTeleportInstance);
 
         yield return null;
     }

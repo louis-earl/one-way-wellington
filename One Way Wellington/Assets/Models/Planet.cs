@@ -22,27 +22,33 @@ public class Planet : MonoBehaviour
     private List<PotentialPassenger> potentialPassengers;
     public List<PotentialPassenger> selectedPassengers;
 
+    public bool allowClick;
+
     private void Start()
     {
         potentialPassengers = new List<PotentialPassenger>();
         selectedPassengers = new List<PotentialPassenger>();
         GeneratePotentialPassengers();
+        allowClick = true;
     }
 
     private void OnMouseUpAsButton()
     {
-        if (planetName != "Earth")
+        if (allowClick)
         {
-            if (planetUI != null) Destroy(planetUI);
-            planetUI = Instantiate(JourneyController.Instance.PlanetUIPrefab);
-            planetUI.transform.position = new Vector3(planetCoordinates.x, planetCoordinates.y, 1020);
-            planetUI.transform.localScale = Vector3.one / 500;
-            planetUI.GetComponent<PlanetInterface>().SetPlanet(this, false);
-            planetUI.GetComponent<PlanetInterface>().button_ContinueJourney.gameObject.SetActive(false);
-            planetUI.GetComponent<PlanetInterface>().SetMoveWithPlanet(true);
+            if (planetName != "Earth")
+            {
+                if (planetUI != null) Destroy(planetUI);
+                planetUI = Instantiate(JourneyController.Instance.PlanetUIPrefab);
+                planetUI.transform.position = new Vector3(planetCoordinates.x, planetCoordinates.y, 1020);
+                planetUI.transform.localScale = Vector3.one / 500;
+                planetUI.GetComponent<PlanetInterface>().SetPlanet(this, false);
+                planetUI.GetComponent<PlanetInterface>().button_ContinueJourney.gameObject.SetActive(false);
+                planetUI.GetComponent<PlanetInterface>().SetMoveWithPlanet(true);
 
+            }
+            StartCoroutine(InputController.Instance.MoveCameraTo(transform.position.x, transform.position.y));
         }
-        StartCoroutine(InputController.Instance.MoveCameraTo(transform.position.x, transform.position.y));
     }
 
     public Vector2 GetPlanetCoordinates()
@@ -56,8 +62,21 @@ public class Planet : MonoBehaviour
         Debug.Log(nextPlanet.name + " <- " + planetName + " <- " + this.previousPlanet.name);
         if (nextPlanet != this)
         {
-            if (this.nextPlanet == null) this.nextPlanet = nextPlanet;
-            else return this.nextPlanet.SetNextPlanet(nextPlanet, this);
+            if (this.nextPlanet == null)
+            {
+                Debug.Log("setting " + this + " next planet to " + nextPlanet + " AND setting " + this.nextPlanet + " sprevious planet to " + this);
+                this.nextPlanet = nextPlanet;
+                this.nextPlanet.previousPlanet = this;
+            }
+            else
+            {
+                if (nextPlanet.previousPlanet == null)
+                {
+                    Debug.Log("setting " + nextPlanet + " sprevious planet to " + GetNextPlanet());
+                    nextPlanet.previousPlanet = GetNextPlanet();
+                }
+                return this.nextPlanet.SetNextPlanet(nextPlanet, this);
+            }
             return true;
         }
         return false;
@@ -69,11 +88,13 @@ public class Planet : MonoBehaviour
         previousPlanet = null;
     }
 
-    public Planet GetNextPlanet()
+    public Planet GetNextPlanet(bool recurse = true)
     {
         if (nextPlanet == null) return this;
-        else return nextPlanet.GetNextPlanet();
+        if (recurse) return nextPlanet.GetNextPlanet(recurse);
+        else return nextPlanet;
     }
+
 
     public void SetPlanetGraphicSuffix (int planetGraphicSuffix)
     {
@@ -150,7 +171,7 @@ public class Planet : MonoBehaviour
 
         if (this.nextPlanet != null)
         {
-            Debug.Log(planetName + " -> " + this.nextPlanet.planetName);
+            //Debug.Log(planetName + " -> " + this.nextPlanet.planetName);
             nextPlanet = this.nextPlanet.ToPlanetData();
             
         }

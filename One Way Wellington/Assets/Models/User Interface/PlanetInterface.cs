@@ -62,7 +62,6 @@ public class PlanetInterface : MonoBehaviour
     // Activated by UI Button 
     public void AddToJourney(Planet planet)
     {
-        Debug.Log("UI activeated add to journey: " + planet.name);
         JourneyController.Instance.AddNextPlanet(planet);
         InputController.Instance.cameraZoomEnabled = true;
         Destroy(gameObject);
@@ -113,7 +112,7 @@ public class PlanetInterface : MonoBehaviour
         Destroy(gameObject);
 
 
-        JourneyController.Instance.ContinueJourney();
+        JourneyController.Instance.ContinueJourney(planet);
     }
 
     // An initialisation function 

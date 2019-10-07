@@ -21,7 +21,7 @@ public class JourneyController : MonoBehaviour
 
     public GameObject distanceLinePrefab;
     public GameObject distanceLineTeleportPrefab;
-    private GameObject distanceLineTeleportInstance;
+    public GameObject distanceLineTeleportInstance;
     public GameObject progressMarkerPrefab;
     public GameObject PlanetUIPrefab;
 
@@ -58,6 +58,7 @@ public class JourneyController : MonoBehaviour
         
         if (nextPlanetVisit != null && !isJourneyEditMode)
         {
+            // If ship is at planet location 
             if (Vector2.Distance(shipCoordinates, nextPlanetVisit.GetPlanetCoordinates()) < 0.1)
             {
                 // We have arrived at a planet! 
@@ -75,7 +76,10 @@ public class JourneyController : MonoBehaviour
                 // Move towards the planet 
 
                 shipCoordinates = Vector2.MoveTowards(shipCoordinates, nextPlanetVisit.GetPlanetCoordinates(), (shipSpeedCurrent / 5) * Time.deltaTime);
-                progressMarkerPrefab.transform.position = new Vector3(shipCoordinates.x, shipCoordinates.y, 1020);
+                if (shipCoordinates.x < 100000) // not infinity
+                {
+                    progressMarkerPrefab.transform.position = new Vector3(shipCoordinates.x, shipCoordinates.y, 1020);
+                }
                 currentPlanetVisit = null;
             }
         }
@@ -143,7 +147,7 @@ public class JourneyController : MonoBehaviour
                     }
                     else
                     {
-                        earth.GetComponent<Planet>().linkLine.transform.position = Vector3.Lerp(lastPlanet.transform.position, earth.transform.position, 0.5f);
+                        earth.GetComponent<Planet>().linkLine.transform.position = Vector3.Lerp(earth.GetNextPlanet(false).transform.position, earth.transform.position, 0.5f);
 
                     }
 
@@ -227,7 +231,7 @@ public class JourneyController : MonoBehaviour
             shipCoordinates = earth.GetNextPlanet().GetPlanetCoordinates();
             //shipSpeedCurrent = shipSpeedMax;
             //TransitionController.Instance.StartTransitionToMain();
-            StartCoroutine(TransitionController.Instance.TransitionWormhole());
+            StartCoroutine(TransitionController.Instance.TransitionWormhole(lastPlanetVisit));
             isJourneyEditMode = false;
             isAtOriginPlanet = true;
             panel_FuelCost.SetActive(false);
@@ -266,6 +270,7 @@ public class JourneyController : MonoBehaviour
     // Called when the above coroutine is completed
     public void OnLandComplete()
     {
+       
         if (currentPlanetVisit != null)
         {
             if (currentPlanetVisit == earth)
@@ -282,6 +287,7 @@ public class JourneyController : MonoBehaviour
         }
     }
 
+    // For selecting passengers to board
     private void SpawnPlanetInterfaceGO()
     {
         GameObject planetInterfaceGO = Instantiate(PlanetUIPrefab);
@@ -299,25 +305,37 @@ public class JourneyController : MonoBehaviour
     }
 
     // After landing and boarding passengers 
-    public void ContinueJourney() 
+    public void ContinueJourney(Planet planet)
     {
+        // Return planet to map
+        GameObject planetLandGO = planet.gameObject;
+        TransitionController.Instance.mapGO.SetActive(true);
+        planetLandGO.transform.parent = TransitionController.Instance.mapGO.transform;
+        planetLandGO.transform.localScale = new Vector3(planetLandGO.GetComponent<Planet>().planetScale, planetLandGO.GetComponent<Planet>().planetScale, 1);
+        planetLandGO.transform.localPosition = new Vector3(planetLandGO.GetComponent<Planet>().GetPlanetCoordinates().x, planetLandGO.GetComponent<Planet>().GetPlanetCoordinates().y, 0);
+        TransitionController.Instance.mapGO.SetActive(false);
+        planet.allowClick = true;
+
+        Debug.Log("Put back planet: " + planet.name);
+
         // Set the next destination
         UserInterfaceController.Instance.ShowMainUI();
 
         InputController.Instance.cameraZoomEnabled = true;
 
-        if (!isAtOriginPlanet)
-        {
 
-            lastPlanetVisit.ClearLinkedPlanets();
-            Destroy(nextPlanetVisit.linkLine);
+        //if (!isAtOriginPlanet)
+        //{
 
-            lastPlanetVisit = nextPlanetVisit;
-            nextPlanetVisit = nextPlanetVisit.GetPreviousPlanet();
 
-            
-        }
-        else isAtOriginPlanet = false;
+
+        lastPlanetVisit = nextPlanetVisit;
+        nextPlanetVisit = nextPlanetVisit.GetPreviousPlanet();
+        lastPlanetVisit.ClearLinkedPlanets();
+        Destroy(lastPlanetVisit.linkLine);
+
+        //}
+        //else isAtOriginPlanet = false;
 
         shipSpeedCurrent = shipSpeedMax;
         isJourneyEditMode = false;
@@ -327,6 +345,16 @@ public class JourneyController : MonoBehaviour
 
     public void EndJourney()
     {
+        // put earth back
+        // Return planet to map
+        GameObject planetLandGO = earth.gameObject;
+        TransitionController.Instance.mapGO.SetActive(true);
+        planetLandGO.transform.parent = TransitionController.Instance.mapGO.transform;
+        planetLandGO.transform.localScale = new Vector3(planetLandGO.GetComponent<Planet>().planetScale, planetLandGO.GetComponent<Planet>().planetScale, 1);
+        planetLandGO.transform.localPosition = new Vector3(planetLandGO.GetComponent<Planet>().GetPlanetCoordinates().x, planetLandGO.GetComponent<Planet>().GetPlanetCoordinates().y, 0);
+        TransitionController.Instance.mapGO.SetActive(false);
+        Debug.Log("Put back earth!!");
+
         lastPlanetVisit.ClearLinkedPlanets();
         earth.ClearLinkedPlanets();
         Destroy(earth.linkLine);
