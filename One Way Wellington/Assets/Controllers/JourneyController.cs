@@ -64,10 +64,8 @@ public class JourneyController : MonoBehaviour
                 // We have arrived at a planet! 
                 currentPlanetVisit = nextPlanetVisit;
 
-                shipSpeedCurrent = 0;
                 isJourneyEditMode = true;
                 StartCoroutine(TransitionController.Instance.TransitionArrival(nextPlanetVisit));
-                UserInterfaceController.Instance.ShowLandUI();
                 currentPlanetVisit = nextPlanetVisit;
                 
             }
@@ -307,6 +305,7 @@ public class JourneyController : MonoBehaviour
     // After landing and boarding passengers 
     public void ContinueJourney(Planet planet)
     {
+
         // Return planet to map
         GameObject planetLandGO = planet.gameObject;
         TransitionController.Instance.mapGO.SetActive(true);
@@ -324,18 +323,11 @@ public class JourneyController : MonoBehaviour
         InputController.Instance.cameraZoomEnabled = true;
 
 
-        //if (!isAtOriginPlanet)
-        //{
-
-
-
         lastPlanetVisit = nextPlanetVisit;
         nextPlanetVisit = nextPlanetVisit.GetPreviousPlanet();
         lastPlanetVisit.ClearLinkedPlanets();
         Destroy(lastPlanetVisit.linkLine);
 
-        //}
-        //else isAtOriginPlanet = false;
 
         shipSpeedCurrent = shipSpeedMax;
         isJourneyEditMode = false;

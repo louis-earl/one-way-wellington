@@ -70,12 +70,20 @@ public class PlanetInterface : MonoBehaviour
     // Activated by UI button
     public void ContinueJourney()
     {
+        StartCoroutine(ContinueJourneyEnum());
+    }
+
+    public IEnumerator ContinueJourneyEnum()
+    {
+        StartCoroutine(TransitionController.Instance.QuickFadeToBlack());
+        yield return new WaitForSecondsRealtime(0.5f);
+
         Vector3 stairwellPos = Vector3.zero;
 
         // Get position of stairwell 
         if (BuildModeController.Instance.furnitureTileOWWMap.ContainsKey("Stairwell"))
         {
-             stairwellPos = new Vector3(BuildModeController.Instance.furnitureTileOWWMap["Stairwell"][0].GetX(), BuildModeController.Instance.furnitureTileOWWMap["Stairwell"][0].GetY(), 0);
+            stairwellPos = new Vector3(BuildModeController.Instance.furnitureTileOWWMap["Stairwell"][0].GetX(), BuildModeController.Instance.furnitureTileOWWMap["Stairwell"][0].GetY(), 0);
         }
         else
         {
@@ -110,7 +118,6 @@ public class PlanetInterface : MonoBehaviour
 
         }
         Destroy(gameObject);
-
 
         JourneyController.Instance.ContinueJourney(planet);
     }
