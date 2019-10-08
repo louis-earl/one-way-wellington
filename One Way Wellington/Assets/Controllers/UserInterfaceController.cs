@@ -194,7 +194,7 @@ public class UserInterfaceController : MonoBehaviour
         {
             tooltipInstance.SetActive(true);
         }
-        toolTipText = "Hire robotic staff to maintain ship operations. They run on energised coffee and recharge at the charging pad. Hover over an item for more information.";
+        toolTipText = "Hire staff-bots to maintain ship operations. They run on energised coffee and recharge at the charging pad. Hover over an item for more information.";
         tooltipInstance.GetComponentInChildren<TextMeshProUGUI>().text = toolTipText;
     }
 
