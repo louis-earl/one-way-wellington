@@ -8,8 +8,30 @@ public class Passenger : Character
     // Passenger information 
     protected string passengerName;
     protected string career;
-    protected int fare; 
-    
+    protected int fare;
+
+    // Appearance 
+    protected int hair;
+    public SpriteRenderer spriteRenderer_Hair;
+
+    protected int skin;
+    public SpriteRenderer spriteRenderer_Skin;
+
+    protected int pants;
+    public SpriteRenderer spriteRenderer_Pants;
+
+    protected int decal;
+    public SpriteRenderer spriteRenderer_Decal;
+
+    protected int shades;
+    public SpriteRenderer spriteRenderer_Shades;
+
+    protected int shirt;
+    public SpriteRenderer spriteRenderer_Shirt;
+
+    protected int shoes;
+    public SpriteRenderer spriteRenderer_Shoes;
+
 
     // Passenger needs 
     protected float nourishment;
@@ -52,11 +74,28 @@ public class Passenger : Character
 
     }
 
-    public void SetPassengerInformation(string name, string career, int fare)
+    public void SetPassengerInformation(string name, string career, int fare, int hair, int skin, int decal, int shirt, int pants, int shoes, int shades)
     {
         this.name = name;
         this.career = career;
         this.fare = fare;
+        this.hair = hair;
+        this.skin = skin;
+        this.decal = decal;
+        this.shirt = shirt;
+        this.pants = pants;
+        this.shoes = shoes;
+        this.shades = shades;
+
+
+        // Load sprite resources 
+        spriteRenderer_Hair.sprite = Resources.Load<Sprite>("Images/Characters/Passengers/Hair/Hair" + hair.ToString());
+        spriteRenderer_Skin.sprite = Resources.Load<Sprite>("Images/Characters/Passengers/Skin/Skin" + skin.ToString());
+        spriteRenderer_Decal.sprite = Resources.Load<Sprite>("Images/Characters/Passengers/Decal/Decal" + decal.ToString());
+        spriteRenderer_Shirt.sprite = Resources.Load<Sprite>("Images/Characters/Passengers/Shirt/Shirt" + shirt.ToString());
+        spriteRenderer_Pants.sprite = Resources.Load<Sprite>("Images/Characters/Passengers/Pants/Pants" + pants.ToString());
+        spriteRenderer_Shoes.sprite = Resources.Load<Sprite>("Images/Characters/Passengers/Shoes/Shoes" + shoes.ToString());
+        spriteRenderer_Shades.sprite = Resources.Load<Sprite>("Images/Characters/Passengers/Shades/Shades" + shades.ToString());
     }
 
     protected override void Refresh()

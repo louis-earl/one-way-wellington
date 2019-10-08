@@ -18,6 +18,7 @@ public class Enemy : Character
 
         // Setup from here onwards
         health = 100f;
+        spriteRenderer.transform.localPosition = new Vector3(0f, 0f, 0.25f);
 
     }
 
@@ -35,7 +36,7 @@ public class Enemy : Character
         staffUIInstance.GetComponent<CharacterInterface>().character = this;
 
     }
-    */ 
+    */
 
     protected override void Refresh()
     {

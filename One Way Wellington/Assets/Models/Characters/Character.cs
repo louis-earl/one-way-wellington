@@ -30,12 +30,18 @@ public class Character : MonoBehaviour
     protected NavMeshAgent navMeshAgent;
     public static Character currentSelectedCharacter;
 
+    // Pathfinding stuck
+    public Vector2 lastLocation;
+    public float stuckCheckTime;
+
 
     private void Start()
     {
         Init();
         lineRenderer = GetComponent<LineRenderer>();
         failedJobs = new List<Job>();
+        lastLocation = transform.position;
+        stuckCheckTime = 5f;
     }
 
     private void Update()
@@ -68,7 +74,6 @@ public class Character : MonoBehaviour
         navMeshAgent.radius = 0.15f;
 
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
-        spriteRenderer.transform.localPosition = new Vector3(0f, 0f, 0.25f);
     }
 
     private void FixedUpdate()
@@ -213,6 +218,35 @@ public class Character : MonoBehaviour
                 return;
             }
         }
+
+        // Stuck but path is complete
+        if (currentJob != null)
+        {
+            // Check every 5 seconds 
+            if (stuckCheckTime > 0)
+            {
+                stuckCheckTime -= Time.deltaTime;
+            }
+            // Due for stuck check 
+            else
+            {
+                stuckCheckTime = 5f;
+                // not at job location 
+                if (Vector2.Distance(transform.position, currentJob.GetLocation()) > 1.2f)
+                {
+                    // Do nothing?
+                }
+                else if (Vector2.Distance(transform.position, lastLocation) < 0.667f)
+                {
+                    // We are stuck
+                    // Fix 1: move to middle of tile
+                    transform.position = new Vector3(Mathf.FloorToInt(transform.position.x) + 0.5f, Mathf.FloorToInt(transform.position.y) + 0.5f);
+                    Debug.LogWarning("STUCK CHARACTER - Tried moving " + name + " to the center of the tile.");
+                }
+                lastLocation = transform.position;
+            }
+        }
+
     }
 
     public void ReturnFailedJob()

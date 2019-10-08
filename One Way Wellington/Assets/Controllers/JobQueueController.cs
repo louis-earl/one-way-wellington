@@ -55,4 +55,5 @@ public class JobQueueController : MonoBehaviour
 
 		return furnitureType;
 	}
+
 }

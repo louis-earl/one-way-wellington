@@ -62,7 +62,6 @@ public class PlanetInterface : MonoBehaviour
     // Activated by UI Button 
     public void AddToJourney(Planet planet)
     {
-        Debug.Log("UI activeated add to journey: " + planet.name);
         JourneyController.Instance.AddNextPlanet(planet);
         InputController.Instance.cameraZoomEnabled = true;
         Destroy(gameObject);
@@ -71,12 +70,20 @@ public class PlanetInterface : MonoBehaviour
     // Activated by UI button
     public void ContinueJourney()
     {
+        StartCoroutine(ContinueJourneyEnum());
+    }
+
+    public IEnumerator ContinueJourneyEnum()
+    {
+        StartCoroutine(TransitionController.Instance.QuickFadeToBlack());
+        yield return new WaitForSecondsRealtime(0.5f);
+
         Vector3 stairwellPos = Vector3.zero;
 
         // Get position of stairwell 
         if (BuildModeController.Instance.furnitureTileOWWMap.ContainsKey("Stairwell"))
         {
-             stairwellPos = new Vector3(BuildModeController.Instance.furnitureTileOWWMap["Stairwell"][0].GetX(), BuildModeController.Instance.furnitureTileOWWMap["Stairwell"][0].GetY(), 0);
+            stairwellPos = new Vector3(BuildModeController.Instance.furnitureTileOWWMap["Stairwell"][0].GetX(), BuildModeController.Instance.furnitureTileOWWMap["Stairwell"][0].GetY(), 0);
         }
         else
         {
@@ -95,7 +102,14 @@ public class PlanetInterface : MonoBehaviour
             passengerGO.GetComponent<Passenger>().SetPassengerInformation(
                 potentialPassenger.GetPassengerFirstName() + " " + potentialPassenger.GetPassengerLastName() + ".",
                 potentialPassenger.GetPassengerOccupation(),
-                (100 + distance * 5));
+                (100 + distance * 5),
+                potentialPassenger.hair,
+                potentialPassenger.skin,
+                potentialPassenger.decal,
+                potentialPassenger.shirt,
+                potentialPassenger.pants,
+                potentialPassenger.shoes,
+                potentialPassenger.shades);
 
             JourneyController.Instance.currentPassengers.Add(passengerGO);
 
@@ -105,8 +119,7 @@ public class PlanetInterface : MonoBehaviour
         }
         Destroy(gameObject);
 
-
-        JourneyController.Instance.ContinueJourney();
+        JourneyController.Instance.ContinueJourney(planet);
     }
 
     // An initialisation function 
