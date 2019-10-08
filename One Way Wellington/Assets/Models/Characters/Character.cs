@@ -239,7 +239,9 @@ public class Character : MonoBehaviour
                 else if (Vector2.Distance(transform.position, lastLocation) < 0.667f)
                 {
                     // We are stuck
-                    Debug.LogError("Help, im stuck! -" + name);
+                    // Fix 1: move to middle of tile
+                    transform.position = new Vector3(Mathf.FloorToInt(transform.position.x) + 0.5f, Mathf.FloorToInt(transform.position.y) + 0.5f);
+                    Debug.LogWarning("STUCK CHARACTER - Tried moving " + name + " to the center of the tile.");
                 }
                 lastLocation = transform.position;
             }
