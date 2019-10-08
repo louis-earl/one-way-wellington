@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using TMPro;
 
 public class Planet : MonoBehaviour
@@ -34,20 +35,23 @@ public class Planet : MonoBehaviour
 
     private void OnMouseUpAsButton()
     {
-        if (allowClick)
+        if (!EventSystem.current.IsPointerOverGameObject())
         {
-            if (planetName != "Earth")
+            if (allowClick)
             {
-                if (planetUI != null) Destroy(planetUI);
-                planetUI = Instantiate(JourneyController.Instance.PlanetUIPrefab);
-                planetUI.transform.position = new Vector3(planetCoordinates.x, planetCoordinates.y, 1020);
-                planetUI.transform.localScale = Vector3.one / 500;
-                planetUI.GetComponent<PlanetInterface>().SetPlanet(this, false);
-                planetUI.GetComponent<PlanetInterface>().button_ContinueJourney.gameObject.SetActive(false);
-                planetUI.GetComponent<PlanetInterface>().SetMoveWithPlanet(true);
+                if (planetName != "Earth")
+                {
+                    if (planetUI != null) Destroy(planetUI);
+                    planetUI = Instantiate(JourneyController.Instance.PlanetUIPrefab);
+                    planetUI.transform.position = new Vector3(planetCoordinates.x, planetCoordinates.y, 1020);
+                    planetUI.transform.localScale = Vector3.one / 500;
+                    planetUI.GetComponent<PlanetInterface>().SetPlanet(this, false);
+                    planetUI.GetComponent<PlanetInterface>().button_ContinueJourney.gameObject.SetActive(false);
+                    planetUI.GetComponent<PlanetInterface>().SetMoveWithPlanet(true);
 
+                }
+                StartCoroutine(InputController.Instance.MoveCameraTo(transform.position.x, transform.position.y));
             }
-            StartCoroutine(InputController.Instance.MoveCameraTo(transform.position.x, transform.position.y));
         }
     }
 
