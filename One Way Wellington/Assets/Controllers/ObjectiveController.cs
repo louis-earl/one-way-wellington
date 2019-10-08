@@ -85,6 +85,7 @@ public class ObjectiveController : MonoBehaviour
                 if (!objectiveUIParent.activeInHierarchy)
                 {
                     NotificationController.Instance.CreateNotification("Objective Complete! (" + objective.title + ")", UrgencyLevel.Low, true, false, new List<string>() { "Open Objectives Panel" }, new List<System.Action>() { new System.Action(delegate () { toggle_Objectives.GetComponent<Toggle>().isOn = true; }) });
+                    StartBlinking();
                 }
             }
         }
@@ -111,10 +112,50 @@ public class ObjectiveController : MonoBehaviour
         Destroy(objectiveGO);
     }
 
+    IEnumerator Blink()
+    {
+        while (true)
+        {
+            if (toggle_Objectives.GetComponent<Toggle>().colors.normalColor.r != 1)
+            {
+                ColorBlock colorBlock= toggle_Objectives.GetComponent<Toggle>().colors;
+                colorBlock.normalColor = new Color32(255, 221, 0, 255);
+                toggle_Objectives.GetComponent<Toggle>().colors = colorBlock;
+
+                yield return new WaitForSecondsRealtime(0.5f);
+            }
+            else
+            {
+                ColorBlock colorBlock = toggle_Objectives.GetComponent<Toggle>().colors;
+                colorBlock.normalColor = new Color32(59, 39, 186, 255);
+                toggle_Objectives.GetComponent<Toggle>().colors = colorBlock;
+
+                yield return new WaitForSecondsRealtime(0.5f);
+            }
+        }
+    }
+
+    public void StartBlinking()
+    {
+        if (gameObject.activeInHierarchy)
+        {
+            StartCoroutine("Blink");
+        }
+    }
+
+    public void StopBlinking()
+    {
+        StopAllCoroutines();
+        ColorBlock colorBlock = toggle_Objectives.GetComponent<Toggle>().colors;
+        colorBlock.normalColor = new Color32(59, 39, 186, 255);
+        toggle_Objectives.GetComponent<Toggle>().colors = colorBlock;
+    }
+
     private void Start()
     {
         if (Instance == null) Instance = this;
 
+        StartBlinking();
 
         allObjectives = new Dictionary<string, Objective>();
         currentObjectives = new List<Objective>();
