@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class PassengerInterface : MonoBehaviour
 {
 
-    public Passenger passenger;
+    private Passenger passenger;
 
     public TextMeshProUGUI passengerName;
     public TextMeshProUGUI currentJob;
@@ -20,9 +20,11 @@ public class PassengerInterface : MonoBehaviour
     public Slider sliderHygiene;
     public Slider sliderHealth;
 
-    // Start is called before the first frame update
-    void Start()
+
+    public void InitPassengerUI(Passenger passenger)
     {
+        this.passenger = passenger;
+        passengerName.text = passenger.name;
 
     }
 
@@ -31,8 +33,8 @@ public class PassengerInterface : MonoBehaviour
     {
         // Move the UI with the camera zoom level 
 
-        transform.localScale = Vector3.Lerp(new Vector3(Camera.main.orthographicSize / 500, Camera.main.orthographicSize / 500, 1), transform.localScale, 0.8f);
-        transform.localPosition = new Vector3(passenger.GetXPos() + 0.5f + (Camera.main.orthographicSize / 2.75f), passenger.GetYPos() + 0.35f, 0);
+        transform.localScale = Vector3.Lerp(new Vector3(Camera.main.orthographicSize / 500, Camera.main.orthographicSize / 500, 1), transform.localScale, 0.9f);
+        transform.localPosition = Vector3.Lerp(new Vector3(passenger.gameObject.transform.position.x + 0.5f + (Camera.main.orthographicSize / 2.75f), passenger.gameObject.transform.position.y + 0.35f, 0), transform.position, 0.9f);
 
         if (passenger.currentJob == null || passenger.currentJob.GetJobType() == "Wander")
         {

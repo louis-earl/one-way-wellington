@@ -70,7 +70,7 @@ public class Passenger : Character
         passengerUIInstance = Instantiate(UserInterfaceController.Instance.passengerUIPrefab);
         passengerUIInstance.transform.position = new Vector3(currentX, currentY, 0);
         passengerUIInstance.transform.localScale = Vector3.one / 500;
-        passengerUIInstance.GetComponent<PassengerInterface>().passenger = this;
+        passengerUIInstance.GetComponent<PassengerInterface>().InitPassengerUI(this);
 
     }
 

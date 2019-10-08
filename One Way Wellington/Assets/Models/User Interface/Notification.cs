@@ -58,6 +58,7 @@ public class Notification : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
             panelAlpha.alpha -= Time.unscaledDeltaTime * 0.5f;
             yield return new WaitForEndOfFrame();
         }
+
         Destroy(gameObject);
     }
 

@@ -21,6 +21,8 @@ public class NotificationController : MonoBehaviour
 
     public GameObject eventFeedParent;
 
+    public Toggle toggle_Notification;
+
     public static NotificationController Instance;
 
     private List<GameObject> notifications;
@@ -31,6 +33,14 @@ public class NotificationController : MonoBehaviour
         if (Instance == null) Instance = this;
 
         notifications = new List<GameObject>();
+    }
+
+    private void Update()
+    {
+        if (eventFeedParent.transform.childCount == 0)
+        {
+            StopBlinking();
+        }
     }
 
     public void CreateNotification(string description, UrgencyLevel urgencyLevel, bool destroyExisting, bool saveToNotifications = true, List<string> buttonTitles = null, List<Action> buttonActions = null)
@@ -54,6 +64,10 @@ public class NotificationController : MonoBehaviour
             eventFeedGO.transform.parent.GetComponent<ContentSizeFitter>().enabled = false;
             eventFeedGO.transform.parent.GetComponent<ContentSizeFitter>().enabled = true;
             eventFeedGO.GetComponent<Notification>().Destroy(5f);
+            if (saveToNotifications)
+            {
+                StartBlinking();
+            }
         }
     }
 
@@ -136,6 +150,43 @@ public class NotificationController : MonoBehaviour
         return null;
     }
 
+    IEnumerator Blink()
+    {
+        while (true)
+        {
+            if (toggle_Notification.colors.normalColor.r != 1)
+            {
+                ColorBlock colorBlock = toggle_Notification.colors;
+                colorBlock.normalColor = new Color32(255, 221, 0, 255);
+                toggle_Notification.colors = colorBlock;
 
+                yield return new WaitForSecondsRealtime(0.5f);
+            }
+            else
+            {
+                ColorBlock colorBlock = toggle_Notification.colors;
+                colorBlock.normalColor = new Color32(59, 39, 186, 255);
+                toggle_Notification.colors = colorBlock;
+
+                yield return new WaitForSecondsRealtime(0.5f);
+            }
+        }
+    }
+
+    public void StartBlinking()
+    {
+        if (gameObject.activeInHierarchy)
+        {
+            StartCoroutine("Blink");
+        }
+    }
+
+    public void StopBlinking()
+    {
+        StopAllCoroutines();
+        ColorBlock colorBlock = toggle_Notification.colors;
+        colorBlock.normalColor = new Color32(59, 39, 186, 255);
+        toggle_Notification.colors = colorBlock;
+    }
 
 }

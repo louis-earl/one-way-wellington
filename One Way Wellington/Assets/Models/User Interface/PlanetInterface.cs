@@ -117,6 +117,9 @@ public class PlanetInterface : MonoBehaviour
             planet.RemovePotentialPassenger(potentialPassenger);
 
         }
+
+        planet.selectedPassengers.Clear();
+
         Destroy(gameObject);
 
         JourneyController.Instance.ContinueJourney(planet);

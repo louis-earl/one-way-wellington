@@ -14,6 +14,7 @@ public class ObjectiveController : MonoBehaviour
     public GameObject toggle_Objectives;
 
     private List<Objective> currentObjectives;
+    public List<string> completedObjectives;
 
     private Dictionary<string, Objective> allObjectives;
 
@@ -31,7 +32,16 @@ public class ObjectiveController : MonoBehaviour
         objectiveGO.transform.SetParent(objectiveUIParent.transform);
 		objectiveGO.transform.localScale = Vector3.one;
         objectiveGO.GetComponent<ObjectiveUI>().text_Title.text = objective.title;
-        objectiveGO.GetComponent<ObjectiveUI>().text_OnComplete.text = string.Format("{0:C} when completed", objective.reward);
+
+        // reward text 
+        if (objective.reward == 0)
+        {
+            objectiveGO.GetComponent<ObjectiveUI>().text_OnComplete.text = "Complete in any order";
+        }
+        else
+        {
+            objectiveGO.GetComponent<ObjectiveUI>().text_OnComplete.text = string.Format("{0:C} when completed", objective.reward);
+        }
         objectiveGO.GetComponent<ObjectiveUI>().buttonClose.GetComponent<Button>().onClick.AddListener(delegate () { CloseObjective(objectiveGO); });
         objectiveGO.GetComponent<ObjectiveUI>().objectiveReference = objective;
 
@@ -73,7 +83,14 @@ public class ObjectiveController : MonoBehaviour
 
                 objectiveGO.GetComponent<ObjectiveUI>().isComplete = true;
                 objectiveGO.GetComponent<ObjectiveUI>().StartBlinking();
-                objectiveGO.GetComponent<ObjectiveUI>().text_OnComplete.text = "Click to claim reward!";
+                if (objective.reward == 0)
+                {
+                    objectiveGO.GetComponent<ObjectiveUI>().text_OnComplete.text = "Click to progress";
+                }
+                else
+                {
+                    objectiveGO.GetComponent<ObjectiveUI>().text_OnComplete.text = string.Format("Click to claim {0:C} reward", objective.reward);
+                }
                 objectiveGO.GetComponent<Button>().onClick.AddListener(delegate () { CloseObjective(objectiveGO); });
 
                 objectivesToRemove.Add(objective);
@@ -98,16 +115,32 @@ public class ObjectiveController : MonoBehaviour
 
     public void CloseObjective(GameObject objectiveGO)
     {
-        // Enable next objectives 
-        foreach (string nextObjective in objectiveGO.GetComponent<ObjectiveUI>().objectiveReference.nextObjectives)
-        {
-            AddObjective(allObjectives[nextObjective]);
-        }
 
+        // Check completion group 
+        bool isGroupComplete = true;
+        if (objectiveGO.GetComponent<ObjectiveUI>().objectiveReference.completionGroup != null)
+        {
+            foreach (string siblingObjective in objectiveGO.GetComponent<ObjectiveUI>().objectiveReference.completionGroup)
+            {
+                if (!completedObjectives.Contains(siblingObjective))
+                {
+                    isGroupComplete = false;
+                }
+            }
+        }
+        // Enable next objectives 
+        if (isGroupComplete)
+        {
+            foreach (string nextObjective in objectiveGO.GetComponent<ObjectiveUI>().objectiveReference.nextObjectives)
+            {
+                AddObjective(allObjectives[nextObjective]);
+            }
+        }
         // Play sound 
         audio_ObjectiveRemove.timeSamples = 5000;
         audio_ObjectiveRemove.Play();
 
+        completedObjectives.Add(objectiveGO.GetComponent<ObjectiveUI>().objectiveReference.title);
         CurrencyController.Instance.AddBankBalance(objectiveGO.GetComponent<ObjectiveUI>().objectiveReference.reward);
         Destroy(objectiveGO);
     }
@@ -151,6 +184,13 @@ public class ObjectiveController : MonoBehaviour
         toggle_Objectives.GetComponent<Toggle>().colors = colorBlock;
     }
 
+    public IEnumerator InitialNotificationDelayed()
+    {
+        yield return new WaitForSeconds(1.5f);
+        NotificationController.Instance.CreateNotification("Welcome to One Way Wellington! Get started by opening your objectives panel.", UrgencyLevel.Low, true, false, new List<string>() { "Open Objectives Panel" }, new List<System.Action>() { new System.Action(delegate () { toggle_Objectives.GetComponent<Toggle>().isOn = true; }) });
+
+    }
+
     private void Start()
     {
         if (Instance == null) Instance = this;
@@ -160,6 +200,7 @@ public class ObjectiveController : MonoBehaviour
         allObjectives = new Dictionary<string, Objective>();
         currentObjectives = new List<Objective>();
 
+        StartCoroutine(InitialNotificationDelayed());
 
         allObjectives.Add("Wellywood Cinematographer",
             new Objective(
@@ -181,15 +222,16 @@ public class ObjectiveController : MonoBehaviour
                 "The Hull",
                 new List<Goal>
                 {
-                    new Goal_Hull("Build at least 30 hull tiles", 30),
-                    new Goal_Staff("Hire a Builder", 1, "Builder")
+                    new Goal_Staff("Hire at least 1 BUILDER", 1, "Builder"),
+                    new Goal_Hull("Build at least 30 HULL tiles", 30),
+                    new Goal_Furniture("Build at least 1 AIRLOCK", 1, "Airlock")
                 },
                 1000,
                 new List<string>
                 {
                     "Staff Basics",
-                    "Get Moving",
-                    "Most Livable City"
+                    "Interesting Public Transport",
+                    "Fresh Air"
                 }
          ));
 
@@ -205,13 +247,22 @@ public class ObjectiveController : MonoBehaviour
                     new Goal_Furniture("Build a Battery", 1, "Battery"),
                 },
                 1500,
-                new List<string>()                              
+                new List<string>
+                {
+                    "First Migrants",
+                    "Passenger Needs"
+                },
+                new List<string>
+                {
+                    "Interesting Public Transport",
+                    "Fresh Air",
+                }
          ));
 
 
-        allObjectives.Add("Get Moving",
+        allObjectives.Add("Interesting Public Transport",
             new Objective(
-                "Get Moving",
+                "Interesting Public Transport",
                 new List<Goal>
                 {
                     new Goal_Furniture("Build an Engine", 1, "Engine"),
@@ -220,19 +271,37 @@ public class ObjectiveController : MonoBehaviour
                     new Goal_Furniture("Build the Stairwell", 1, "Stairwell"),
                 },
                 2000,
-                new List<string>()
+                new List<string>
+                {
+                    "First Migrants",
+                    "Passenger Needs"
+                },
+                new List<string>
+                {
+                    "Staff Basics",
+                    "Fresh Air",
+                }
          ));
 
-        allObjectives.Add("Most Livable City",
+        allObjectives.Add("Fresh Air",
             new Objective(
-                "Most Livable City",
+                "Fresh Air",
                 new List<Goal>
                 {
                     new Goal_Furniture("Build an Oxygen Vent", 1, "Oxygen Vent"),
                     new Goal_Furniture("Build at least 2 Oxygen Tanks", 1, "Oxygen Tank"),
                 },
                 1000,
-                new List<string>()
+                new List<string>
+                {
+                    "First Migrants",
+                    "Passenger Needs"
+                },
+                new List<string>
+                {
+                    "Staff Basics",
+                    "Interesting Public Transport"
+                }
          ));
 
 
@@ -266,9 +335,9 @@ public class ObjectiveController : MonoBehaviour
                }
         ));
 
-        allObjectives.Add("Milestone I",
+        allObjectives.Add("First Migrants",
            new Objective(
-               "Milestone I",
+               "First Migrants",
                new List<Goal>
                {
                     new Goal_Passenger("Transport 10 passengers to Wellington in one journey", 10),

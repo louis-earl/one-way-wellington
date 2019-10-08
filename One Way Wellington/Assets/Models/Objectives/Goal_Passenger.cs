@@ -13,7 +13,10 @@ public class Goal_Passenger : Goal
 
     public override bool CheckComplete()
     {
-
+        if (JourneyController.Instance.passengersDeliveredLastJourney >= goalAmount)
+        {
+            return true;
+        }
         Debug.LogWarning("Goal checker not working properly!!");
         return false;
     }

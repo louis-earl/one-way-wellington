@@ -10,13 +10,15 @@ public class Objective
     public List<Goal> goals;
     public int reward;
     public List<string> nextObjectives;
+    public List<string> completionGroup; // If using completionGroup, nextObjectives MUST match for all in completionGroup 
 
-    public Objective(string title, List<Goal> goals, int reward, List<string> nextObjectives)
+    public Objective(string title, List<Goal> goals, int reward, List<string> nextObjectives, List<string> completionGroup = null)
     {
         this.title = title;
         this.goals = goals;
         this.reward = reward;
         this.nextObjectives = nextObjectives;
+        this.completionGroup = completionGroup;
     }
 
     public bool CheckComplete(GameObject objectiveGO)

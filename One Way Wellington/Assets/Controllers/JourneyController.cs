@@ -36,6 +36,9 @@ public class JourneyController : MonoBehaviour
 
     public GameObject passengerParent;
 
+    public int passengersDeliveredLastJourney;
+    public int passengersDeliveredTotal;
+
     // Fuel UI
     public GameObject panel_FuelCost;
     public TextMeshProUGUI text_FuelCost;
@@ -240,6 +243,9 @@ public class JourneyController : MonoBehaviour
 
             // Refill oxygen
             OxygenController.Instance.RestockOxygen();
+
+            UserInterfaceController.Instance.panel_LaunchJourney.SetActive(false);
+
         }
         else
         {
@@ -263,6 +269,7 @@ public class JourneyController : MonoBehaviour
     {
         if (TransitionController.Instance.isMapMode) StartCoroutine(TransitionController.Instance.TransitionLandingWithoutZoom());
         else StartCoroutine(TransitionController.Instance.TransitionLanding());
+        UserInterfaceController.Instance.panel_LandShip.SetActive(false);
     }
 
     // Called when the above coroutine is completed
@@ -356,10 +363,14 @@ public class JourneyController : MonoBehaviour
         isJourneyEditMode = true;
         StartCoroutine(TransitionController.Instance.TransitionInMap());
 
+        passengersDeliveredLastJourney = 0;
+
         foreach (GameObject passengerGO in currentPassengers)
         {
             int payment = passengerGO.GetComponent<Passenger>().GetPassengerFare();
             CurrencyController.Instance.AddBankBalance(payment);
+            passengersDeliveredLastJourney++;
+            passengersDeliveredTotal++;
         }
         foreach (GameObject passengerGO in currentPassengers)
         {
@@ -378,6 +389,9 @@ public class JourneyController : MonoBehaviour
             planetGO.GetComponent<Planet>().GeneratePotentialPassengers();
         }
 
+
+        // Check Objectives 
+        ObjectiveController.Instance.CheckObjectives();
     }
 
 }
