@@ -1,14 +1,16 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using TMPro;
 
 public class Planet : MonoBehaviour
 {
     private string planetName;
 
-    public int planetGraphic;
-    private Sprite surface;
-    private Sprite clouds;
+    private int planetGraphicSuffix;
+    public SpriteRenderer surface;
+    public SpriteRenderer clouds;
     public Planet nextPlanet; // further from earth 
     public Planet previousPlanet; // closer to earth 
     public float planetScale;
@@ -21,24 +23,35 @@ public class Planet : MonoBehaviour
     private List<PotentialPassenger> potentialPassengers;
     public List<PotentialPassenger> selectedPassengers;
 
+    public bool allowClick;
+
     private void Start()
     {
         potentialPassengers = new List<PotentialPassenger>();
         selectedPassengers = new List<PotentialPassenger>();
         GeneratePotentialPassengers();
+        allowClick = true;
     }
 
-    private void OnMouseDown()
+    private void OnMouseUpAsButton()
     {
-        if (planetName != "Earth")
+        if (!EventSystem.current.IsPointerOverGameObject())
         {
-            if (planetUI != null) Destroy(planetUI);
-            planetUI = Instantiate(JourneyController.Instance.PlanetUIPrefab);
-            planetUI.transform.position = new Vector3(planetCoordinates.x, planetCoordinates.y, 1020);
-            planetUI.transform.localScale = Vector3.one / 500;
-            planetUI.GetComponent<PlanetInterface>().SetPlanet(this, false);
-            planetUI.GetComponent<PlanetInterface>().button_ContinueJourney.gameObject.SetActive(false);
-            planetUI.GetComponent<PlanetInterface>().SetMoveWithPlanet(true);
+            if (allowClick)
+            {
+                if (planetName != "Earth")
+                {
+                    if (planetUI != null) Destroy(planetUI);
+                    planetUI = Instantiate(JourneyController.Instance.PlanetUIPrefab);
+                    planetUI.transform.position = new Vector3(planetCoordinates.x, planetCoordinates.y, 1020);
+                    planetUI.transform.localScale = Vector3.one / 500;
+                    planetUI.GetComponent<PlanetInterface>().SetPlanet(this, false);
+                    planetUI.GetComponent<PlanetInterface>().button_ContinueJourney.gameObject.SetActive(false);
+                    planetUI.GetComponent<PlanetInterface>().SetMoveWithPlanet(true);
+
+                }
+                StartCoroutine(InputController.Instance.MoveCameraTo(transform.position.x, transform.position.y));
+            }
         }
     }
 
@@ -50,11 +63,24 @@ public class Planet : MonoBehaviour
     public bool SetNextPlanet(Planet nextPlanet, Planet previousPlanet)
     {
         this.previousPlanet = previousPlanet;
-        // Debug.Log(nextPlanet.name + " <- " + planetName + " <- " + this.previousPlanet.name);
+        Debug.Log(nextPlanet.name + " <- " + planetName + " <- " + this.previousPlanet.name);
         if (nextPlanet != this)
         {
-            if (this.nextPlanet == null) this.nextPlanet = nextPlanet;
-            else return this.nextPlanet.SetNextPlanet(nextPlanet, this);
+            if (this.nextPlanet == null)
+            {
+                Debug.Log("setting " + this + " next planet to " + nextPlanet + " AND setting " + this.nextPlanet + " sprevious planet to " + this);
+                this.nextPlanet = nextPlanet;
+                this.nextPlanet.previousPlanet = this;
+            }
+            else
+            {
+                if (nextPlanet.previousPlanet == null)
+                {
+                    Debug.Log("setting " + nextPlanet + " sprevious planet to " + GetNextPlanet());
+                    nextPlanet.previousPlanet = GetNextPlanet();
+                }
+                return this.nextPlanet.SetNextPlanet(nextPlanet, this);
+            }
             return true;
         }
         return false;
@@ -66,10 +92,17 @@ public class Planet : MonoBehaviour
         previousPlanet = null;
     }
 
-    public Planet GetNextPlanet()
+    public Planet GetNextPlanet(bool recurse = true)
     {
         if (nextPlanet == null) return this;
-        else return nextPlanet.GetNextPlanet();
+        if (recurse) return nextPlanet.GetNextPlanet(recurse);
+        else return nextPlanet;
+    }
+
+
+    public void SetPlanetGraphicSuffix (int planetGraphicSuffix)
+    {
+        this.planetGraphicSuffix = planetGraphicSuffix;
     }
 
     public Planet GetPreviousPlanet()
@@ -79,22 +112,22 @@ public class Planet : MonoBehaviour
 
     public Sprite GetSurface()
     {
-        return surface;
+        return surface.sprite;
     }
 
     public void SetSurface(Sprite surface)
     {
-        this.surface = surface;
+        this.surface.sprite = surface;
     }
 
     public Sprite GetClouds()
     {
-        return clouds;
+        return clouds.sprite;
     }
 
     public void SetClouds(Sprite clouds)
     {
-        this.clouds = clouds;
+        this.clouds.sprite = clouds;
     }
 
     public string GetPlanetName()
@@ -105,6 +138,15 @@ public class Planet : MonoBehaviour
     public void SetPlanetName(string name)
     {
         this.planetName = name;
+    }
+
+    public void RemovePotentialPassenger(PotentialPassenger potentialPassenger) 
+    {
+        if (potentialPassengers.Contains(potentialPassenger))
+        {
+            potentialPassengers.Remove(potentialPassenger);
+        }
+
     }
 
     public void GeneratePotentialPassengers()
@@ -133,12 +175,12 @@ public class Planet : MonoBehaviour
 
         if (this.nextPlanet != null)
         {
-            Debug.Log(planetName + " -> " + this.nextPlanet.planetName);
+            //Debug.Log(planetName + " -> " + this.nextPlanet.planetName);
             nextPlanet = this.nextPlanet.ToPlanetData();
             
         }
 
-        return new PlanetData(planetName, planetGraphic, nextPlanet, planetScale, planetCoordinates.x, planetCoordinates.y);
+        return new PlanetData(planetName, planetGraphicSuffix, nextPlanet, planetScale, planetCoordinates.x, planetCoordinates.y);
     }
 
 }

@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 public class JourneyController : MonoBehaviour
 {
@@ -17,7 +19,9 @@ public class JourneyController : MonoBehaviour
     public float shipSpeedCurrent;
     public bool isJourneyEditMode; // TODO: set ONLY after Wellington arrival
 
-    public GameObject orangeLinePrefab;
+    public GameObject distanceLinePrefab;
+    public GameObject distanceLineTeleportPrefab;
+    public GameObject distanceLineTeleportInstance;
     public GameObject progressMarkerPrefab;
     public GameObject PlanetUIPrefab;
 
@@ -27,8 +31,18 @@ public class JourneyController : MonoBehaviour
     public List<GameObject> currentPassengers;
 
     public float fuelRemaining;
+    public float fuelUsed;
+    public static readonly float FUEL_COST = 2.30f;
 
     public GameObject passengerParent;
+
+    public int passengersDeliveredLastJourney;
+    public int passengersDeliveredTotal;
+
+    // Fuel UI
+    public GameObject panel_FuelCost;
+    public TextMeshProUGUI text_FuelCost;
+
 
     // Start is called before the first frame update
     void Start()
@@ -38,6 +52,7 @@ public class JourneyController : MonoBehaviour
         progressMarkerPrefab.transform.position = new Vector3(0, 0, 1020);
 
         currentPassengers = new List<GameObject>();
+        panel_FuelCost.SetActive(false);
     }
 
     // Update is called once per frame
@@ -46,15 +61,14 @@ public class JourneyController : MonoBehaviour
         
         if (nextPlanetVisit != null && !isJourneyEditMode)
         {
+            // If ship is at planet location 
             if (Vector2.Distance(shipCoordinates, nextPlanetVisit.GetPlanetCoordinates()) < 0.1)
             {
                 // We have arrived at a planet! 
                 currentPlanetVisit = nextPlanetVisit;
 
-                shipSpeedCurrent = 0;
                 isJourneyEditMode = true;
                 StartCoroutine(TransitionController.Instance.TransitionArrival(nextPlanetVisit));
-                UserInterfaceController.Instance.ShowLandUI();
                 currentPlanetVisit = nextPlanetVisit;
                 
             }
@@ -63,7 +77,10 @@ public class JourneyController : MonoBehaviour
                 // Move towards the planet 
 
                 shipCoordinates = Vector2.MoveTowards(shipCoordinates, nextPlanetVisit.GetPlanetCoordinates(), (shipSpeedCurrent / 5) * Time.deltaTime);
-                progressMarkerPrefab.transform.position = new Vector3(shipCoordinates.x, shipCoordinates.y, 1020);
+                if (shipCoordinates.x < 100000) // not infinity
+                {
+                    progressMarkerPrefab.transform.position = new Vector3(shipCoordinates.x, shipCoordinates.y, 1020);
+                }
                 currentPlanetVisit = null;
             }
         }
@@ -71,6 +88,8 @@ public class JourneyController : MonoBehaviour
 
     public void AddNextPlanet(Planet planet)
     {
+        Debug.Log("Adding next planet to journey: " + planet.name);
+
         if (isJourneyEditMode)
         {
             
@@ -86,16 +105,63 @@ public class JourneyController : MonoBehaviour
                     UserInterfaceController.Instance.panel_LaunchJourney.SetActive(true);
                     UserInterfaceController.Instance.panel_GoToShip.SetActive(false);
 
-                    // Draw line between planets 
-                    GameObject line = Instantiate(orangeLinePrefab);
+                    // Draw new distance line between planets 
+                    GameObject line = Instantiate(distanceLinePrefab);
                     line.transform.position = Vector3.Lerp(planet.transform.position, lastPlanet.transform.position, 0.5f);
-                    line.transform.localScale = new Vector3(Vector3.Distance(planet.transform.position, lastPlanet.transform.position) * 100, 500, 1);
+                    line.transform.localScale = new Vector3(12, 12, 1);
+                    line.GetComponent<SpriteRenderer>().size = new Vector2(Vector3.Distance(planet.transform.position, lastPlanet.transform.position)/12, 0.31f);
                     line.transform.LookAt(planet.transform.position);
                     line.transform.Rotate(new Vector3(0, 90, 0));
                     line.transform.parent = TransitionController.Instance.mapGO.transform;
+                    line.GetComponentInChildren<Canvas>().GetComponentInChildren<TextMeshProUGUI>().text = string.Format("{0:C}", (int)Vector3.Distance(planet.transform.position, lastPlanet.transform.position) * FUEL_COST);
+
+                    // Rotate fuel cost text 
+                    Debug.Log("line.transform.localRotation.eulerAngles.y): " + line.transform.localRotation.eulerAngles.y);
+                    if (Mathf.Abs(line.transform.localRotation.eulerAngles.y % 360) >= 90)
+                    {
+                        line.GetComponentInChildren<Canvas>().GetComponentInChildren<RectTransform>().localRotation = Quaternion.Euler(new Vector3(0, -180, 0));
+                    }
+
                     nextPlanetVisit.linkLine = line;
 
+
+                    // Update existing teleport line 
+                    if (distanceLineTeleportInstance == null) distanceLineTeleportInstance = Instantiate(distanceLineTeleportPrefab);
+                    distanceLineTeleportInstance.transform.position = Vector3.Lerp(earth.transform.position, lastPlanetVisit.transform.position, 0.5f);
+                    distanceLineTeleportInstance.transform.localScale = new Vector3(12, 12, 1);
+                    distanceLineTeleportInstance.GetComponent<SpriteRenderer>().size = new Vector2(Vector3.Distance(earth.transform.position, lastPlanetVisit.transform.position) / 12, 0.31f);
+                    distanceLineTeleportInstance.transform.LookAt(earth.transform.position);
+                    distanceLineTeleportInstance.transform.Rotate(new Vector3(0, 90, 0));
+                    distanceLineTeleportInstance.transform.parent = TransitionController.Instance.mapGO.transform;
+
+                    // Rotate fuel cost text 
+                    if (Mathf.Abs(distanceLineTeleportInstance.transform.localRotation.eulerAngles.y % 360) >= 90)
+                    {
+                        distanceLineTeleportInstance.GetComponentInChildren<Canvas>().GetComponentInChildren<RectTransform>().localRotation = Quaternion.Euler(new Vector3(0, -180, 0));
+                    }
+
+                    // Offset if journey is only 1 planet
+                    if (lastPlanet == earth)
+                    {
+                        line.transform.Translate(Vector3.up * 2, line.transform);
+                        distanceLineTeleportInstance.transform.Translate(Vector3.down * 2, distanceLineTeleportInstance.transform);
+                    }
+                    else
+                    {
+                        earth.GetComponent<Planet>().linkLine.transform.position = Vector3.Lerp(earth.GetNextPlanet(false).transform.position, earth.transform.position, 0.5f);
+
+                    }
+
+
+                    // Fuel usage
                     fuelRemaining -= Vector3.Distance(planet.transform.position, lastPlanet.transform.position);
+                    fuelUsed += Vector3.Distance(planet.transform.position, lastPlanet.transform.position);
+                    text_FuelCost.text = string.Format("{0:C}", (int) fuelUsed * FUEL_COST);
+
+                    // Strange Unity glitch requires UI force update
+                    Canvas.ForceUpdateCanvases();
+                    text_FuelCost.transform.parent.GetComponent<ContentSizeFitter>().enabled = false;
+                    text_FuelCost.transform.parent.GetComponent<ContentSizeFitter>().enabled = true;
 
                     // Draw circle around planet 
                     Destroy(distanceRingInstance);
@@ -108,7 +174,19 @@ public class JourneyController : MonoBehaviour
                         distanceRingInstance.GetComponent<DistanceRing>().CreatePoints();
                     }
                 }
+                else
+                {
+                    Debug.LogWarning("Failed to add planet to journey");
+                }
             }
+            else
+            {
+                Debug.Log("Not enough fuel");
+            }
+        }
+        else
+        {
+            Debug.Log("Not in journey edit mode");
         }
     }
 
@@ -126,6 +204,18 @@ public class JourneyController : MonoBehaviour
             distanceRingInstance.GetComponent<DistanceRing>().yradius = fuelRemaining;
             distanceRingInstance.GetComponent<DistanceRing>().CreatePoints();
         }
+        // Fuel cost UI 
+        if (isJourneyEditMode)
+        {
+            panel_FuelCost.SetActive(true);
+            text_FuelCost.text = string.Format("{0:C}", 0);
+
+            // Strange Unity glitch requires UI force update
+            Canvas.ForceUpdateCanvases();
+            text_FuelCost.transform.parent.GetComponent<ContentSizeFitter>().enabled = false;
+            text_FuelCost.transform.parent.GetComponent<ContentSizeFitter>().enabled = true;
+            
+        }
     }
 
     public float GetShipSpeedCurrent()
@@ -142,9 +232,20 @@ public class JourneyController : MonoBehaviour
             shipCoordinates = earth.GetNextPlanet().GetPlanetCoordinates();
             //shipSpeedCurrent = shipSpeedMax;
             //TransitionController.Instance.StartTransitionToMain();
-            StartCoroutine(TransitionController.Instance.TransitionLandingWithoutZoom());
+            StartCoroutine(TransitionController.Instance.TransitionWormhole(lastPlanetVisit));
             isJourneyEditMode = false;
             isAtOriginPlanet = true;
+            panel_FuelCost.SetActive(false);
+
+            // Charge for fuel 
+            CurrencyController.Instance.DeductBankBalance((int)(fuelUsed * FUEL_COST));
+            fuelUsed = 0;
+
+            // Refill oxygen
+            OxygenController.Instance.RestockOxygen();
+
+            UserInterfaceController.Instance.panel_LaunchJourney.SetActive(false);
+
         }
         else
         {
@@ -168,11 +269,13 @@ public class JourneyController : MonoBehaviour
     {
         if (TransitionController.Instance.isMapMode) StartCoroutine(TransitionController.Instance.TransitionLandingWithoutZoom());
         else StartCoroutine(TransitionController.Instance.TransitionLanding());
+        UserInterfaceController.Instance.panel_LandShip.SetActive(false);
     }
 
     // Called when the above coroutine is completed
     public void OnLandComplete()
     {
+       
         if (currentPlanetVisit != null)
         {
             if (currentPlanetVisit == earth)
@@ -189,6 +292,7 @@ public class JourneyController : MonoBehaviour
         }
     }
 
+    // For selecting passengers to board
     private void SpawnPlanetInterfaceGO()
     {
         GameObject planetInterfaceGO = Instantiate(PlanetUIPrefab);
@@ -206,22 +310,31 @@ public class JourneyController : MonoBehaviour
     }
 
     // After landing and boarding passengers 
-    public void ContinueJourney() 
+    public void ContinueJourney(Planet planet)
     {
+
+        // Return planet to map
+        GameObject planetLandGO = planet.gameObject;
+        TransitionController.Instance.mapGO.SetActive(true);
+        planetLandGO.transform.parent = TransitionController.Instance.mapGO.transform;
+        planetLandGO.transform.localScale = new Vector3(planetLandGO.GetComponent<Planet>().planetScale, planetLandGO.GetComponent<Planet>().planetScale, 1);
+        planetLandGO.transform.localPosition = new Vector3(planetLandGO.GetComponent<Planet>().GetPlanetCoordinates().x, planetLandGO.GetComponent<Planet>().GetPlanetCoordinates().y, 0);
+        TransitionController.Instance.mapGO.SetActive(false);
+        planet.allowClick = true;
+
+        Debug.Log("Put back planet: " + planet.name);
+
         // Set the next destination
         UserInterfaceController.Instance.ShowMainUI();
 
         InputController.Instance.cameraZoomEnabled = true;
 
-        if (!isAtOriginPlanet)
-        {
-            lastPlanetVisit.ClearLinkedPlanets();
-            Destroy(nextPlanetVisit.linkLine);
 
-            lastPlanetVisit = nextPlanetVisit;
-            nextPlanetVisit = nextPlanetVisit.GetPreviousPlanet();
-        }
-        else isAtOriginPlanet = false;
+        lastPlanetVisit = nextPlanetVisit;
+        nextPlanetVisit = nextPlanetVisit.GetPreviousPlanet();
+        lastPlanetVisit.ClearLinkedPlanets();
+        Destroy(lastPlanetVisit.linkLine);
+
 
         shipSpeedCurrent = shipSpeedMax;
         isJourneyEditMode = false;
@@ -231,6 +344,16 @@ public class JourneyController : MonoBehaviour
 
     public void EndJourney()
     {
+        // put earth back
+        // Return planet to map
+        GameObject planetLandGO = earth.gameObject;
+        TransitionController.Instance.mapGO.SetActive(true);
+        planetLandGO.transform.parent = TransitionController.Instance.mapGO.transform;
+        planetLandGO.transform.localScale = new Vector3(planetLandGO.GetComponent<Planet>().planetScale, planetLandGO.GetComponent<Planet>().planetScale, 1);
+        planetLandGO.transform.localPosition = new Vector3(planetLandGO.GetComponent<Planet>().GetPlanetCoordinates().x, planetLandGO.GetComponent<Planet>().GetPlanetCoordinates().y, 0);
+        TransitionController.Instance.mapGO.SetActive(false);
+        Debug.Log("Put back earth!!");
+
         lastPlanetVisit.ClearLinkedPlanets();
         earth.ClearLinkedPlanets();
         Destroy(earth.linkLine);
@@ -240,18 +363,35 @@ public class JourneyController : MonoBehaviour
         isJourneyEditMode = true;
         StartCoroutine(TransitionController.Instance.TransitionInMap());
 
+        passengersDeliveredLastJourney = 0;
+
         foreach (GameObject passengerGO in currentPassengers)
         {
             int payment = passengerGO.GetComponent<Passenger>().GetPassengerFare();
-            CurrencyController.Instance.ChangeBankBalance(payment);
+            CurrencyController.Instance.AddBankBalance(payment);
+            passengersDeliveredLastJourney++;
+            passengersDeliveredTotal++;
         }
         foreach (GameObject passengerGO in currentPassengers)
         {
             if (passengerGO != null)
             {
+                
                 Destroy(passengerGO);
             }
         }
+        currentPassengers.Clear();
+
+
+        // Generate new potential passengers for all planets 
+       foreach(GameObject planetGO in WorldController.Instance.GetPlanets())
+        {
+            planetGO.GetComponent<Planet>().GeneratePotentialPassengers();
+        }
+
+
+        // Check Objectives 
+        ObjectiveController.Instance.CheckObjectives();
     }
 
 }

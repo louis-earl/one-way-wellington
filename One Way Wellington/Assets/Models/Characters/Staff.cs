@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class Staff : Character
 {
@@ -20,20 +21,22 @@ public class Staff : Character
         // Setup from here onwards
         //energy = 100f;
         //health = 100f;
+        spriteRenderer.transform.localPosition = new Vector3(0f, 0f, 0.25f);
+
 
     }
 
     public void OnMouseUpAsButton()
     {
-        Debug.Log("Click on staff member");
         if (Passenger.passengerUIInstance != null) Destroy(Passenger.passengerUIInstance);
         if (staffUIInstance != null) Destroy(staffUIInstance);
 
         staffUIInstance = Instantiate(UserInterfaceController.Instance.staffUIPrefab);
         staffUIInstance.transform.position = new Vector3(currentX, currentY, 0);
         staffUIInstance.transform.localScale = Vector3.one / 500;
-        staffUIInstance.GetComponent<CharacterInterface>().character = this;
+        staffUIInstance.GetComponent<StaffInterface>().staff = this;
 
+        currentSelectedCharacter = this;
     }
 
     protected override void Refresh()
@@ -45,16 +48,16 @@ public class Staff : Character
         if (energy <= 0)
         {
             // Enter a low power mode (staff never die from zero energy) 
-            spriteRenderer.color = Color.red;
+            // spriteRenderer.color = Color.red;
 
-            if (targetJob?.GetJobType() != "UseChargingPad")
+            if (targetJob?.GetJobType() != "Use Charging Pad")
             {
                 FindCharger();
             }
         }
         else if (health < 100)
         {
-            if (targetJob?.GetJobType() != "Use3DPrinter")
+            if (targetJob?.GetJobType() != "Use 3D Printer")
             {
                 Find3DPrinter();
             }
@@ -63,12 +66,12 @@ public class Staff : Character
 
     private void FindCharger()
     {
-        DoJobAtFurnitureTile("Charging Pad", "UseChargingPad", delegate () { UseChargingPad(); }, 5 );
+        DoJobAtFurnitureTile("Charging Pad", "Use Charging Pad", delegate () { UseChargingPad(); }, 5 );
     }
 
     private void Find3DPrinter()
     {
-        DoJobAtFurnitureTile("3D Printer", "Use3DPrinter", delegate () { Use3DPrinter(); }, 10);
+        DoJobAtFurnitureTile("3D Printer", "Use 3D Printer", delegate () { Use3DPrinter(); }, 10);
     }
 
     public void UseChargingPad()
@@ -94,14 +97,6 @@ public class Staff : Character
 
     }
 
-    public float GetHealth()
-    {
-        return health;
-    }
-
-    public void SetHealth(float health)
-    {
-        this.health = health;
-    }
+    
 
 }

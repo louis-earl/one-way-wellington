@@ -5,7 +5,7 @@ using UnityEngine.AI;
 
 public class Builder : Staff
 {
-    
+
     protected override void Init()
     {
         // Call from superclass
@@ -24,14 +24,25 @@ public class Builder : Staff
 
 
         // Find and set a target/current jobs
-        if (targetJob == null)
+
+        if (targetJob == null || targetJob?.GetJobType() == "Wander")
         {
             targetJob = jobQueue.GetNextJob(new Vector2(currentX, currentY), failedJobs);
             if (targetJob == null)
             {
+
                 // We are idle
-                // Go to storage and enter low power mode 
+                // TODO: Go to storage and enter low power mode 
+
+                // Get random hull tile 
+                TileOWW randomHullTile = WorldController.Instance.GetWorld().GetRandomHullTile();
+                if (randomHullTile != null)
+                {
+                    targetJob = new Job(delegate () { }, randomHullTile, 1, "Wander", JobPriority.Low, tileExcludeOtherJobs: false);
+                }
             }
+
+ 
         }
         
     }

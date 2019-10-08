@@ -17,22 +17,25 @@ public class WorldController : MonoBehaviour
     // NOTE: Passengers are stored in journey controller 
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         Instance = this;
         // Create world
-        world = new World(100, 100);
+        world = new World(100, 100);  
 
+        // Staff Lists 
+        staff = new List<GameObject>();
+
+    }
+
+    private void Start()
+    {
         // Create tile GameObjects
         TileSpriteController.Instance.InstantiateTiles(world);
 
         // Generate planets 
         GeneratePlanets(75);
         mapGO.SetActive(false);
-
-        // Staff Lists 
-        staff = new List<GameObject>();
-
     }
 
 
@@ -51,8 +54,51 @@ public class WorldController : MonoBehaviour
     {
         foreach (TileOWW tile in world.GetAllTiles())
         {
+            // Build references to furniture locations
+            if (tile.GetInstalledFurniture() != null)
+            {
+                if (!BuildModeController.Instance.furnitureTileOWWMap.ContainsKey(tile.GetInstalledFurniture().GetFurnitureType()))
+                {
+                    BuildModeController.Instance.furnitureTileOWWMap.Add(tile.GetInstalledFurniture().GetFurnitureType(), new List<TileOWW>());
+                    BuildModeController.Instance.furnitureTileOWWMap[tile.GetInstalledFurniture().GetFurnitureType()].Add(tile);
+                }
+                else if (!BuildModeController.Instance.furnitureTileOWWMap[tile.GetInstalledFurniture().GetFurnitureType()].Contains(tile))
+                {
+                    BuildModeController.Instance.furnitureTileOWWMap[tile.GetInstalledFurniture().GetFurnitureType()].Add(tile);
+                }
+            }
+
+            // Reset furniture to their default state
+            if (tile.GetInstalledFurniture()?.GetFurnitureType() == "Airlock Open")
+            {
+                tile.SetInstalledFurniture(new InstalledFurniture("Airlock"));
+            }
+            else
+            {              
+                FurnitureSpriteController.Instance.UpdateFurniture(tile);
+            }
+
+            // Cargo references 
+            if (tile.looseItem != null)
+            {
+
+                if (CargoController.Instance.unusedShipStock.ContainsKey(tile.looseItem.itemType))
+                {
+                    CargoController.Instance.unusedShipStock[tile.looseItem.itemType] += tile.looseItem.quantity;
+                }
+                else
+                {
+                    CargoController.Instance.unusedShipStock.Add(tile.looseItem.itemType, tile.looseItem.quantity);
+                }
+
+                if (!CargoController.Instance.shipStockLocations.ContainsKey(tile.looseItem.itemType))
+                {
+                    CargoController.Instance.shipStockLocations.Add(tile.looseItem.itemType, new List<TileOWW>());
+                }
+                CargoController.Instance.shipStockLocations[tile.looseItem.itemType].Add(tile);
+            }
+
             TileSpriteController.Instance.UpdateTile(tile);
-            FurnitureSpriteController.Instance.UpdateFurniture(tile);
             JobSpriteController.Instance.UpdateJob(tile);
             RoomSpriteController.Instance.UpdateRoom(tile);
         }
@@ -106,26 +152,33 @@ public class WorldController : MonoBehaviour
         planet.transform.position = new Vector3(temp.x, temp.y, 1020);
         planet.name = name;
         planet.GetComponent<Planet>().SetPlanetName(name);
-        planet.GetComponent<Planet>().planetScale = Random.Range(1f, 1.85f);
-        planet.transform.localScale = new Vector3(planet.GetComponent<Planet>().planetScale, planet.GetComponent<Planet>().planetScale, 1);
 
 
         // Initialise sprites
 
-        int planetGraphic;
+        int planetGraphicSuffix;
         if (name == "Earth")
         {
-            planetGraphic = 0;
+            planetGraphicSuffix = 0;
+            planet.GetComponent<Planet>().planetScale = 1.9f;
+
+
         }
         else
         {
-            planetGraphic = Random.Range(1, 4);
+            planetGraphicSuffix = Random.Range(1, 4);
+            planet.GetComponent<Planet>().planetScale = Random.Range(1.4f, 2.2f);
+
         }
-        planet.GetComponent<Planet>().planetGraphic = planetGraphic;
-        planet.GetComponent<PlanetSpin>().InitSprites(
-            
-            Resources.Load<Sprite>("Images/Planets/Surfaces/Surface" + planetGraphic.ToString()),
-            Resources.Load<Sprite>("Images/Planets/Clouds/Cloud" + planetGraphic.ToString())) ;
+        planet.transform.localScale = new Vector3(planet.GetComponent<Planet>().planetScale, planet.GetComponent<Planet>().planetScale, 1);
+
+
+        planet.GetComponent<Planet>().SetPlanetGraphicSuffix(planetGraphicSuffix);
+        planet.GetComponent<Planet>().SetSurface(Resources.Load < Sprite > ("Images/Planets/Surfaces/Surface" + planetGraphicSuffix.ToString()));
+        planet.GetComponent<Planet>().SetClouds(Resources.Load < Sprite > ("Images/Planets/Clouds/Cloud" + planetGraphicSuffix.ToString()));
+
+
+
 
         return planet;
     }
@@ -151,9 +204,8 @@ public class WorldController : MonoBehaviour
 
 
             // Initialise sprites
-            planet.GetComponent<PlanetSpin>().InitSprites(
-                Resources.Load<Sprite>("Images/Planets/Surfaces/Surface" + planetData[i].planetGraphic.ToString()),
-                Resources.Load<Sprite>("Images/Planets/Clouds/Cloud" + planetData[i].planetGraphic.ToString()));
+            planet.GetComponent<Planet>().SetSurface(Resources.Load<Sprite>("Images/Planets/Surfaces/Surface" + planetData[i].planetGraphic.ToString()));
+            planet.GetComponent<Planet>().SetClouds(Resources.Load<Sprite>("Images/Planets/Clouds/Cloud" + planetData[i].planetGraphic.ToString()));
 
             planets.Add(planet);
 
@@ -180,7 +232,6 @@ public class WorldController : MonoBehaviour
         foreach (GameObject staffGO in staff) 
         {
             Destroy(staffGO);
-
         }
         staff.Clear();
     }

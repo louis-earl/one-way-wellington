@@ -25,11 +25,17 @@ public class PlanetInterface : MonoBehaviour
 
     public bool moveWithPlanet = true;
 
+    public bool isMouseOver;
+
 
     // Start is called before the first frame update
     void Start()
     {
         homePosition = transform.position;
+        if (!JourneyController.Instance.isJourneyEditMode)
+        {
+            button_AddToJourney.gameObject.SetActive(false);
+        }
     }
 
     // Update is called once per frame
@@ -45,12 +51,12 @@ public class PlanetInterface : MonoBehaviour
 
     private void OnMouseEnter()
     {
-        InputController.Instance.cameraZoomEnabled = false;
+        isMouseOver = true;
     }
 
     private void OnMouseExit()
     {
-        InputController.Instance.cameraZoomEnabled = true;
+        isMouseOver = false;
     }
 
     // Activated by UI Button 
@@ -64,12 +70,20 @@ public class PlanetInterface : MonoBehaviour
     // Activated by UI button
     public void ContinueJourney()
     {
+        StartCoroutine(ContinueJourneyEnum());
+    }
+
+    public IEnumerator ContinueJourneyEnum()
+    {
+        StartCoroutine(TransitionController.Instance.QuickFadeToBlack());
+        yield return new WaitForSecondsRealtime(0.5f);
+
         Vector3 stairwellPos = Vector3.zero;
 
         // Get position of stairwell 
         if (BuildModeController.Instance.furnitureTileOWWMap.ContainsKey("Stairwell"))
         {
-             stairwellPos = new Vector3(BuildModeController.Instance.furnitureTileOWWMap["Stairwell"][0].GetX(), BuildModeController.Instance.furnitureTileOWWMap["Stairwell"][0].GetY(), 0);
+            stairwellPos = new Vector3(BuildModeController.Instance.furnitureTileOWWMap["Stairwell"][0].GetX(), BuildModeController.Instance.furnitureTileOWWMap["Stairwell"][0].GetY(), 0);
         }
         else
         {
@@ -88,14 +102,27 @@ public class PlanetInterface : MonoBehaviour
             passengerGO.GetComponent<Passenger>().SetPassengerInformation(
                 potentialPassenger.GetPassengerFirstName() + " " + potentialPassenger.GetPassengerLastName() + ".",
                 potentialPassenger.GetPassengerOccupation(),
-                (100 + distance * 5));
+                (100 + distance * 5),
+                potentialPassenger.hair,
+                potentialPassenger.skin,
+                potentialPassenger.decal,
+                potentialPassenger.shirt,
+                potentialPassenger.pants,
+                potentialPassenger.shoes,
+                potentialPassenger.shades);
 
             JourneyController.Instance.currentPassengers.Add(passengerGO);
+
+            // Remove passenger as potential passneger from planet 
+            planet.RemovePotentialPassenger(potentialPassenger);
+
         }
+
+        planet.selectedPassengers.Clear();
+
         Destroy(gameObject);
 
-
-        JourneyController.Instance.ContinueJourney();
+        JourneyController.Instance.ContinueJourney(planet);
     }
 
     // An initialisation function 

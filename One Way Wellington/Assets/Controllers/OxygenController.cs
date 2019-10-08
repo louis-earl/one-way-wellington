@@ -6,18 +6,25 @@ using UnityEngine.Tilemaps;
 
 public class OxygenController : MonoBehaviour
 {
+    public static OxygenController Instance;
+
     public Tilemap tilemap;
 
-
+    // Oxygen usage
+    public float shipOxygenLevel;
 
     HashSet<TileOWW> uncheckedTiles;
     Queue<TileOWW> tilesToCheck;
     Dictionary<TileOWW, List<TileOWW>> oxygenTileGroups;
 
-    
+	private static float OXYGEN_COST = 5.85f;
 
     private static readonly float VENT_FLOW = 0.5f; // Flow from Oxygen Vent per FixedUpdate 
 
+    private void Start()
+    {
+        if (Instance == null) Instance = this;
+    }
 
     public void FixedUpdate()
     {
@@ -106,14 +113,20 @@ public class OxygenController : MonoBehaviour
     {
         if (BuildModeController.Instance.furnitureTileOWWMap.ContainsKey("Oxygen Vent"))
         {
-
-            foreach (TileOWW tile in BuildModeController.Instance.furnitureTileOWWMap["Oxygen Vent"])
+            // Is there any oxygen to use
+            if (shipOxygenLevel >= 0.5f)
             {
-                // Check oxygen vent tile first 
-                if (tile.oxygenLevel < 1)
+                foreach (TileOWW tile in BuildModeController.Instance.furnitureTileOWWMap["Oxygen Vent"])
                 {
-                    tile.oxygenLevel += VENT_FLOW;
-                    // TODO: Remove from oxygen tank supply 
+                    // Check oxygen vent tile first 
+                    if (tile.oxygenLevel < 1)
+                    {
+                        // Remove from oxygen tank supply
+                        shipOxygenLevel -= VENT_FLOW;
+
+                        // Add oxygen to ship
+                        tile.oxygenLevel += VENT_FLOW;
+                    }
                 }
             }
         }
@@ -182,7 +195,23 @@ public class OxygenController : MonoBehaviour
     }
 
 
+    public void RestockOxygen()
+    {
+        float currentOxygenLevel = shipOxygenLevel;
+        float maxOxygenLevel = 0;
+        if (BuildModeController.Instance.furnitureTileOWWMap.ContainsKey("Oxygen Tank"))
+        {
+            maxOxygenLevel = BuildModeController.Instance.furnitureTileOWWMap["Oxygen Tank"].Count * 10;
+            Debug.Log("Found oxygen tanks: " + BuildModeController.Instance.furnitureTileOWWMap["Oxygen Tank"].Count);
 
+        }
+
+
+        shipOxygenLevel = maxOxygenLevel;
+        CurrencyController.Instance.DeductBankBalance((int)((maxOxygenLevel - currentOxygenLevel) * OXYGEN_COST));
+
+        Debug.Log("Charged " + ((maxOxygenLevel - currentOxygenLevel) * OXYGEN_COST) + " for oxygen."); 
+    }
 
     private void UpdateOxygenSprite(TileOWW tileOWW, float oxygenLevel)
     {

@@ -11,10 +11,17 @@ public class ObjectiveController : MonoBehaviour
     public GameObject objectiveUIParent;
     public GameObject objectiveUIPrefab;
     public GameObject goalUIPrefab;
+    public GameObject toggle_Objectives;
 
     private List<Objective> currentObjectives;
+    public List<string> completedObjectives;
 
     private Dictionary<string, Objective> allObjectives;
+
+    // audio 
+    public AudioSource audio_ObjectiveComplete;
+    public AudioSource audio_ObjectiveRemove;
+
 
     public void AddObjective(Objective objective)
     {
@@ -23,16 +30,29 @@ public class ObjectiveController : MonoBehaviour
         // Create new ObjectiveGO for UI
         GameObject objectiveGO = Instantiate(objectiveUIPrefab);
         objectiveGO.transform.SetParent(objectiveUIParent.transform);
-        objectiveGO.GetComponent<ObjectiveUI>().title.text = objective.title;
-        objectiveGO.GetComponent<ObjectiveUI>().onComplete.text = string.Format("{0:C} when completed", objective.reward);
+		objectiveGO.transform.localScale = Vector3.one;
+        objectiveGO.GetComponent<ObjectiveUI>().text_Title.text = objective.title;
+
+        // reward text 
+        if (objective.reward == 0)
+        {
+            objectiveGO.GetComponent<ObjectiveUI>().text_OnComplete.text = "Complete in any order";
+        }
+        else
+        {
+            objectiveGO.GetComponent<ObjectiveUI>().text_OnComplete.text = string.Format("{0:C} when completed", objective.reward);
+        }
         objectiveGO.GetComponent<ObjectiveUI>().buttonClose.GetComponent<Button>().onClick.AddListener(delegate () { CloseObjective(objectiveGO); });
         objectiveGO.GetComponent<ObjectiveUI>().objectiveReference = objective;
 
+        // Create goals 
         foreach (Goal goal in objective.goals)
         {
             GameObject goalGO = Instantiate(goalUIPrefab);
             goalGO.transform.SetParent(objectiveGO.GetComponent<ObjectiveUI>().goalsParent);
-            goalGO.GetComponentInChildren<TextMeshProUGUI>().text = goal.title;
+			goalGO.transform.localScale = Vector3.one;
+			goalGO.GetComponentInChildren<TextMeshProUGUI>().text = goal.title;
+            goalGO.GetComponentInChildren<Toggle>().isOn = false;
         }
     }
 
@@ -49,7 +69,7 @@ public class ObjectiveController : MonoBehaviour
             for (int i = 0; i < objectiveUIParent.transform.childCount; i++)
             {
                 Transform objectiveTransform = objectiveUIParent.transform.GetChild(i);
-                if (objective.title.Equals(objectiveTransform.GetComponent<ObjectiveUI>().title.text))
+                if (objective.title.Equals(objectiveTransform.GetComponent<ObjectiveUI>().text_Title.text))
                 {
                     objectiveGO = objectiveTransform.gameObject;
                     break;
@@ -61,12 +81,29 @@ public class ObjectiveController : MonoBehaviour
                 // Turn on close button
                 objectiveGO.GetComponent<ObjectiveUI>().buttonClose.SetActive(true);
 
-                
-
-                objectiveGO.GetComponent<ObjectiveUI>().onComplete.text = "Click to claim reward!";
+                objectiveGO.GetComponent<ObjectiveUI>().isComplete = true;
+                objectiveGO.GetComponent<ObjectiveUI>().StartBlinking();
+                if (objective.reward == 0)
+                {
+                    objectiveGO.GetComponent<ObjectiveUI>().text_OnComplete.text = "Click to progress";
+                }
+                else
+                {
+                    objectiveGO.GetComponent<ObjectiveUI>().text_OnComplete.text = string.Format("Click to claim {0:C} reward", objective.reward);
+                }
                 objectiveGO.GetComponent<Button>().onClick.AddListener(delegate () { CloseObjective(objectiveGO); });
 
-                objectivesToRemove.Add(objective);               
+                objectivesToRemove.Add(objective);
+
+                // Play sound 
+                audio_ObjectiveComplete.Play();
+
+                // UI pop-up if Objectives panel not already open 
+                if (!objectiveUIParent.activeInHierarchy)
+                {
+                    NotificationController.Instance.CreateNotification("Objective Complete! (" + objective.title + ")", UrgencyLevel.Low, true, false, new List<string>() { "Open Objectives Panel" }, new List<System.Action>() { new System.Action(delegate () { toggle_Objectives.GetComponent<Toggle>().isOn = true; }) });
+                    StartBlinking();
+                }
             }
         }
 
@@ -78,51 +115,123 @@ public class ObjectiveController : MonoBehaviour
 
     public void CloseObjective(GameObject objectiveGO)
     {
-        // Enable next objectives 
-        foreach (string nextObjective in objectiveGO.GetComponent<ObjectiveUI>().objectiveReference.nextObjectives)
-        {
-            AddObjective(allObjectives[nextObjective]);
-        }
 
-        CurrencyController.Instance.ChangeBankBalance(objectiveGO.GetComponent<ObjectiveUI>().objectiveReference.reward);
+        // Check completion group 
+        bool isGroupComplete = true;
+        if (objectiveGO.GetComponent<ObjectiveUI>().objectiveReference.completionGroup != null)
+        {
+            foreach (string siblingObjective in objectiveGO.GetComponent<ObjectiveUI>().objectiveReference.completionGroup)
+            {
+                if (!completedObjectives.Contains(siblingObjective))
+                {
+                    isGroupComplete = false;
+                }
+            }
+        }
+        // Enable next objectives 
+        if (isGroupComplete)
+        {
+            foreach (string nextObjective in objectiveGO.GetComponent<ObjectiveUI>().objectiveReference.nextObjectives)
+            {
+                AddObjective(allObjectives[nextObjective]);
+            }
+        }
+        // Play sound 
+        audio_ObjectiveRemove.timeSamples = 5000;
+        audio_ObjectiveRemove.Play();
+
+        completedObjectives.Add(objectiveGO.GetComponent<ObjectiveUI>().objectiveReference.title);
+        CurrencyController.Instance.AddBankBalance(objectiveGO.GetComponent<ObjectiveUI>().objectiveReference.reward);
         Destroy(objectiveGO);
+    }
+
+    IEnumerator Blink()
+    {
+        while (true)
+        {
+            if (toggle_Objectives.GetComponent<Toggle>().colors.normalColor.r != 1)
+            {
+                ColorBlock colorBlock= toggle_Objectives.GetComponent<Toggle>().colors;
+                colorBlock.normalColor = new Color32(255, 221, 0, 255);
+                toggle_Objectives.GetComponent<Toggle>().colors = colorBlock;
+
+                yield return new WaitForSecondsRealtime(0.5f);
+            }
+            else
+            {
+                ColorBlock colorBlock = toggle_Objectives.GetComponent<Toggle>().colors;
+                colorBlock.normalColor = new Color32(59, 39, 186, 255);
+                toggle_Objectives.GetComponent<Toggle>().colors = colorBlock;
+
+                yield return new WaitForSecondsRealtime(0.5f);
+            }
+        }
+    }
+
+    public void StartBlinking()
+    {
+        if (gameObject.activeInHierarchy)
+        {
+            StartCoroutine("Blink");
+        }
+    }
+
+    public void StopBlinking()
+    {
+        StopAllCoroutines();
+        ColorBlock colorBlock = toggle_Objectives.GetComponent<Toggle>().colors;
+        colorBlock.normalColor = new Color32(59, 39, 186, 255);
+        toggle_Objectives.GetComponent<Toggle>().colors = colorBlock;
+    }
+
+    public IEnumerator InitialNotificationDelayed()
+    {
+        yield return new WaitForSeconds(1.5f);
+        NotificationController.Instance.CreateNotification("Welcome to One Way Wellington! Get started by opening your objectives panel.", UrgencyLevel.Low, true, false, new List<string>() { "Open Objectives Panel" }, new List<System.Action>() { new System.Action(delegate () { toggle_Objectives.GetComponent<Toggle>().isOn = true; }) });
+
     }
 
     private void Start()
     {
         if (Instance == null) Instance = this;
 
+        StartBlinking();
 
         allObjectives = new Dictionary<string, Objective>();
         currentObjectives = new List<Objective>();
 
-        List<Goal> goals = new List<Goal>
-        {
-            new Goal_Furniture("Build at least 32 hull tiles", 32, "Hull")
-        };
+        StartCoroutine(InitialNotificationDelayed());
 
-        List<string> nextObjectives = new List<string>
-        {
-            "Staff Basics",
-            "Get Moving",
-            "Habitable"
-        };
+        allObjectives.Add("Wellywood Cinematographer",
+            new Objective(
+                "Wellywood Cinematographer",
+                new List<Goal>
+                {
+                    new Goal_CameraPan("Hold the right mouse button and drag to pan the camera", new Vector2(Camera.main.transform.position.x, Camera.main.transform.position.y), 10),
+                    new Goal_CameraSize("Use the mouse scroll wheel to zoom the camera", Camera.main.orthographicSize, 15)
+                },
+                0,
+                new List<string>
+                {
+                    "The Hull"
+                }
+         ));
 
-        // The Hull
         allObjectives.Add("The Hull",
             new Objective(
                 "The Hull",
                 new List<Goal>
                 {
-                    new Goal_Hull("Build at least 30 hull tiles", 30),
-                    new Goal_Staff("Hire a Builder", 1, "Builder")
+                    new Goal_Staff("Hire at least 1 BUILDER", 1, "Builder"),
+                    new Goal_Hull("Build at least 30 HULL tiles", 30),
+                    new Goal_Furniture("Build at least 1 AIRLOCK", 1, "Airlock")
                 },
                 1000,
                 new List<string>
                 {
                     "Staff Basics",
-                    "Get Moving",
-                    "Habitable"
+                    "Interesting Public Transport",
+                    "Fresh Air"
                 }
          ));
 
@@ -138,34 +247,61 @@ public class ObjectiveController : MonoBehaviour
                     new Goal_Furniture("Build a Battery", 1, "Battery"),
                 },
                 1500,
-                new List<string>()                              
+                new List<string>
+                {
+                    "First Migrants",
+                    "Passenger Needs"
+                },
+                new List<string>
+                {
+                    "Interesting Public Transport",
+                    "Fresh Air",
+                }
          ));
 
 
-        allObjectives.Add("Get Moving",
+        allObjectives.Add("Interesting Public Transport",
             new Objective(
-                "Get Moving",
+                "Interesting Public Transport",
                 new List<Goal>
                 {
                     new Goal_Furniture("Build an Engine", 1, "Engine"),
                     new Goal_Furniture("Build at least 6 Fuel Tanks", 1, "Fuel Tank"),
                     new Goal_Furniture("Build the Ship Controls", 1, "Ship Controls"),
-                    new Goal_Furniture("Build the Staircase", 1, "Staircase"),
+                    new Goal_Furniture("Build the Stairwell", 1, "Stairwell"),
                 },
                 2000,
-                new List<string>()
+                new List<string>
+                {
+                    "First Migrants",
+                    "Passenger Needs"
+                },
+                new List<string>
+                {
+                    "Staff Basics",
+                    "Fresh Air",
+                }
          ));
 
-        allObjectives.Add("Habitable",
+        allObjectives.Add("Fresh Air",
             new Objective(
-                "Habitable",
+                "Fresh Air",
                 new List<Goal>
                 {
                     new Goal_Furniture("Build an Oxygen Vent", 1, "Oxygen Vent"),
                     new Goal_Furniture("Build at least 2 Oxygen Tanks", 1, "Oxygen Tank"),
                 },
                 1000,
-                new List<string>()
+                new List<string>
+                {
+                    "First Migrants",
+                    "Passenger Needs"
+                },
+                new List<string>
+                {
+                    "Staff Basics",
+                    "Interesting Public Transport"
+                }
          ));
 
 
@@ -199,9 +335,9 @@ public class ObjectiveController : MonoBehaviour
                }
         ));
 
-        allObjectives.Add("Milestone I",
+        allObjectives.Add("First Migrants",
            new Objective(
-               "Milestone I",
+               "First Migrants",
                new List<Goal>
                {
                     new Goal_Passenger("Transport 10 passengers to Wellington in one journey", 10),
@@ -289,8 +425,8 @@ public class ObjectiveController : MonoBehaviour
 
 
 
-        // DEBUG
-        AddObjective(allObjectives["The Hull"]);
+        // Initial Objective 
+        AddObjective(allObjectives["Wellywood Cinematographer"]);
         
     }
 

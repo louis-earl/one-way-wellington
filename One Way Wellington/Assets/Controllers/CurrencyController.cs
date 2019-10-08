@@ -17,7 +17,7 @@ public class CurrencyController : MonoBehaviour
     {
         if (Instance == null) Instance = this;
         // TODO: Load/save
-        SetBankBalance(50000);
+        SetBankBalance(60000);
     }
 
     // Update is called once per frame
@@ -38,11 +38,16 @@ public class CurrencyController : MonoBehaviour
 
     }
 
-    public void ChangeBankBalance(int amount)
+    public void AddBankBalance(int amount)
     {
         bankBalance += amount;
         text_BankBalance.text = string.Format("{0:C}", bankBalance);
     }
 
+    public void DeductBankBalance(int amount)
+    {
+        bankBalance -= amount;
+        text_BankBalance.text = string.Format("{0:C}", bankBalance);
+    }
 
 }

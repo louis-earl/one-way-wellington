@@ -10,13 +10,15 @@ public class Objective
     public List<Goal> goals;
     public int reward;
     public List<string> nextObjectives;
+    public List<string> completionGroup; // If using completionGroup, nextObjectives MUST match for all in completionGroup 
 
-    public Objective(string title, List<Goal> goals, int reward, List<string> nextObjectives)
+    public Objective(string title, List<Goal> goals, int reward, List<string> nextObjectives, List<string> completionGroup = null)
     {
         this.title = title;
         this.goals = goals;
         this.reward = reward;
         this.nextObjectives = nextObjectives;
+        this.completionGroup = completionGroup;
     }
 
     public bool CheckComplete(GameObject objectiveGO)
@@ -41,13 +43,15 @@ public class Objective
 
             if (goal.CheckComplete())
             {
-                // Update graphic               
-                goalGO.GetComponent<Image>().color = new Color(0.254902f, 0.6431373f, 0.2196078f);
+                // Update graphic       
+                goalGO.GetComponentInChildren<Toggle>().isOn = true;
+                goalGO.GetComponent<Image>().color = new Color(0.145098f, 0.8666667f, 0.827451f); // green
             }
             else
             {
                 // Update graphic (in case the goal changed back to incomplete) 
-                goalGO.GetComponent<Image>().color = new Color(0f, 0.5254902f, 0.8117647f);
+                goalGO.GetComponentInChildren<Toggle>().isOn = false;
+                goalGO.GetComponent<Image>().color = new Color(0.2313726f, 0.1529412f, 0.7294118f); //purple
 
                 isAllGoalsComplete = false;
             }

@@ -1,10 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class UserInterfaceController : MonoBehaviour
 {
+    // Build panels 
     public GameObject[] subPanels;
     public GameObject panel_Building;
     public GameObject panel_GoToMap;
@@ -12,19 +12,29 @@ public class UserInterfaceController : MonoBehaviour
     public GameObject panel_LaunchJourney;
     public GameObject panel_LandShip;
 
-    public Button button_Hull;
-    public Button button_Wall;
-    public Button button_Storage;
-    public Button button_Furniture;
-    public Button button_Rooms;
-    public Button button_Staff;
-
+    // Prefabs 
     public GameObject passengerUIPrefab;
     public GameObject staffUIPrefab;
 
+
+    // Reference to the canvas 
     public GameObject canvas_Main;
 
+
+    // Tooltips 
+    public GameObject pricePopUpPrefab;
+    public GameObject pricePopUpInstance;
+    public GameObject tooltipInstance;
+    public string toolTipText;
+
+    // Audio 
+    public AudioSource audio_OpenBuildPanel;
+    public AudioSource audio_SelectBuildItem;
+
     public static UserInterfaceController Instance;
+
+    public GameObject NotificationPanel;
+    public GameObject ObjectivesPanel;
 
     // Start is called before the first frame update
     void Start()
@@ -41,97 +51,151 @@ public class UserInterfaceController : MonoBehaviour
         CloseAllBuilding();
         if (Instance == null) Instance = this;
 
+        tooltipInstance.SetActive(false);
 
+        NotificationPanel.SetActive(false);
+        ObjectivesPanel.SetActive(false);
     }
 
-    // Update is called once per frame
-    void Update()
+    public void CloseAllBuilding()
     {
-        
-    }
+        BuildModeController.Instance.SetAllListingTogglesOff();
 
-    private void CloseAllBuilding()
-    {
         foreach (GameObject g in subPanels)
         {
             g.SetActive(false);
         }
-        button_Hull.image.color = Color.white;
-        button_Wall.image.color = Color.white;
-        button_Storage.image.color = Color.white;
-        button_Furniture.image.color = Color.white;
-        button_Staff.image.color = Color.white;
         BuildModeController.Instance.roomsTilemap.SetActive(false);
+        tooltipInstance.SetActive(false);
 
     }
 
     private void CloseOtherBuilding(int ignore)
     {
+
+        audio_SelectBuildItem.Play();
+        audio_OpenBuildPanel.PlayDelayed(0.04f);
+        
+        BuildModeController.Instance.SetAllListingTogglesOff();
+
         foreach (GameObject g in subPanels)
         {
             if (g != subPanels[ignore]) g.SetActive(false);
         }
-        button_Hull.image.color = Color.white;
-        button_Wall.image.color = Color.white;
-        button_Storage.image.color = Color.white;
-        button_Furniture.image.color = Color.white;
-        button_Rooms.image.color = Color.white;
-        button_Staff.image.color = Color.white;
         BuildModeController.Instance.roomsTilemap.SetActive(false);
+        tooltipInstance.SetActive(false);
+
 
     }
+
+
 
     public void ToggleHullPanel()
     {
         CloseOtherBuilding(0);
         subPanels[0].SetActive(!subPanels[0].activeInHierarchy);
-        if (!subPanels[0].activeInHierarchy) InputController.Instance.SetMode_None();
-        else button_Hull.image.color = new Color(1f, 0.73f, 0.94f);
+        if (!subPanels[0].activeInHierarchy)
+        {
+            BuildModeController.Instance.roomsTilemap.SetActive(false);
+            InputController.Instance.SetMode_None();
+        }
+        else
+        {
+            tooltipInstance.SetActive(true);       
+        }
+        toolTipText = "The hull is the foundation of your spaceship. All interior objects must be placed on a hull tile. Hover over an item for more information.";
+        tooltipInstance.GetComponentInChildren<TextMeshProUGUI>().text = toolTipText;
+
     }
+
 
     public void ToggleWallPanel()
     {
         CloseOtherBuilding(1);
         subPanels[1].SetActive(!subPanels[1].activeInHierarchy);
-        if (!subPanels[1].activeInHierarchy) InputController.Instance.SetMode_None();
-        else button_Wall.image.color = new Color(1f, 0.73f, 0.94f);
+        if (!subPanels[1].activeInHierarchy)
+        {
+            BuildModeController.Instance.roomsTilemap.SetActive(false);
+            InputController.Instance.SetMode_None();
+        }
+        else
+        {
+            tooltipInstance.SetActive(true);
+        }
+        toolTipText = "Walls don't let oxygen past, so they are a necessity to enclose the exterior of your ship. Hover over an item for more information.";
+        tooltipInstance.GetComponentInChildren<TextMeshProUGUI>().text = toolTipText;
+
     }
 
-    public void ToggleStoragePanel()
+    public void ToggleUtilityPanel()
     {
         CloseOtherBuilding(2);
         subPanels[2].SetActive(!subPanels[2].activeInHierarchy);
-        if (!subPanels[2].activeInHierarchy) InputController.Instance.SetMode_None();
-        else button_Storage.image.color = new Color(1f, 0.73f, 0.94f);
+        if (!subPanels[2].activeInHierarchy)
+        {
+            BuildModeController.Instance.roomsTilemap.SetActive(false);
+            InputController.Instance.SetMode_None();
+        }
+        else
+        {
+            tooltipInstance.SetActive(true);
+        }
+        toolTipText = "Utility items are necessities to get your ship up and running. Hover over an item for more information.";
+        tooltipInstance.GetComponentInChildren<TextMeshProUGUI>().text = toolTipText;
+
     }
 
     public void ToggleFurniturePanel()
     {
         CloseOtherBuilding(3);
         subPanels[3].SetActive(!subPanels[3].activeInHierarchy);
-        if (!subPanels[3].activeInHierarchy) InputController.Instance.SetMode_None();
-        else button_Furniture.image.color = new Color(1f, 0.73f, 0.94f);
+        if (!subPanels[3].activeInHierarchy)
+        {
+            BuildModeController.Instance.roomsTilemap.SetActive(false);
+            InputController.Instance.SetMode_None();
+        }
+        else
+        {
+            tooltipInstance.SetActive(true);
+        }
+        toolTipText = "Furniture objects add functionality to your ship. Hover over an item for more information.";
+        tooltipInstance.GetComponentInChildren<TextMeshProUGUI>().text = toolTipText;
+        
     }
 
     public void ToggleRoomsPanel()
     {
         CloseOtherBuilding(4);
         subPanels[4].SetActive(!subPanels[4].activeInHierarchy);
-        if (!subPanels[4].activeInHierarchy) InputController.Instance.SetMode_None();
+        if (!subPanels[4].activeInHierarchy)
+        {
+            BuildModeController.Instance.roomsTilemap.SetActive(false);
+            InputController.Instance.SetMode_None();
+        }
         else
         {
-
-            button_Rooms.image.color = new Color(1f, 0.73f, 0.94f);
+            tooltipInstance.SetActive(true);
             BuildModeController.Instance.roomsTilemap.SetActive(true);
         }
+        toolTipText = "Rooms allow you to designate an area for a particular purpose. Hover over an item for more information.";
+        tooltipInstance.GetComponentInChildren<TextMeshProUGUI>().text = toolTipText;
     }
 
     public void ToggleStaffPanel()
     {
         CloseOtherBuilding(5);
         subPanels[5].SetActive(!subPanels[5].activeInHierarchy);
-        if (!subPanels[5].activeInHierarchy) InputController.Instance.SetMode_None();
-        else button_Staff.image.color = new Color(1f, 0.73f, 0.94f);
+        if (!subPanels[5].activeInHierarchy)
+        {
+            BuildModeController.Instance.roomsTilemap.SetActive(false);
+            InputController.Instance.SetMode_None();
+        }
+        else
+        {
+            tooltipInstance.SetActive(true);
+        }
+        toolTipText = "Hire staff-bots to maintain ship operations. They run on energised coffee and recharge at the charging pad. Hover over an item for more information.";
+        tooltipInstance.GetComponentInChildren<TextMeshProUGUI>().text = toolTipText;
     }
 
     public void ShowMapUI()

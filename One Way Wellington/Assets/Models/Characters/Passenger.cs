@@ -8,8 +8,30 @@ public class Passenger : Character
     // Passenger information 
     protected string passengerName;
     protected string career;
-    protected int fare; 
-    
+    protected int fare;
+
+    // Appearance 
+    protected int hair;
+    public SpriteRenderer spriteRenderer_Hair;
+
+    protected int skin;
+    public SpriteRenderer spriteRenderer_Skin;
+
+    protected int pants;
+    public SpriteRenderer spriteRenderer_Pants;
+
+    protected int decal;
+    public SpriteRenderer spriteRenderer_Decal;
+
+    protected int shades;
+    public SpriteRenderer spriteRenderer_Shades;
+
+    protected int shirt;
+    public SpriteRenderer spriteRenderer_Shirt;
+
+    protected int shoes;
+    public SpriteRenderer spriteRenderer_Shoes;
+
 
     // Passenger needs 
     protected float nourishment;
@@ -40,7 +62,7 @@ public class Passenger : Character
     }
 
 
-    public void OnMouseDown()
+    public void OnMouseUpAsButton()
     {
         if (Staff.staffUIInstance != null) Destroy(Staff.staffUIInstance);
         if (passengerUIInstance != null) Destroy(passengerUIInstance);
@@ -48,15 +70,32 @@ public class Passenger : Character
         passengerUIInstance = Instantiate(UserInterfaceController.Instance.passengerUIPrefab);
         passengerUIInstance.transform.position = new Vector3(currentX, currentY, 0);
         passengerUIInstance.transform.localScale = Vector3.one / 500;
-        passengerUIInstance.GetComponent<CharacterInterface>().character = this;
+        passengerUIInstance.GetComponent<PassengerInterface>().InitPassengerUI(this);
 
     }
 
-    public void SetPassengerInformation(string name, string career, int fare)
+    public void SetPassengerInformation(string name, string career, int fare, int hair, int skin, int decal, int shirt, int pants, int shoes, int shades)
     {
         this.name = name;
         this.career = career;
         this.fare = fare;
+        this.hair = hair;
+        this.skin = skin;
+        this.decal = decal;
+        this.shirt = shirt;
+        this.pants = pants;
+        this.shoes = shoes;
+        this.shades = shades;
+
+
+        // Load sprite resources 
+        spriteRenderer_Hair.sprite = Resources.Load<Sprite>("Images/Characters/Passengers/Hair/Hair" + hair.ToString());
+        spriteRenderer_Skin.sprite = Resources.Load<Sprite>("Images/Characters/Passengers/Skin/Skin" + skin.ToString());
+        spriteRenderer_Decal.sprite = Resources.Load<Sprite>("Images/Characters/Passengers/Decal/Decal" + decal.ToString());
+        spriteRenderer_Shirt.sprite = Resources.Load<Sprite>("Images/Characters/Passengers/Shirt/Shirt" + shirt.ToString());
+        spriteRenderer_Pants.sprite = Resources.Load<Sprite>("Images/Characters/Passengers/Pants/Pants" + pants.ToString());
+        spriteRenderer_Shoes.sprite = Resources.Load<Sprite>("Images/Characters/Passengers/Shoes/Shoes" + shoes.ToString());
+        spriteRenderer_Shades.sprite = Resources.Load<Sprite>("Images/Characters/Passengers/Shades/Shades" + shades.ToString());
     }
 
     protected override void Refresh()
@@ -109,7 +148,7 @@ public class Passenger : Character
             {
                 // We are idle
                 // Random movement 
-                if (!navMeshAgent.hasPath) navMeshAgent.SetDestination(new Vector3(UnityEngine.Random.Range(0, 100), UnityEngine.Random.Range(0, 100), 0));
+                targetJob = new Job(delegate () { }, WorldController.Instance.GetWorld().GetRandomHullTile(), 1f, "Wander", JobPriority.Low, tileExcludeOtherJobs: false);
             }
         }
     }
@@ -126,22 +165,22 @@ public class Passenger : Character
         
         if (bladder == 0)
         {
-            if (SetJobAtFurnitureTile("Toilet Stall", "UseToiletStall", 5, delegate () { UseToiletStall(); })) return;
+            if (SetJobAtFurnitureTile("Toilet Stall", "Use Toilet Stall", 5, delegate () { UseToiletStall(); })) return;
         }
 
         if (nourishment == 0)
         {
-            if (SetJobAtFurnitureTile("Cafe", "UseCafe", 5, delegate () { UseCafe(); })) return;
+            if (SetJobAtFurnitureTile("Cafe", "Use Cafe", 5, delegate () { UseCafe(); })) return;
         }
 
         if (hygiene == 0)
         {
-            if (SetJobAtFurnitureTile("Shower Stall", "UseShowerStall", 10, delegate () { UseShowerStall(); })) return;
+            if (SetJobAtFurnitureTile("Shower Stall", "Use Shower Stall", 10, delegate () { UseShowerStall(); })) return;
         }
 
         if (energy == 0)
         {
-            if (SetJobAtFurnitureTile("Bed", "UseBed", 20, delegate () { UseBed(); })) return;
+            if (SetJobAtFurnitureTile("Bed", "Use Bed", 20, delegate () { UseBed(); })) return;
         }
     }
     
@@ -171,6 +210,32 @@ public class Passenger : Character
         return fare;
     }
 
+    public float GetNourishment()
+    {
+        return nourishment;
+    }
+
+    public float GetEnergy()
+    {
+        return energy;
+    }
+
+    public float GetBladder()
+    {
+        return bladder;
+    }
+
+    public float GetOxygen()
+    {
+        return oxygen;
+    }
+
+    public float GetHygiene()
+    {
+        return hygiene;
+    }
+    
+
 
     protected bool SetJobAtFurnitureTile(string furnitureType, string jobType, float jobTime, Action action)
     {
@@ -189,7 +254,7 @@ public class Passenger : Character
                         targetJob = currentJob = null;
                     }
 
-                    targetJob = new Job(action, tileCharger, jobTime, jobType);
+                    targetJob = new Job(action, tileCharger, jobTime, jobType, JobPriority.Medium);
                     return true;
                 }
             }

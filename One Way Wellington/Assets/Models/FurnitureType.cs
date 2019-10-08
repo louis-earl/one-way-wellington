@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class FurnitureType
 {
-    public enum BuildCategory {Hull, Wall, Utility, Furniture, Staff};
+    public enum BuildCategory {Hull, Wall, Utility, Furniture, Staff, Loose};
 
     public string title;
     public string description;
@@ -49,6 +49,7 @@ public class FurnitureType
     {
         Dictionary<string, FurnitureType> furnitureTypes = new Dictionary<string, FurnitureType>();
 
+        /*
         furnitureTypes.Add("3D Printer", new FurnitureType(
             "3D Printer",
             "The 3D Printer can create new staff members and recover staff health.",
@@ -58,17 +59,19 @@ public class FurnitureType
             sizeY: 2,
             requireElectricity: true
             ));
+            */
 
         furnitureTypes.Add("Airlock", new FurnitureType(
             "Airlock",
             "Airlocks act as doors for the ship. Oxygen does not flow through when the Airlock is closed. Passengers, staff and enemies can open the Airlock, unless locked closed by the player.",
-            FurnitureType.BuildCategory.Utility,
+            FurnitureType.BuildCategory.Wall,
             200,
             4,
             requireElectricity: true,
             walkable: false
             ));
 
+        /*
         furnitureTypes.Add("Art Station", new FurnitureType(
             "Art Station",
             "Passengers can sit at the workstation and create art. Passengers become happier and produce Artist Cards for the ship.",
@@ -77,9 +80,10 @@ public class FurnitureType
             3,
             sizeX: 2,
             requireElectricity: true));
+            */
 
         furnitureTypes.Add("Battery", new FurnitureType("Battery",
-            "Must be built outside. Stores electricity for your ship.",
+            "Must be built inside. Stores electricity for your ship.",
             FurnitureType.BuildCategory.Utility,
             200,
             3,
@@ -96,6 +100,7 @@ public class FurnitureType
             sizeX: 2
             ));
 
+        /*
         furnitureTypes.Add("Cafe", new FurnitureType(
             "Cafe",
             "Cook staff stand at the Café and prepare food for passengers. Passengers will stand and queue while waiting for food.",
@@ -106,6 +111,7 @@ public class FurnitureType
             sizeY: 2,
             requireElectricity: true
             ));
+            */
 
         furnitureTypes.Add("Charging Pad", new FurnitureType(
             "Charging Pad",
@@ -117,6 +123,7 @@ public class FurnitureType
             requireElectricity: true
             ));
 
+        /*
         furnitureTypes.Add("Couch", new FurnitureType(
             "Couch",
             "Passengers can sit on the couch. They can watch tv or rest.",
@@ -125,7 +132,9 @@ public class FurnitureType
             2,
             sizeX: 2
             ));
+            */
 
+        /*
         furnitureTypes.Add("Dining Table", new FurnitureType(
             "Dining Table",
             "Passengers sit at the dining table and eat.",
@@ -135,6 +144,7 @@ public class FurnitureType
             sizeX: 3,
             sizeY: 2
             ));
+            */
 
         furnitureTypes.Add("Engine", new FurnitureType(
             "Engine",
@@ -173,7 +183,7 @@ public class FurnitureType
         */
 
         furnitureTypes.Add("Oxygen Tank", new FurnitureType("Oxygen Tank",
-            "Must be built outside. Stores oxygen to allow your passengers to breathe.",
+            "Must be built inside. Stores oxygen to allow your passengers to breathe.",
             FurnitureType.BuildCategory.Utility,
             200,
             3,
@@ -190,15 +200,15 @@ public class FurnitureType
             requireElectricity: true,
             requireOxygen: true
             ));
-
+     
         furnitureTypes.Add("Ship Controls", new FurnitureType(
             "Ship Controls",
             "The captain sits at the ship controls.",
-            FurnitureType.BuildCategory.Furniture,
+            FurnitureType.BuildCategory.Utility,
             500,
             5,
-            sizeX: 2,
-            sizeY: 3,
+            sizeX: 1,
+            sizeY: 2,
             fixedRotation: true,
             requireElectricity: true
             ));
@@ -215,13 +225,14 @@ public class FurnitureType
         furnitureTypes.Add("Stairwell", new FurnitureType(
             "Stairwell",
             "Connect the interior and exterior of the ship.",
-            FurnitureType.BuildCategory.Furniture,
+            FurnitureType.BuildCategory.Utility,
             200,
             5,
             sizeX: 2,
             fixedRotation: true
             ));
 
+        /*
         furnitureTypes.Add("Solar Panel", new FurnitureType(
             "Solar Panel",
             "Solar panels collect electricity for the ship.",
@@ -232,7 +243,9 @@ public class FurnitureType
             requireElectricity: true,
             exteriorOnly: true
             ));
+            */
 
+        /*
         furnitureTypes.Add("Support Beam", new FurnitureType(
             "Support Beam",
             "Used for connecting exterior structures",
@@ -241,6 +254,7 @@ public class FurnitureType
             3,
             exteriorOnly: true
             ));
+            */
 
         furnitureTypes.Add("Toilet Stall", new FurnitureType(
             "Toilet Stall",
@@ -275,6 +289,7 @@ public class FurnitureType
 
         */
 
+        /*
         furnitureTypes.Add("TV", new FurnitureType(
             "TV",
             "Passengers become happier when watching TV.",
@@ -284,18 +299,35 @@ public class FurnitureType
             sizeX: 2,
             requireElectricity: true
             ));
+            */
 
+        
         furnitureTypes.Add("Wall", new FurnitureType(
             "Wall",
-            "It speaks for itself.",
-            FurnitureType.BuildCategory.Wall,
+            "If you can read this, something isn't right.",
+            FurnitureType.BuildCategory.Loose,
             100,
             3,
             fixedRotation: true,
             multiSize: true,
             walkable: false
             ));
+            
 
+
+
+
+
+
+        // LOOSE ITEMS 
+        furnitureTypes.Add("Cargo", new FurnitureType(
+            "Cargo",
+            "If you can read this, something isn't right",
+            FurnitureType.BuildCategory.Loose,
+            0,
+            0,
+            fixedRotation: true
+            ));
 
         return furnitureTypes;
     }

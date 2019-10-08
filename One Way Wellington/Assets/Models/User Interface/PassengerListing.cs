@@ -7,13 +7,23 @@ using TMPro;
 public class PassengerListing : MonoBehaviour
 {
 
-    public Image image_PassengerPreview;
-    public Button button_BoardPassenger;
+    public Toggle toggle_BoardPassenger;
     public TextMeshProUGUI text_PassengerName;
     public TextMeshProUGUI text_PassengerFare;
 
     private PotentialPassenger potentialPassenger;
     private Planet planet;
+
+    // Passenger visuals 
+    public Image skin;
+    public Image shades;
+    public Image pants;
+    public Image shirt;
+    public Image shoes;
+    public Image hair;
+    public Image decal;
+
+
 
     // Initialisation 
     public void InitPassengerListing(PotentialPassenger potentialPassenger, Planet planet)
@@ -24,6 +34,23 @@ public class PassengerListing : MonoBehaviour
 
         int distance = (int) Vector2.Distance(planet.GetPlanetCoordinates(), Vector2.zero);
         text_PassengerFare.SetText("$" + (100 + distance * 5).ToString());
+
+        // Load sprite resources 
+        hair.sprite = Resources.Load<Sprite>("Images/Characters/Passengers/Hair/Hair" + potentialPassenger.hair.ToString());
+        skin.sprite = Resources.Load<Sprite>("Images/Characters/Passengers/Skin/Skin" + potentialPassenger.skin.ToString());
+        decal.sprite = Resources.Load<Sprite>("Images/Characters/Passengers/Decal/Decal" + potentialPassenger.decal.ToString());
+        shirt.sprite = Resources.Load<Sprite>("Images/Characters/Passengers/Shirt/Shirt" + potentialPassenger.shirt.ToString());
+        pants.sprite = Resources.Load<Sprite>("Images/Characters/Passengers/Pants/Pants" + potentialPassenger.pants.ToString());
+        shoes.sprite = Resources.Load<Sprite>("Images/Characters/Passengers/Shoes/Shoes" + potentialPassenger.shoes.ToString());
+        shades.sprite = Resources.Load<Sprite>("Images/Characters/Passengers/Shades/Shades" + potentialPassenger.shades.ToString());
+
+        if (hair.sprite == null) hair.color = Color.clear;
+        if (skin.sprite == null) skin.color = Color.clear;
+        if (decal.sprite == null) decal.color = Color.clear;
+        if (shirt.sprite == null) shirt.color = Color.clear;
+        if (pants.sprite == null) pants.color = Color.clear;
+        if (shoes.sprite == null) shoes.color = Color.clear;
+        if (shades.sprite == null) shades.color = Color.clear;
     }
 
     // Board button pressed
@@ -44,6 +71,6 @@ public class PassengerListing : MonoBehaviour
     // Sow/hide board button 
     public void SetBoardButtonActive(bool isActive)
     {
-        button_BoardPassenger.gameObject.SetActive(isActive);
+        toggle_BoardPassenger.gameObject.SetActive(isActive);
     }
 }
