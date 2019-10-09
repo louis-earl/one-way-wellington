@@ -181,7 +181,7 @@ public class JourneyController : MonoBehaviour
             }
             else
             {
-                Debug.Log("Not enough fuel");
+                NotificationController.Instance.CreateNotification("Add more fuel tanks to your ship before travelling to " + planet.name, UrgencyLevel.Medium, true, false, new List<string> { "Return to ship" }, new List<System.Action> { delegate () { TransitionController.Instance.StartTransitionToMain(); } });
             }
         }
         else

@@ -505,7 +505,7 @@ public class InputController : MonoBehaviour
         if (isMode_Furniture) BuildModeController.Instance.PreviewFurniture(furnitureTypeInUse, (int)currFramePosition.x, (int)currFramePosition.y);
         else if (isMode_Staff) BuildModeController.Instance.PreviewStaff("builder", (int)currFramePosition.x, (int)currFramePosition.y);
 
-        if (isMode_Dragable)
+        if (isMode_Hull || isMode_HullNoWalls || isMode_Wall || isMode_FurnitureMulti)
         {
             // Size indicator UI (X Axis)
             if (start_x != end_x)
