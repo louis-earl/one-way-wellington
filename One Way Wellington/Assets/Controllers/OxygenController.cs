@@ -17,9 +17,9 @@ public class OxygenController : MonoBehaviour
     Queue<TileOWW> tilesToCheck;
     Dictionary<TileOWW, List<TileOWW>> oxygenTileGroups;
 
-	private static float OXYGEN_COST = 5.85f;
+	private static float OXYGEN_COST = 0.0585f;
 
-    private static readonly float VENT_FLOW = 0.5f; // Flow from Oxygen Vent per FixedUpdate 
+    private static readonly float VENT_FLOW = 20f; // Flow from Oxygen Vent per FixedUpdate 
 
     private void Start()
     {
@@ -119,7 +119,7 @@ public class OxygenController : MonoBehaviour
                 foreach (TileOWW tile in BuildModeController.Instance.furnitureTileOWWMap["Oxygen Vent"])
                 {
                     // Check oxygen vent tile first 
-                    if (tile.oxygenLevel < 1)
+                    if (tile.oxygenLevel < 100)
                     {
                         // Remove from oxygen tank supply
                         shipOxygenLevel -= VENT_FLOW;
@@ -201,7 +201,7 @@ public class OxygenController : MonoBehaviour
         float maxOxygenLevel = 0;
         if (BuildModeController.Instance.furnitureTileOWWMap.ContainsKey("Oxygen Tank"))
         {
-            maxOxygenLevel = BuildModeController.Instance.furnitureTileOWWMap["Oxygen Tank"].Count * 10;
+            maxOxygenLevel = BuildModeController.Instance.furnitureTileOWWMap["Oxygen Tank"].Count * 10000;
             Debug.Log("Found oxygen tanks: " + BuildModeController.Instance.furnitureTileOWWMap["Oxygen Tank"].Count);
 
         }
@@ -222,7 +222,7 @@ public class OxygenController : MonoBehaviour
             t = Resources.Load<Tile>("TileSets/Rooms/Oxygen");
             if (tileOWW.GetTileType() == "Hull")
             {
-                t.color = new Color(0.227451f, 0.7294118f, 0.9960784f, tileOWW.oxygenLevel);
+                t.color = new Color(0.227451f, 0.7294118f, 0.9960784f, tileOWW.oxygenLevel/50);
             }
             else
             {

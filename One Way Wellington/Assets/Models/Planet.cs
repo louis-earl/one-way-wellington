@@ -158,7 +158,8 @@ public class Planet : MonoBehaviour
 
             PassengerNames.FirstNames passengerFirstName = (PassengerNames.FirstNames)Random.Range(0, (int)PassengerNames.FirstNames.COUNT);
             PassengerNames.LastNames passengerLastName = (PassengerNames.LastNames)Random.Range(0, (int)PassengerNames.LastNames.COUNT);
-            potentialPassengers.Add(new PotentialPassenger(passengerFirstName.ToString(), passengerLastName.ToString(), "Student"));
+            string passengerOccupation = PassengerNames.careers[Random.Range(0, PassengerNames.careers.Length)];
+            potentialPassengers.Add(new PotentialPassenger(passengerFirstName.ToString(), passengerLastName.ToString(), passengerOccupation));
         }
 
 

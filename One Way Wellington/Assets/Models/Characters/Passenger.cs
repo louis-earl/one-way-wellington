@@ -6,8 +6,9 @@ using UnityEngine;
 public class Passenger : Character
 {
     // Passenger information 
-    protected string passengerName;
-    protected string career;
+    public string occupation;
+    public string homePlanet;
+    
     protected int fare;
 
     // Appearance 
@@ -36,9 +37,14 @@ public class Passenger : Character
     // Passenger needs 
     protected float nourishment;
     protected float oxygen;
+    protected float oxygenUsageMultiplier;
     protected float bladder;
     protected float hygiene;
     protected float energy;
+
+
+    // Notifications 
+    bool hasWarnedOxygen;
 
     // Interface
     public static GameObject passengerUIInstance;
@@ -53,12 +59,16 @@ public class Passenger : Character
 
         // Default needs 
         energy = 100f;
-        health = 100f;
+        SetHealth(100);
         nourishment = 100f;
         oxygen = 100f;
+        oxygenUsageMultiplier = UnityEngine.Random.Range(0.85f, 1.15f);
         bladder = 100f;
         hygiene = 100f;
 
+
+        // Notifications
+        hasWarnedOxygen = false;
     }
 
 
@@ -74,10 +84,11 @@ public class Passenger : Character
 
     }
 
-    public void SetPassengerInformation(string name, string career, int fare, int hair, int skin, int decal, int shirt, int pants, int shoes, int shades)
+    public void SetPassengerInformation(string name, string occupation, string homePlanet, int fare, int hair, int skin, int decal, int shirt, int pants, int shoes, int shades)
     {
         this.name = name;
-        this.career = career;
+        this.occupation = occupation;
+        this.homePlanet = homePlanet;
         this.fare = fare;
         this.hair = hair;
         this.skin = skin;
@@ -110,33 +121,45 @@ public class Passenger : Character
         hygiene = Mathf.Clamp(hygiene - (1 * Time.deltaTime), 0, 100);
         bladder = Mathf.Clamp(bladder - (1 * Time.deltaTime), 0, 100);
         nourishment = Mathf.Clamp(nourishment - (1 * Time.deltaTime), 0, 100);
-        oxygen = Mathf.Clamp(oxygen - (0.02f * Time.deltaTime), 0, 1);
+        oxygen = Mathf.Clamp(oxygen - (5 * Time.deltaTime * oxygenUsageMultiplier), 0, 100);
 
 
         // Restore oxygen
         TileOWW currentTile = WorldController.Instance.GetWorld().GetTileAt((int)currentX, (int)currentY);
-        float oxygenDeficit = 1 - oxygen;
-        float maxRegen = currentTile.oxygenLevel / 10;
+        float oxygenDeficit = 100 - oxygen; // how much oxygen can be filled up 
+        float maxRegen = currentTile.oxygenLevel;
 
         // Oxygen intake limited to 1/10th of a tiles oxygen level 
         if (oxygenDeficit < maxRegen)
         {
-            oxygen += oxygenDeficit;
+            oxygen += oxygenDeficit; // Just take as much as needed 
             currentTile.oxygenLevel -= oxygenDeficit;
         }
         else
         {
-            oxygen += maxRegen;
+            oxygen += maxRegen; // Take as much as possible 
             currentTile.oxygenLevel -= maxRegen;
         }
 
         SolveNeeds();
 
+
+
         // Take oxygen damage 
-        if (oxygen < 0.5f)
+        if (oxygen < 50f)
         {
-            Debug.Log("Oxygen 0");
-            health -= (-2 * oxygen) + 1;
+            if (!hasWarnedOxygen)
+            {
+                hasWarnedOxygen = true;
+                NotificationController.Instance.CreateNotification(name + " is suffocating! Quick, get some oxygen to them!", UrgencyLevel.High, true, true, new List<string> { "Go to " + name },
+                    new List<Action> { delegate () { StartCoroutine(InputController.Instance.MoveCameraTo(transform.position.x, transform.position.y)); } });
+            }
+            TakeDamage(((-0.133333f * oxygen) + 6.666666f) * Time.deltaTime);
+        }
+        else if (oxygen > 98)
+        {
+            // Reset warning notification 
+            hasWarnedOxygen = false;
         }
 
 
@@ -151,6 +174,7 @@ public class Passenger : Character
                 targetJob = new Job(delegate () { }, WorldController.Instance.GetWorld().GetRandomHullTile(), 1f, "Wander", JobPriority.Low, tileExcludeOtherJobs: false);
             }
         }
+
     }
 
 

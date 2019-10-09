@@ -9,7 +9,7 @@ public class Character : MonoBehaviour
     protected float currentX;
     protected float currentY;
 
-    protected float health;
+    private float health;
 
 	protected LooseItem inventory;
 
@@ -382,7 +382,7 @@ public class Character : MonoBehaviour
                 }
 
                 // Create new notification
-                NotificationController.Instance.CreateNotification("Your " + gameObject.tag + ", '" + gameObject.name + "' has died!", UrgencyLevel.High, false, buttonActions: null);
+                NotificationController.Instance.CreateNotification("Your " + gameObject.tag + ", '" + gameObject.name + "' has died!", UrgencyLevel.Medium, false, buttonActions: null);
             }
 
             // Remove other references 
@@ -407,7 +407,7 @@ public class Character : MonoBehaviour
                 {
                     delegate () { StartCoroutine(InputController.Instance.MoveCameraTo(currentX, currentY)); }
                 };
-                NotificationController.Instance.CreateNotification("Your " + gameObject.tag + ", '" + gameObject.name + "' is low on health!", UrgencyLevel.Medium, false, buttonTitles: new List<string>() { "Go To" }, buttonActions: actions);
+                NotificationController.Instance.CreateNotification("Your " + gameObject.tag + ", '" + gameObject.name + "' is low on health!", UrgencyLevel.High, false, buttonTitles: new List<string>() { "Go to " + name}, buttonActions: actions);
             }
         }
         

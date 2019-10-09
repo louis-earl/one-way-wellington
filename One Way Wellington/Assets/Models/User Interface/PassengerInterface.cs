@@ -10,6 +10,8 @@ public class PassengerInterface : MonoBehaviour
     private Passenger passenger;
 
     public TextMeshProUGUI passengerName;
+    public TextMeshProUGUI passengerOccupation;
+    public TextMeshProUGUI passengerHomePlanet;
     public TextMeshProUGUI currentJob;
 
     public Slider sliderEnergy;
@@ -25,6 +27,8 @@ public class PassengerInterface : MonoBehaviour
     {
         this.passenger = passenger;
         passengerName.text = passenger.name;
+        passengerOccupation.text = passenger.occupation;
+        passengerHomePlanet.text = passenger.homePlanet;
 
     }
 
@@ -32,7 +36,10 @@ public class PassengerInterface : MonoBehaviour
     void Update()
     {
         // Move the UI with the camera zoom level 
-
+        if (passenger == null)
+        {
+            Destroy(gameObject);
+        }
         transform.localScale = Vector3.Lerp(new Vector3(Camera.main.orthographicSize / 500, Camera.main.orthographicSize / 500, 1), transform.localScale, 0.9f);
         transform.localPosition = Vector3.Lerp(new Vector3(passenger.gameObject.transform.position.x + 0.5f + (Camera.main.orthographicSize / 2.75f), passenger.gameObject.transform.position.y + 0.35f, 0), transform.position, 0.9f);
 

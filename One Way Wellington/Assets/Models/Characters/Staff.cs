@@ -55,7 +55,7 @@ public class Staff : Character
                 FindCharger();
             }
         }
-        else if (health < 100)
+        else if (GetHealth() < 100)
         {
             if (targetJob?.GetJobType() != "Use 3D Printer")
             {
@@ -82,7 +82,7 @@ public class Staff : Character
 
     public void Use3DPrinter()
     {
-        health = 100;
+        SetHealth(100);
         spriteRenderer.color = Color.white;
     }
 

@@ -17,7 +17,7 @@ public class Enemy : Character
         base.Init();
 
         // Setup from here onwards
-        health = 100f;
+        SetHealth(100);
         spriteRenderer.transform.localPosition = new Vector3(0f, 0f, 0.25f);
 
     }

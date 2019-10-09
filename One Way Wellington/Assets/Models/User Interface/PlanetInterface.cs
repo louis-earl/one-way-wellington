@@ -102,6 +102,7 @@ public class PlanetInterface : MonoBehaviour
             passengerGO.GetComponent<Passenger>().SetPassengerInformation(
                 potentialPassenger.GetPassengerFirstName() + " " + potentialPassenger.GetPassengerLastName() + ".",
                 potentialPassenger.GetPassengerOccupation(),
+                planet.name,
                 (100 + distance * 5),
                 potentialPassenger.hair,
                 potentialPassenger.skin,

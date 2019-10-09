@@ -5128,4 +5128,32 @@ public class PassengerNames
 
         COUNT // MUST ALWAYS BE LAST
     }
+
+
+    public static string[] careers = new string[] {"Accessory Designer", "Advertising Designer",
+        "Animator", "Architect", "Art Administrator", "Artisan",
+        "Baker", "Ceramics Artist", "Colorist", "Concept Artist", "Curator", "Dancer", "Design Director",
+    "Design Strategist", "Event Planner", "Fashion Designer", "Floral Designer",
+        "Graphic Designer", "Hairstylist", "Illustrator",
+        "Tattoo Artist", "Interior Designer", "Jewellery Designer", "Lyricist",
+        "Make-Up Artist", "Marine Designer", "Media Designer",
+    "Musician", "Party Planner", "Photographer", "Advertising Photographer",
+        "Fashoin Photographer", "Food Photographer",
+        "Portrait Photographer", "Underwater Photographer", "Wedding Photographer",
+        "Photojournalist", "Potter", "Production Designer",
+        "Sculptor", "Set Decorator", "Set Dresser", "Web Designer", "Wedding Planner", "Writer",
+    "Art Critic", "Blogger", "Vlogger", "Graphic Novel Author",
+        "Dressmaker", "Pattern Maker", "Costume Designer", "Textile Designer", "T-Shirt Designer",
+    "Logo Designer", "Typographer", "Architect",
+        "Landscape Architect", "Urban Designer", "Spatial Designer", "Industrial Designer",
+    "Toy Designer", "Prop Designer", "Carver", "Jeweller", "Weaver",
+        "Glass Artist", "3D Modeller", "Television Producer",
+        "Film Producer", "Animation Producer", "Video Game Designer",
+    "Film Editor", "Camera Operator", "Visual Effects Designer",
+        "Visual Effects Artist", "Video Game Programmer", "Airbrush Artist",
+        "Architectural Illustrator", "Book Illustrator",
+        "Story Board Illustrator", "Painter", "Printmaker", "Level Designer", "DJ",
+        "Music Producer", "Rock Star", "Jazz Musician", "Background Singer", "Jingle Writer",
+    "Film Composer", "Accompanist", "Video Game Composer", "Sound Designer", "Foley Artist"} ;
+
 }
