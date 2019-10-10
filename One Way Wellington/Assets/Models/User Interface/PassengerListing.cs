@@ -36,12 +36,15 @@ public class PassengerListing : MonoBehaviour
         text_PassengerFare.SetText("$" + (100 + distance * 5).ToString());
 
         // Load sprite resources 
-        hair.sprite = Resources.Load<Sprite>("Images/Characters/Passengers/Hair/Hair" + potentialPassenger.hair.ToString());
+        hair.sprite = Resources.Load<Sprite>("Images/Characters/Passengers/Hair/Hair" + potentialPassenger.hairStyle.ToString());
+        hair.color = potentialPassenger.hairColor;
         skin.sprite = Resources.Load<Sprite>("Images/Characters/Passengers/Skin/Skin" + potentialPassenger.skin.ToString());
         decal.sprite = Resources.Load<Sprite>("Images/Characters/Passengers/Decal/Decal" + potentialPassenger.decal.ToString());
-        shirt.sprite = Resources.Load<Sprite>("Images/Characters/Passengers/Shirt/Shirt" + potentialPassenger.shirt.ToString());
-        pants.sprite = Resources.Load<Sprite>("Images/Characters/Passengers/Pants/Pants" + potentialPassenger.pants.ToString());
-        shoes.sprite = Resources.Load<Sprite>("Images/Characters/Passengers/Shoes/Shoes" + potentialPassenger.shoes.ToString());
+        shirt.sprite = Resources.Load<Sprite>("Images/Characters/Passengers/Shirt/Shirt" + potentialPassenger.shirtStyle.ToString());
+        shirt.color = potentialPassenger.shirtColor;
+        pants.sprite = Resources.Load<Sprite>("Images/Characters/Passengers/Pants/Pants" + potentialPassenger.pantStyle.ToString());
+        pants.color = potentialPassenger.pantColor;
+        shoes.sprite = Resources.Load<Sprite>("Images/Characters/Passengers/Shoes/Shoes" + potentialPassenger.shoeStyle.ToString());
         shades.sprite = Resources.Load<Sprite>("Images/Characters/Passengers/Shades/Shades" + potentialPassenger.shades.ToString());
 
         if (hair.sprite == null) hair.color = Color.clear;

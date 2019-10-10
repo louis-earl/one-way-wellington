@@ -104,12 +104,15 @@ public class PlanetInterface : MonoBehaviour
                 potentialPassenger.GetPassengerOccupation(),
                 planet.name,
                 (100 + distance * 5),
-                potentialPassenger.hair,
+                potentialPassenger.hairStyle,
+                potentialPassenger.hairColor,
                 potentialPassenger.skin,
                 potentialPassenger.decal,
-                potentialPassenger.shirt,
-                potentialPassenger.pants,
-                potentialPassenger.shoes,
+                potentialPassenger.shirtStyle,
+                potentialPassenger.shirtColor,
+                potentialPassenger.pantStyle,
+                potentialPassenger.pantColor,
+                potentialPassenger.shoeStyle,
                 potentialPassenger.shades);
 
             JourneyController.Instance.currentPassengers.Add(passengerGO);

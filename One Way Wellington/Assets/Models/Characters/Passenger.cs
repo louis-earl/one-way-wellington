@@ -12,13 +12,15 @@ public class Passenger : Character
     protected int fare;
 
     // Appearance 
-    protected int hair;
+    protected int hairStyle;
+    protected Color hairColor;
     public SpriteRenderer spriteRenderer_Hair;
 
     protected int skin;
     public SpriteRenderer spriteRenderer_Skin;
 
-    protected int pants;
+    protected int pantStyle;
+    protected Color pantColor;
     public SpriteRenderer spriteRenderer_Pants;
 
     protected int decal;
@@ -27,10 +29,11 @@ public class Passenger : Character
     protected int shades;
     public SpriteRenderer spriteRenderer_Shades;
 
-    protected int shirt;
+    protected int shirtStyle;
+    protected Color shirtColor;
     public SpriteRenderer spriteRenderer_Shirt;
 
-    protected int shoes;
+    protected int shoeStyle;
     public SpriteRenderer spriteRenderer_Shoes;
 
 
@@ -84,28 +87,40 @@ public class Passenger : Character
 
     }
 
-    public void SetPassengerInformation(string name, string occupation, string homePlanet, int fare, int hair, int skin, int decal, int shirt, int pants, int shoes, int shades)
+    public void SetPassengerInformation(string name, string occupation, string homePlanet, int fare, 
+        int hairStyle, Color hairColor, 
+        int skin, int decal, 
+        int shirtStyle, Color shirtColor, 
+        int pantStyle, Color pantColor, 
+        int shoeStyle, int shades)
     {
         this.name = name;
         this.occupation = occupation;
         this.homePlanet = homePlanet;
         this.fare = fare;
-        this.hair = hair;
+        this.hairStyle = hairStyle;
+        this.hairColor = hairColor;
         this.skin = skin;
         this.decal = decal;
-        this.shirt = shirt;
-        this.pants = pants;
-        this.shoes = shoes;
+        this.shirtStyle = shirtStyle;
+        this.shirtColor = shirtColor;
+        this.shirtColor = shirtColor;
+        this.pantStyle = pantStyle;
+        this.pantColor = pantColor;
+        this.shoeStyle = shoeStyle;
         this.shades = shades;
 
 
         // Load sprite resources 
-        spriteRenderer_Hair.sprite = Resources.Load<Sprite>("Images/Characters/Passengers/Hair/Hair" + hair.ToString());
+        spriteRenderer_Hair.sprite = Resources.Load<Sprite>("Images/Characters/Passengers/Hair/Hair" + hairStyle.ToString());
+        spriteRenderer_Hair.color = hairColor;
         spriteRenderer_Skin.sprite = Resources.Load<Sprite>("Images/Characters/Passengers/Skin/Skin" + skin.ToString());
         spriteRenderer_Decal.sprite = Resources.Load<Sprite>("Images/Characters/Passengers/Decal/Decal" + decal.ToString());
-        spriteRenderer_Shirt.sprite = Resources.Load<Sprite>("Images/Characters/Passengers/Shirt/Shirt" + shirt.ToString());
-        spriteRenderer_Pants.sprite = Resources.Load<Sprite>("Images/Characters/Passengers/Pants/Pants" + pants.ToString());
-        spriteRenderer_Shoes.sprite = Resources.Load<Sprite>("Images/Characters/Passengers/Shoes/Shoes" + shoes.ToString());
+        spriteRenderer_Shirt.sprite = Resources.Load<Sprite>("Images/Characters/Passengers/Shirt/Shirt" + shirtStyle.ToString());
+        spriteRenderer_Shirt.color = shirtColor;
+        spriteRenderer_Pants.sprite = Resources.Load<Sprite>("Images/Characters/Passengers/Pants/Pants" + pantStyle.ToString());
+        spriteRenderer_Pants.color = pantColor;
+        spriteRenderer_Shoes.sprite = Resources.Load<Sprite>("Images/Characters/Passengers/Shoes/Shoes" + shoeStyle.ToString());
         spriteRenderer_Shades.sprite = Resources.Load<Sprite>("Images/Characters/Passengers/Shades/Shades" + shades.ToString());
     }
 

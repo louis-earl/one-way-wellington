@@ -17,7 +17,7 @@ public class OxygenController : MonoBehaviour
     Queue<TileOWW> tilesToCheck;
     Dictionary<TileOWW, List<TileOWW>> oxygenTileGroups;
 
-	private static float OXYGEN_COST = 0.0585f;
+	private static float OXYGEN_COST = 0.00585f;
 
     private static readonly float VENT_FLOW = 20f; // Flow from Oxygen Vent per FixedUpdate 
 

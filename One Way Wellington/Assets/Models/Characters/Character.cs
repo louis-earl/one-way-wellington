@@ -365,7 +365,7 @@ public class Character : MonoBehaviour
     public void TakeDamage(float damage)
     {
         float startHealth = health;
-        Debug.Log("Taking damage: " + damage);
+        // Debug.Log("Taking damage: " + damage);
         health -= damage;
 
         if (health < 0)
@@ -407,7 +407,7 @@ public class Character : MonoBehaviour
                 {
                     delegate () { StartCoroutine(InputController.Instance.MoveCameraTo(currentX, currentY)); }
                 };
-                NotificationController.Instance.CreateNotification("Your " + gameObject.tag + ", '" + gameObject.name + "' is low on health!", UrgencyLevel.High, false, buttonTitles: new List<string>() { "Go to " + name}, buttonActions: actions);
+                NotificationController.Instance.CreateNotification("Your " + gameObject.tag + ", " + gameObject.name + " is low on health!", UrgencyLevel.High, false, buttonTitles: new List<string>() { "Go to " + name}, buttonActions: actions);
             }
         }
         

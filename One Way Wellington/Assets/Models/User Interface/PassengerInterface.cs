@@ -39,6 +39,7 @@ public class PassengerInterface : MonoBehaviour
         if (passenger == null)
         {
             Destroy(gameObject);
+            return;
         }
         transform.localScale = Vector3.Lerp(new Vector3(Camera.main.orthographicSize / 500, Camera.main.orthographicSize / 500, 1), transform.localScale, 0.9f);
         transform.localPosition = Vector3.Lerp(new Vector3(passenger.gameObject.transform.position.x + 0.5f + (Camera.main.orthographicSize / 2.75f), passenger.gameObject.transform.position.y + 0.35f, 0), transform.position, 0.9f);
