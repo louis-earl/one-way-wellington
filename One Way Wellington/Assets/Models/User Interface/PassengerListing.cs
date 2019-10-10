@@ -43,7 +43,7 @@ public class PassengerListing : MonoBehaviour
         shirt.sprite = Resources.Load<Sprite>("Images/Characters/Passengers/Shirt/Shirt" + potentialPassenger.shirtStyle.ToString());
         shirt.color = potentialPassenger.shirtColor;
         pants.sprite = Resources.Load<Sprite>("Images/Characters/Passengers/Pants/Pants" + potentialPassenger.pantStyle.ToString());
-        pants.color = potentialPassenger.pantColor;
+        pants.color = new Color(potentialPassenger.pantColor, potentialPassenger.pantColor, potentialPassenger.pantColor);
         shoes.sprite = Resources.Load<Sprite>("Images/Characters/Passengers/Shoes/Shoes" + potentialPassenger.shoeStyle.ToString());
         shades.sprite = Resources.Load<Sprite>("Images/Characters/Passengers/Shades/Shades" + potentialPassenger.shades.ToString());
 

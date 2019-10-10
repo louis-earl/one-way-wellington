@@ -94,7 +94,7 @@ public class Passenger : Character
         int hairStyle, Color hairColor, 
         int skin, int decal, 
         int shirtStyle, Color shirtColor, 
-        int pantStyle, Color pantColor, 
+        int pantStyle, float pantColor, 
         int shoeStyle, int shades)
     {
         this.name = name;
@@ -109,7 +109,7 @@ public class Passenger : Character
         this.shirtColor = shirtColor;
         this.shirtColor = shirtColor;
         this.pantStyle = pantStyle;
-        this.pantColor = pantColor;
+        this.pantColor = new Color(pantColor, pantColor, pantColor);
         this.shoeStyle = shoeStyle;
         this.shades = shades;
 
@@ -122,7 +122,7 @@ public class Passenger : Character
         spriteRenderer_Shirt.sprite = Resources.Load<Sprite>("Images/Characters/Passengers/Shirt/Shirt" + shirtStyle.ToString());
         spriteRenderer_Shirt.color = shirtColor;
         spriteRenderer_Pants.sprite = Resources.Load<Sprite>("Images/Characters/Passengers/Pants/Pants" + pantStyle.ToString());
-        spriteRenderer_Pants.color = pantColor;
+        spriteRenderer_Pants.color = this.pantColor;
         spriteRenderer_Shoes.sprite = Resources.Load<Sprite>("Images/Characters/Passengers/Shoes/Shoes" + shoeStyle.ToString());
         spriteRenderer_Shades.sprite = Resources.Load<Sprite>("Images/Characters/Passengers/Shades/Shades" + shades.ToString());
     }

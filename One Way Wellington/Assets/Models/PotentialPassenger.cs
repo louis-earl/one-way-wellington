@@ -15,7 +15,7 @@ public class PotentialPassenger
     public Color hairColor;
     public int skin;
     public int pantStyle;
-    public Color pantColor;
+    public float pantColor;
     public int decal;
     public int shades;
     public int shirtStyle;
@@ -30,7 +30,6 @@ public class PotentialPassenger
         new Color(1,0.97f,0.78f),new Color(0.61f,0.58f,0.39f),new Color(),new Color(1,0.91f,0.78f),new Color(0.31f,0.27f,0.21f),
         new Color(1,1,1), new Color(0.87f, 0.87f, 0.87f), new Color(0.5f,0.5f,0.5f), new Color(0.14f, 0.14f, 0.14f), new Color(0, 0, 0)
     };
-    private List<Color> pantColors = new List<Color>() { Color.white };
     private List<Color> shirtColors = new List<Color>
     {
         new Color(0.26f,0.14f,0.60f), new Color(0.42f,0.30f,0.78f), new Color(0.16f,0.03f,0.54f), new Color(0.08f,0.01f,0.27f),
@@ -56,7 +55,7 @@ public class PotentialPassenger
         hairColor = hairColors[Random.Range(0, hairColors.Count)];
         skin = Random.Range(1, 7);
         pantStyle = Random.Range(1, 2);
-        pantColor = pantColors[Random.Range(0, pantColors.Count)];
+        pantColor = Random.Range(0.1f, 1f);
         decal = Random.Range(0, 6);
         shades = Random.Range(0, 8);
         shirtStyle = Random.Range(1, 1);
