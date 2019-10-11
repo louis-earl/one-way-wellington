@@ -166,7 +166,7 @@ public class WorldController : MonoBehaviour
         }
         else
         {
-            planetGraphicSuffix = Random.Range(1, 4);
+            planetGraphicSuffix = Random.Range(1, 5);
             planet.GetComponent<Planet>().planetScale = Random.Range(1.4f, 2.2f);
 
         }
