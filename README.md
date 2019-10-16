@@ -1,9 +1,9 @@
 # One Way Wellington
 Welcome to the One Way Wellington repository! This is a student project developed by Louis Earl, for Massey University and Wellington-based client, WREDA 
 
-![alt text][logo]
+![OWW Promotional Poster][poster]
 
-[logo]: https://github.com/louieearl/one-way-wellington/blob/master/oww-poster.PNG "OWW Promotional Poster"
+[poster]: https://github.com/louieearl/one-way-wellington/blob/master/oww-poster.png "OWW Promotional Poster"
 
 ## The Game
 One Way Wellington is a 2D building/management game made in Unity. The goal is to transport as many creative passengers across the galaxy - to the coolest little capital on Earth.
@@ -22,7 +22,7 @@ While navigating the stars, enemies will try to board your ship. Different group
 
 This repository conatins all files of the Unity Project for One Way Wellington. 
 
-Requires Unity version 2019.2.0f1 [(Download Here)]("unityhub://2019.2.0f1/20c1667945cf") and the latest version of Unity Hub [(Download Here)]("https://store.unity.com/download").
+Requires Unity version 2019.2.0f1 [(Download Here)](unityhub://2019.2.0f1/20c1667945cf "Download Unity 2019.2.0f1") and the latest version of Unity Hub [(Download Here)](https://store.unity.com/download "Download Unity Hub").
 
 If you would like to download the latest PC or Mac build, please contact Louis Earl (<louis.earl.14@gmail.com>).
 
@@ -37,3 +37,7 @@ This project has been developed by Louis Earl, with special thanks to second yea
 * Syafiq Imran 
 * Taizan Yamada
 * Christian Ancheta
+
+![OWW Gameplay][footer]
+
+[footer]: https://github.com/louieearl/one-way-wellington/blob/master/oww-footer.png "OWW Gameplay"
