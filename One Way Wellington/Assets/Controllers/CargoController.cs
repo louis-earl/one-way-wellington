@@ -258,12 +258,13 @@ public class CargoController : MonoBehaviour
             // Prefer to take from the smallest stack, so that space can be cleared 
             int smallestQuantity = int.MaxValue;
             TileOWW smallestQuantityTile = null;
+            List<TileOWW> shipStockLocationsToRemove = new List<TileOWW>(); // Aviod modifying the collection while enumerating 
             foreach (TileOWW tileOWW in shipStockLocations[cargoType])
             {
                 if (tileOWW.looseItem == null)
                 {
                     Debug.LogWarning("The location of this stock has not been removed properly. " + cargoType + " " + tileOWW);
-                    shipStockLocations[cargoType].Remove(tileOWW);
+                    shipStockLocationsToRemove.Add(tileOWW);
                 }
                 else if (tileOWW.looseItem.quantity < smallestQuantity)
                 {
@@ -271,6 +272,11 @@ public class CargoController : MonoBehaviour
                     smallestQuantityTile = tileOWW;
                 }
             }
+            foreach (TileOWW tileToRemove in shipStockLocationsToRemove)
+            {
+                shipStockLocations[cargoType].Remove(tileToRemove);
+            }
+            
 
             return smallestQuantityTile;
         }

@@ -251,7 +251,7 @@ public class Character : MonoBehaviour
 
     public void ReturnFailedJob()
     {
-        
+
         if (targetJob.GetJobType() == "Collect All Cargo")
         {
             // Prevent cargo being lost forever 
@@ -261,6 +261,11 @@ public class Character : MonoBehaviour
             // Notification 
             // NotificationController.Instance.CreateNotification("A builder just got stuck trying to move some cargo, consider building more Airlock doors.", UrgencyLevel.Medium, true, buttonActions: null);
 
+        }
+        else if (targetJob.GetJobType() == "Collect Cargo")
+        {
+            // do nothing 
+            Debug.Log("collect cargo job diverted from returning as failed job");
         }
         else if (targetJob.GetJobType() == "Return Cargo")
         {
@@ -303,36 +308,47 @@ public class Character : MonoBehaviour
     // Do job until finished 
     public void DoJobTick()
     {
-		// If job is complete 
-        if (currentJob.DoJob(Time.fixedDeltaTime, this))
+        // Checks inventory if build job, otherwise pass 
+        if ((currentJob.GetJobType().Contains("Build") && currentJob.GetJobType().Contains(inventory.itemType) && inventory.quantity == 1) || !currentJob.GetJobType().Contains("Build"))
         {
-            if (currentJob != null)
+            // If job is complete 
+            if (currentJob.DoJob(Time.fixedDeltaTime, this))
             {
-				// Remove inventory if it was a build job
-				if (currentJob.GetJobType().Contains("Build"))
-				{
-					// Check item built is item in inventory 
-					if (inventory.itemType == JobQueueController.Instance.ConvertJobTypeToFurnitureType(currentJob.GetJobType())) {
-						inventory.quantity -= 1;
-						if (inventory.quantity == 0)
-						{
-							inventory = null;
-						}
-					}
-					else Debug.LogError("Item being built didn't match item in inventory!");
-				}
+                if (currentJob != null)
+                {
+                    // Remove inventory if it was a build job
 
-				if (currentJob == targetJob)
-				{
-					currentJob = targetJob = null;
-					navMeshAgent.SetDestination(new Vector3(currentX, currentY, 0));
-					failedJobs.Clear();
-				}
-				else
-				{
-					currentJob = null;
-				}
+                    if (currentJob.GetJobType().Contains("Build"))
+                    {
+                        // Check item built is item in inventory 
+                        if (inventory?.itemType == JobQueueController.Instance.ConvertJobTypeToFurnitureType(currentJob.GetJobType()))
+                        {
+                            inventory.quantity -= 1;
+                            if (inventory.quantity == 0)
+                            {
+                                inventory = null;
+                            }
+                        }
+                        else Debug.LogError("Item being built didn't match item in inventory!");
+                    }
+
+                    if (currentJob == targetJob)
+                    {
+                        currentJob = targetJob = null;
+                        navMeshAgent.SetDestination(new Vector3(currentX, currentY, 0));
+                        failedJobs.Clear();
+                    }
+                    else
+                    {
+                        currentJob = null;
+                    }
+                }
             }
+        }
+        else
+        {
+            Debug.LogWarning("Not valid to do job tick!");
+            ReturnFailedJob();
         }
     }
 
