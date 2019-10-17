@@ -121,11 +121,6 @@ public class Job
         jobTime -= deltaTime;
         if (jobTime <= 0)
         {
-            // Special case for collecting all cargo, character needs to put into inventory 
-            if (jobType == "Collect All Cargo")
-            {
-                character.SetInventory(tileOWW.looseItem);
-            }
             action?.Invoke();
 
             // Prevent wander jobs removing build jobs 

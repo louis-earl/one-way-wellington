@@ -82,24 +82,6 @@ public class TileInterface : MonoBehaviour
             {
                 Destroy(jobPanelGO);
             }
-        }
-
-        // Cargo 
-        if (tile.looseItem != null)
-        {
-            if (looseItemGO == null)
-            {
-                looseItemGO = Instantiate(looseItemPrefab, parentGO.transform);
-            }
-            looseItemGO.GetComponent<LooseItemPanel>().cargoType.text = tile.looseItem.itemType;
-            looseItemGO.GetComponent<LooseItemPanel>().quantity.text = tile.looseItem.quantity.ToString();
-        }
-        else
-        {
-            if (looseItemGO != null)
-            {
-                Destroy(looseItemGO);
-            }
-        }
+        }       
     }
 }

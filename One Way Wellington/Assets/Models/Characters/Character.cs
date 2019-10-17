@@ -11,8 +11,6 @@ public class Character : MonoBehaviour
 
     private float health;
 
-	protected LooseItem inventory;
-
     // Jobs 
     public Job targetJob; // The base job object
     public Job currentJob; // Any prerequisite jobs of the base object must be completed first 
@@ -91,83 +89,7 @@ public class Character : MonoBehaviour
             if (targetJob.GetPrerequisiteJob() == null) currentJob = targetJob;
             else currentJob = targetJob.GetPrerequisiteJob();
         }
-
-        // If applicable, Check if in stock 
-        if (currentJob != null)
-        {
-            if (currentJob.GetJobType().Contains("Build"))
-            {
-                string furnitureType = JobQueueController.Instance.ConvertJobTypeToFurnitureType(currentJob.GetJobType());
-
-                // Check if character already has stock 
-                if (inventory == null)
-                {
-                    if (CargoController.Instance.unusedShipStock.ContainsKey(furnitureType))
-                    {
-
-                        if (CargoController.Instance.unusedShipStock[furnitureType] == 0)
-                        {
-                            // item is not in stock 
-                            Debug.Log("Item: " + furnitureType + " is not in stock");
-                            ReturnFailedJob();
-                            return;
-                        }
-                        else if (CargoController.Instance.unusedShipStock[furnitureType] < 0)
-                        {
-                            Debug.LogError(furnitureType + " stock is a negative value");
-                        }
-                        else
-                        {
-                            // Item is in stock! Character must go get it first 
-                            TileOWW cargoTile = CargoController.Instance.FindCargo(furnitureType);
-                            if (cargoTile == null)
-                            {
-                                Debug.LogError("No location found for item with stock count of: " + CargoController.Instance.unusedShipStock[furnitureType]);
-                                currentJob = null;
-                                return;
-                            }
-                            // Pick up new materials
-                            currentJob.SetPrerequisiteJob(new Job(delegate () { if (inventory != null) { return; } PickUpCargo(furnitureType, 1); }, cargoTile, 0.5f, "Pickup " + furnitureType + " Cargo", JobPriority.Medium));
-
-
-                            currentJob = null;
-                            return;
-                        }
-                    }
-                    else
-                    {
-                        // Item is not in stock 
-                        Debug.Log("Item: " + furnitureType + " is not in stock");
-                        ReturnFailedJob();
-                        return;
-
-                    }
-                }
-                else if (inventory.itemType != furnitureType)
-                {
-                    // Return existing inventory first ! 
-
-                    Debug.Log("returning the incorrect inventory");
-
-                    TileOWW returnTile = CargoController.Instance.FindCargo(inventory.itemType);
-                    if (returnTile == null)
-                    {
-                        // Put cargo down at random tile
-                        returnTile = WorldController.Instance.GetWorld().GetRandomHullTile(avoidJobs: true);
-                    }
-
-                    currentJob = 
-                        new Job(delegate ()
-                        {
-                            if (inventory == null) return;
-                            CargoController.Instance.DropCargo(returnTile, inventory.itemType, inventory.quantity, clearFailedJobs: false);
-                            inventory = null;
-                        },
-                        returnTile, 0.5f, "Return Cargo", JobPriority.High, tileExcludeOtherJobs: false);
-                }
-            }
-        }
-
+      
 		// Check if another character finished a duplicate chase job
 		if (currentJob != null)
 		{
@@ -250,26 +172,8 @@ public class Character : MonoBehaviour
     }
 
     public void ReturnFailedJob()
-    {
-        
-        if (targetJob.GetJobType() == "Collect All Cargo")
-        {
-            // Prevent cargo being lost forever 
-            inventory = CargoController.Instance.stockInTransit[targetJob.GetTileOWW()];
-            CargoController.Instance.stockInTransit.Remove(targetJob.GetTileOWW());
-
-            // Notification 
-            // NotificationController.Instance.CreateNotification("A builder just got stuck trying to move some cargo, consider building more Airlock doors.", UrgencyLevel.Medium, true, buttonActions: null);
-
-        }
-        else if (targetJob.GetJobType() == "Return Cargo")
-        {
-            Debug.LogWarning("Failed to return the failed job");
-            // NotificationController.Instance.CreateNotification("A builder just got stuck trying to move some cargo, consider building more Airlock doors.", UrgencyLevel.Medium, true, buttonActions: null);
-
-
-        }
-        else if (targetJob.GetJobType() != "Wander" && !targetJob.GetJobType().Contains("Drop"))
+    {        
+        if (targetJob.GetJobType() != "Wander")
         {
             Debug.Log("Returning failed job: " + targetJob.GetJobType());
 
@@ -278,26 +182,7 @@ public class Character : MonoBehaviour
         }
 
         // Clear the job 
-        targetJob = currentJob = null;
-
-        if (inventory != null)
-        {
-            // Return cargo to existing stash if possible 
-            TileOWW returnTile = CargoController.Instance.FindCargo(inventory.itemType);
-            if (returnTile == null)
-            {
-                // Put cargo down at random tile
-                returnTile = WorldController.Instance.GetWorld().GetRandomHullTile(avoidJobs: true);
-
-            }
-            navMeshAgent.ResetPath();
-            targetJob = new Job(delegate () {
-                if (inventory == null) return;
-                CargoController.Instance.DropCargo(returnTile, inventory.itemType, inventory.quantity, clearFailedJobs: false);
-                inventory = null;}, 
-                returnTile, 0.5f, "Return Cargo", JobPriority.High, tileExcludeOtherJobs: false);
-
-        }
+        targetJob = currentJob = null;      
     }
 
     // Do job until finished 
@@ -307,21 +192,7 @@ public class Character : MonoBehaviour
         if (currentJob.DoJob(Time.fixedDeltaTime, this))
         {
             if (currentJob != null)
-            {
-				// Remove inventory if it was a build job
-				if (currentJob.GetJobType().Contains("Build"))
-				{
-					// Check item built is item in inventory 
-					if (inventory.itemType == JobQueueController.Instance.ConvertJobTypeToFurnitureType(currentJob.GetJobType())) {
-						inventory.quantity -= 1;
-						if (inventory.quantity == 0)
-						{
-							inventory = null;
-						}
-					}
-					else Debug.LogError("Item being built didn't match item in inventory!");
-				}
-
+            {				
 				if (currentJob == targetJob)
 				{
 					currentJob = targetJob = null;
@@ -345,12 +216,6 @@ public class Character : MonoBehaviour
     {
         return currentY;
     }
-
-    public LooseItem GetInventory()
-    {
-        return inventory;
-    }
-
 
     public float GetHealth()
     {
@@ -476,34 +341,5 @@ public class Character : MonoBehaviour
                 }
             }
         }
-    }
-
-	protected void PickUpCargo(string cargoType, int quantity)
-	{
-        if (this.inventory != null)
-        {
-            Debug.LogError("Replacing existing inventory!! New: " + cargoType + " " + quantity + " Existing: " + inventory.itemType + " " + inventory.quantity);
-        }
-		TileOWW cargoTile = CargoController.Instance.FindCargo(cargoType);
-		if (cargoTile != null)
-		{
-			cargoTile.CollectCargo(quantity);
-			this.inventory = new LooseItem(cargoType, quantity);
-		}
-		else
-		{
-            Debug.Log("Not sure why to return job here?");
-			// ReturnFailedJob();
-		}
-	}
-
-    public void SetInventory(LooseItem looseItem)
-    {
-        if (this.inventory != null)
-        {
-            Debug.LogError("Replacing existing inventory!! New: " + looseItem.itemType + " " + looseItem.quantity + " Existing: " + inventory.itemType + " " + inventory.quantity);
-        }
-        this.inventory = looseItem;
-    }
-
+    }	
 }

@@ -575,14 +575,6 @@ public class BuildModeController : MonoBehaviour
         // Invoice 
         CurrencyController.Instance.DeductBankBalance(hullOrder * HULL_COST);
         CurrencyController.Instance.DeductBankBalance(wallOrder * WALL_COST);
-
-
-        // Order stock
-        CargoController.Instance.PlaceOrder("Hull", hullOrder);
-        if (wallOrder > 0)
-        {
-            CargoController.Instance.PlaceOrder("Wall", wallOrder);
-        }
     }
 
     // Overloaded method for planing multiple furniture jobs at once (e.g. walls, tanks, batteries, etc.)
@@ -633,9 +625,6 @@ public class BuildModeController : MonoBehaviour
 
 			// Invoice 
             CurrencyController.Instance.DeductBankBalance(furnitureType.cost);
-
-			// Order
-			CargoController.Instance.PlaceOrder(furnitureType.title, 1);
 
 			// Multi-tile furniture items 
 			for (int i = 0; i < furnitureType.sizeX; i++)
@@ -760,7 +749,6 @@ public class BuildModeController : MonoBehaviour
 
         // Event checks 
         ObjectiveController.Instance.CheckObjectives();
-        CargoController.Instance.CheckTempStockLocations();
     }
 
     public void RemoveHull(TileOWW tile)

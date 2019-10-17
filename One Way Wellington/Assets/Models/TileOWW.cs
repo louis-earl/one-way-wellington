@@ -22,8 +22,6 @@ public class TileOWW
 
     public float oxygenLevel;
 
-    public LooseItem looseItem;
-
     public TileOWW(int x, int y, string tileType)
     {
         this.x = x;
@@ -146,52 +144,6 @@ public class TileOWW
             // Debug.Log(installedFurnitureAltY);
             return false;
         }
-
         return true;
     }
-
-	public void CollectCargo(int quantity)
-	{
-        // Another character bet us to the job?
-        if (looseItem == null) return;
-
-
-        // This means to collect all 
-        if (quantity == -1)
-        {
-            quantity = looseItem.quantity;
-            Debug.Log("Collecting all " + looseItem.itemType + " cargo: " + quantity);
-
-        }
-
-        looseItem.quantity -= quantity;
-
-		// Global stock reference 
-		CargoController.Instance.unusedShipStock[looseItem.itemType] -= quantity;
-		if (CargoController.Instance.unusedShipStock[looseItem.itemType] < 0)
-		{
-			Debug.LogWarning("Ship stock went below 0 for " + looseItem.itemType);
-		}
-
-		if (looseItem.quantity == 0)
-		{
-			// Type check 
-			if (installedFurniture.GetFurnitureType() == "Cargo")
-			{
-				CargoController.Instance.shipStockLocations[looseItem.itemType].Remove(this);
-				looseItem = null;
-                BuildModeController.Instance.RemoveFurniture(this);
-			}
-			else
-			{
-				Debug.LogWarning("Trying to remove cargo but installed furniture type didn't match.");
-			}
-			FurnitureSpriteController.Instance.UpdateFurniture(this);
-		}
-        else if (looseItem.quantity < 0)
-        {
-            Debug.LogError("Quantity of item is below 0!");
-        }
-	}
-
 }

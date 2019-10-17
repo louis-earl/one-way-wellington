@@ -211,7 +211,7 @@ public class InputController : MonoBehaviour
             {
                 return;
             }
-            if (tileOWW.GetTileType() == "Empty" && tileOWW.currentJobType == null && tileOWW.looseItem == null)
+            if (tileOWW.GetTileType() == "Empty" && tileOWW.currentJobType == null)
             {
                 return;
             }
