@@ -1,5 +1,5 @@
 # One Way Wellington
-Welcome to the One Way Wellington repository! This is a student project developed by Louis Earl, for Massey University and Wellington-based client, WREDA 
+Welcome to the One Way Wellington repository! This is a student project developed by Louis Earl, for Massey University and Wellington-based client, WREDA.
 
 ![OWW Promotional Poster][poster]
 
@@ -22,7 +22,7 @@ While navigating the stars, enemies will try to board your ship. Different group
 
 This repository conatins all files of the Unity Project for One Way Wellington. 
 
-Requires Unity version 2019.2.0f1 [(Download Here)](unityhub://2019.2.0f1/20c1667945cf "Download Unity 2019.2.0f1") and the latest version of Unity Hub [(Download Here)](https://store.unity.com/download "Download Unity Hub").
+Requires Unity version 2019.2.0f1 [(Download Here)](https://unity3d.com/get-unity/download/archive "Download Unity 2019.2.0f1") and the latest version of Unity Hub [(Download Here)](https://store.unity.com/download "Download Unity Hub").
 
 If you would like to download the latest PC or Mac build, please contact Louis Earl (<louis.earl.14@gmail.com>).
 
@@ -41,3 +41,5 @@ This project has been developed by Louis Earl, with special thanks to second yea
 ![OWW Gameplay][footer]
 
 [footer]: https://github.com/louieearl/one-way-wellington/blob/master/oww-footer.png "OWW Gameplay"
+
+Copyright © 2019 Louis Earl 
