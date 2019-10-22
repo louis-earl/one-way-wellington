@@ -222,9 +222,9 @@ public class ObjectiveController : MonoBehaviour
                 "The Hull",
                 new List<Goal>
                 {
-                    new Goal_Staff("Hire at least 1 BUILDER", 1, "Builder"),
-                    new Goal_Hull("Build at least 30 HULL tiles", 30),
-                    new Goal_Furniture("Build at least 1 AIRLOCK", 1, "Airlock")
+                    new Goal_Staff("Hire at least 1 Builder", 1, "Builder"),
+                    new Goal_Hull("Build at least 30 Hull tiles", 30),
+                    new Goal_Furniture("Build at least 1 Airlock", 1, "Airlock")
                 },
                 1000,
                 new List<string>
@@ -249,8 +249,9 @@ public class ObjectiveController : MonoBehaviour
                 1500,
                 new List<string>
                 {
-                    "First Migrants",
-                    "Passenger Needs"
+                    "Milestone I"
+                    //,
+                    //"Passenger Needs"
                 },
                 new List<string>
                 {
@@ -273,8 +274,9 @@ public class ObjectiveController : MonoBehaviour
                 2000,
                 new List<string>
                 {
-                    "First Migrants",
-                    "Passenger Needs"
+                    "Milestone I"
+                    //,           
+                    //"Passenger Needs"
                 },
                 new List<string>
                 {
@@ -294,8 +296,9 @@ public class ObjectiveController : MonoBehaviour
                 1000,
                 new List<string>
                 {
-                    "First Migrants",
-                    "Passenger Needs"
+                    "Milestone I"
+                    //,
+                    //"Passenger Needs"
                 },
                 new List<string>
                 {
@@ -319,6 +322,7 @@ public class ObjectiveController : MonoBehaviour
                }
         ));
 
+        /*
         allObjectives.Add("Passenger Needs",
            new Objective(
                "Passenger Needs",
@@ -335,14 +339,16 @@ public class ObjectiveController : MonoBehaviour
                }
         ));
 
-        allObjectives.Add("First Migrants",
+    */
+
+        allObjectives.Add("Milestone I",
            new Objective(
-               "First Migrants",
+               "Milestone I",
                new List<Goal>
                {
                     new Goal_Passenger("Transport 10 passengers to Wellington in one journey", 10),
                },
-               1000,
+               2000,
                new List<string>
                {
                     "Milestone II"

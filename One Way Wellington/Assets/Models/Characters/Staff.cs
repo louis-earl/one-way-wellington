@@ -11,6 +11,8 @@ public class Staff : Character
 
     // Interface
     public static GameObject staffUIInstance;
+
+    public float timeClearFailedJobs;
     
 
     protected override void Init()
@@ -23,7 +25,7 @@ public class Staff : Character
         //health = 100f;
         spriteRenderer.transform.localPosition = new Vector3(0f, 0f, 0.25f);
 
-
+        timeClearFailedJobs = Time.time;
     }
 
     public void OnMouseUpAsButton()
@@ -42,6 +44,15 @@ public class Staff : Character
     protected override void Refresh()
     {
         base.Refresh();
+
+
+        // Clear failed jobs every now and then 
+        if (Time.time > timeClearFailedJobs)
+        {
+            timeClearFailedJobs = Time.time + 5f;
+            failedJobs = new List<Job>();
+        }
+
 
         energy = Mathf.Clamp(energy - (1 * Time.deltaTime), 0, 100);
 

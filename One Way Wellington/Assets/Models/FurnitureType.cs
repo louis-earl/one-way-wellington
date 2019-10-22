@@ -119,7 +119,7 @@ public class FurnitureType
             FurnitureType.BuildCategory.Furniture,
             300,
             5,
-            sizeY: 2,
+            sizeX: 2,
             requireElectricity: true
             ));
 
@@ -152,6 +152,7 @@ public class FurnitureType
             FurnitureType.BuildCategory.Utility,
             1000,
             10,
+            sizeX: 2,
             sizeY: 2,
             fixedRotation: true,
             requireFuel: true,
@@ -314,20 +315,6 @@ public class FurnitureType
             ));
             
 
-
-
-
-
-
-        // LOOSE ITEMS 
-        furnitureTypes.Add("Cargo", new FurnitureType(
-            "Cargo",
-            "If you can read this, something isn't right",
-            FurnitureType.BuildCategory.Loose,
-            0,
-            0,
-            fixedRotation: true
-            ));
 
         return furnitureTypes;
     }
