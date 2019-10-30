@@ -222,7 +222,7 @@ public class PersistenceController : MonoBehaviour
 
             // PLANETS
             WorldController.Instance.InsertPlanets(saveFile.planets);
-            JourneyController.Instance.earth = WorldController.Instance.GetPlanets()[0].GetComponent<Planet>();
+            JourneyController.Instance.planetWellington = WorldController.Instance.GetPlanets()[0].GetComponent<Planet>();
 
 
             // SHIP SPEED

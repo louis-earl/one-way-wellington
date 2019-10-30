@@ -6,16 +6,21 @@ using UnityEngine.Tilemaps;
 
 public class WorldController : MonoBehaviour
 {
-    public static WorldController Instance { get; protected set;}
+    public static WorldController Instance { get; protected set; }
     private World world;
 
-    private List<GameObject> planets; // 0 = earth
+    private List<GameObject> planets; // 0 = planet wellington
 
     public GameObject mapGO;
     public GameObject emptyPlanetPrefab;
 
     public List<GameObject> staff;
     // NOTE: Passengers are stored in journey controller 
+
+    private string[] planetSuffixes = new string[] {" a", " b", " c", " d", " e", " f"};
+    private string[] planetNames = new string[] {"Berenices", "Andromedae", "Herculis", "Cygni", "Delphini", "Arietis", "Draconis", "Majoris", "Eridani", "Pegasi", "Cancri", "Lyncis", "Ceti", "Aquarii", "Pictoris", "Tauri", "Leonis", "Tucanae", "Epsilon", "Cephei", "Librae" };
+
+
 
     // Start is called before the first frame update
     void Awake()
@@ -95,8 +100,8 @@ public class WorldController : MonoBehaviour
     {
 
         planets = new List<GameObject>();
-        planets.Add(InstantiatePlanet(new Vector2(0, 0), "Earth"));
-        JourneyController.Instance.earth = planets[0].GetComponent<Planet>();
+        planets.Add(InstantiatePlanet(new Vector2(0, 0), "Wellington"));
+        JourneyController.Instance.planetWellington = planets[0].GetComponent<Planet>();
 
         for (int i = 1; i < n; i++)
         {
@@ -119,19 +124,38 @@ public class WorldController : MonoBehaviour
                 if (canPlace)
                 {
 
-                    planets.Add(InstantiatePlanet(temp, "Planet (" + temp.x + ", " + temp.y + ")"));
+
+                    planets.Add(InstantiatePlanet(temp, GeneratePlanetName()));
                     hasPlaced = true;
                 }
             }
         }
     }
 
+    private string GeneratePlanetName()
+    {
+        // Ensures no name collisions 
+        string nameAttempt = planetNames[Random.Range(0, planetNames.Length)] + planetSuffixes[Random.Range(0, planetSuffixes.Length)];
+
+        bool nameAlreadyTaken = false;
+        foreach (GameObject planetGO in planets)
+        {
+            if (planetGO.GetComponent<Planet>().GetPlanetName() == nameAttempt)
+            {
+                nameAlreadyTaken = true;
+                break;
+            }
+        }
+        if (nameAlreadyTaken)
+        {
+            return GeneratePlanetName();
+        }
+        return nameAttempt;
+    }
+
+
     private GameObject InstantiatePlanet(Vector2 temp, string name)
     {
-        // TODO: If planet name is 'Earth' 
-
-        //TODO: Graphic number 
-
         GameObject planet = Instantiate(emptyPlanetPrefab);
         planet.transform.parent = mapGO.transform;
         planet.GetComponent<Planet>().planetCoordinates = temp;
@@ -143,7 +167,7 @@ public class WorldController : MonoBehaviour
         // Initialise sprites
 
         int planetGraphicSuffix;
-        if (name == "Earth")
+        if (name == "Wellington")
         {
             planetGraphicSuffix = 0;
             planet.GetComponent<Planet>().planetScale = 1.9f;
@@ -158,13 +182,9 @@ public class WorldController : MonoBehaviour
         }
         planet.transform.localScale = new Vector3(planet.GetComponent<Planet>().planetScale, planet.GetComponent<Planet>().planetScale, 1);
 
-
         planet.GetComponent<Planet>().SetPlanetGraphicSuffix(planetGraphicSuffix);
         planet.GetComponent<Planet>().SetSurface(Resources.Load < Sprite > ("Images/Planets/Surfaces/Surface" + planetGraphicSuffix.ToString()));
-        planet.GetComponent<Planet>().SetClouds(Resources.Load < Sprite > ("Images/Planets/Clouds/Cloud" + planetGraphicSuffix.ToString()));
-
-
-
+        planet.GetComponent<Planet>().SetClouds(Resources.Load < Sprite > ("Images/Planets/Clouds/Cloud" + planetGraphicSuffix.ToString())); 
 
         return planet;
     }

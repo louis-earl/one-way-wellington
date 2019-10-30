@@ -335,6 +335,8 @@ public class TransitionController : MonoBehaviour
         while (wormholeScreen.GetComponent<PanelAlpha>().alpha < 1)
         {
             wormholeScreen.GetComponent<PanelAlpha>().alpha += Time.unscaledDeltaTime * 2f;
+            JourneyController.Instance.text_CurrentLocation.text = "Traveling: Planet " + planet.GetPlanetName();
+
             yield return new WaitForSeconds(Time.unscaledDeltaTime);
         }
  
@@ -365,6 +367,8 @@ public class TransitionController : MonoBehaviour
         while (wormholeScreen.GetComponent<Image>().color.a > 0)
         {
             wormholeScreen.GetComponent<PanelAlpha>().alpha -= Time.unscaledDeltaTime * 2f;
+            JourneyController.Instance.text_CurrentLocation.text = "Traveling: Planet " + planet.GetPlanetName();
+
             yield return new WaitForSeconds(Time.unscaledDeltaTime);
         }
         wormholeScreen.SetActive(false);
@@ -382,7 +386,10 @@ public class TransitionController : MonoBehaviour
         {
             backgroundRainbow.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, backgroundRainbow.GetComponent<SpriteRenderer>().color.a - (2*Time.unscaledDeltaTime));
             blackScreen.color = new Color(0, 0, 0, blackScreen.color.a + (2*Time.unscaledDeltaTime));
+            JourneyController.Instance.text_CurrentLocation.text = "Traveling: Planet " + planet.GetPlanetName();
+
             yield return new WaitForSeconds(Time.unscaledDeltaTime);
+
         }
 
         // Position ship at planet
@@ -404,6 +411,8 @@ public class TransitionController : MonoBehaviour
         while (blackScreen.color.a > 0)
         {
             blackScreen.color = new Color(0, 0, 0, blackScreen.color.a - (4 * Time.unscaledDeltaTime));
+            JourneyController.Instance.text_CurrentLocation.text = "Traveling: Planet " + planet.GetPlanetName();
+
             yield return new WaitForSeconds(Time.unscaledDeltaTime);
         }
         blackScreen.color = new Color(0, 0, 0, 0);

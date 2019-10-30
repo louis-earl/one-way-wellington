@@ -8,7 +8,7 @@ public class PlanetData
     public string planetName;
 
     public int planetGraphic;
-    public PlanetData nextPlanet; // further from earth 
+    public PlanetData nextPlanet; // further from wellington 
     public float planetScale;
     public float planetPosX;
     public float planetPosY;

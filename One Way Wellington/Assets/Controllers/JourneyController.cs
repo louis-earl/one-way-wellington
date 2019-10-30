@@ -9,7 +9,7 @@ public class JourneyController : MonoBehaviour
 
     public static JourneyController Instance;
 
-    public Planet earth;
+    public Planet planetWellington;
     public Planet lastPlanetVisit;
     public Planet nextPlanetVisit;
     public Planet currentPlanetVisit;
@@ -43,6 +43,8 @@ public class JourneyController : MonoBehaviour
     public GameObject panel_FuelCost;
     public TextMeshProUGUI text_FuelCost;
 
+    // Location UI 
+    public TextMeshProUGUI text_CurrentLocation;
 
     // Start is called before the first frame update
     void Start()
@@ -53,6 +55,8 @@ public class JourneyController : MonoBehaviour
 
         currentPassengers = new List<GameObject>();
         panel_FuelCost.SetActive(false);
+
+        text_CurrentLocation.text = "Stationed: Planet Wellington";
     }
 
     // Update is called once per frame
@@ -70,7 +74,9 @@ public class JourneyController : MonoBehaviour
                 isJourneyEditMode = true;
                 StartCoroutine(TransitionController.Instance.TransitionArrival(nextPlanetVisit));
                 currentPlanetVisit = nextPlanetVisit;
-                
+
+                // set text
+                text_CurrentLocation.text = "Arrived: Planet " + currentPlanetVisit.GetPlanetName();
             }
             else
             {
@@ -93,10 +99,10 @@ public class JourneyController : MonoBehaviour
         if (isJourneyEditMode)
         {
             
-            Planet lastPlanet = earth.GetNextPlanet();
+            Planet lastPlanet = planetWellington.GetNextPlanet();
             if (fuelRemaining > Vector3.Distance(planet.transform.position, lastPlanet.transform.position))
             {
-                if (earth.SetNextPlanet(planet, earth)) // If successful 
+                if (planetWellington.SetNextPlanet(planet, planetWellington)) // If successful 
                 {
                     lastPlanetVisit = planet;
                     nextPlanetVisit = lastPlanet;
@@ -127,10 +133,10 @@ public class JourneyController : MonoBehaviour
 
                     // Update existing teleport line 
                     if (distanceLineTeleportInstance == null) distanceLineTeleportInstance = Instantiate(distanceLineTeleportPrefab);
-                    distanceLineTeleportInstance.transform.position = Vector3.Lerp(earth.transform.position, lastPlanetVisit.transform.position, 0.5f);
+                    distanceLineTeleportInstance.transform.position = Vector3.Lerp(planetWellington.transform.position, lastPlanetVisit.transform.position, 0.5f);
                     distanceLineTeleportInstance.transform.localScale = new Vector3(12, 12, 1);
-                    distanceLineTeleportInstance.GetComponent<SpriteRenderer>().size = new Vector2(Vector3.Distance(earth.transform.position, lastPlanetVisit.transform.position) / 12, 0.31f);
-                    distanceLineTeleportInstance.transform.LookAt(earth.transform.position);
+                    distanceLineTeleportInstance.GetComponent<SpriteRenderer>().size = new Vector2(Vector3.Distance(planetWellington.transform.position, lastPlanetVisit.transform.position) / 12, 0.31f);
+                    distanceLineTeleportInstance.transform.LookAt(planetWellington.transform.position);
                     distanceLineTeleportInstance.transform.Rotate(new Vector3(0, 90, 0));
                     distanceLineTeleportInstance.transform.parent = TransitionController.Instance.mapGO.transform;
 
@@ -141,14 +147,14 @@ public class JourneyController : MonoBehaviour
                     }
 
                     // Offset if journey is only 1 planet
-                    if (lastPlanet == earth)
+                    if (lastPlanet == planetWellington)
                     {
                         line.transform.Translate(Vector3.up * 2, line.transform);
                         distanceLineTeleportInstance.transform.Translate(Vector3.down * 2, distanceLineTeleportInstance.transform);
                     }
                     else
                     {
-                        earth.GetComponent<Planet>().linkLine.transform.position = Vector3.Lerp(earth.GetNextPlanet(false).transform.position, earth.transform.position, 0.5f);
+                        planetWellington.GetComponent<Planet>().linkLine.transform.position = Vector3.Lerp(planetWellington.GetNextPlanet(false).transform.position, planetWellington.transform.position, 0.5f);
 
                     }
 
@@ -198,7 +204,7 @@ public class JourneyController : MonoBehaviour
             // Draw circle around planet 
             Destroy(distanceRingInstance);
             distanceRingInstance = Instantiate(distanceRingPrefab);
-            distanceRingInstance.transform.position = new Vector3(earth.transform.position.x, earth.transform.position.y, 1015);
+            distanceRingInstance.transform.position = new Vector3(planetWellington.transform.position.x, planetWellington.transform.position.y, 1015);
 
             distanceRingInstance.GetComponent<DistanceRing>().xradius = fuelRemaining;
             distanceRingInstance.GetComponent<DistanceRing>().yradius = fuelRemaining;
@@ -229,7 +235,7 @@ public class JourneyController : MonoBehaviour
         if (nextPlanetVisit != null) 
         {
             Destroy(distanceRingInstance);
-            shipCoordinates = earth.GetNextPlanet().GetPlanetCoordinates();
+            shipCoordinates = planetWellington.GetNextPlanet().GetPlanetCoordinates();
             //shipSpeedCurrent = shipSpeedMax;
             //TransitionController.Instance.StartTransitionToMain();
             StartCoroutine(TransitionController.Instance.TransitionWormhole(lastPlanetVisit));
@@ -245,6 +251,9 @@ public class JourneyController : MonoBehaviour
             OxygenController.Instance.RestockOxygen();
 
             UserInterfaceController.Instance.panel_LaunchJourney.SetActive(false);
+
+            // set text
+            text_CurrentLocation.text = "Traveling: Planet " + lastPlanetVisit.GetPlanetName();
 
         }
         else
@@ -278,7 +287,7 @@ public class JourneyController : MonoBehaviour
        
         if (currentPlanetVisit != null)
         {
-            if (currentPlanetVisit == earth)
+            if (currentPlanetVisit == planetWellington)
             {
                 EndJourney();
             }
@@ -340,23 +349,25 @@ public class JourneyController : MonoBehaviour
         isJourneyEditMode = false;
         StartCoroutine(TransitionController.Instance.TransitionDeparture());
 
+
+        // set text
+        text_CurrentLocation.text = "Traveling: Planet " + nextPlanetVisit.GetPlanetName();
     }
 
     public void EndJourney()
     {
-        // put earth back
+        // put planet wellington back
         // Return planet to map
-        GameObject planetLandGO = earth.gameObject;
+        GameObject planetLandGO = planetWellington.gameObject;
         TransitionController.Instance.mapGO.SetActive(true);
         planetLandGO.transform.parent = TransitionController.Instance.mapGO.transform;
         planetLandGO.transform.localScale = new Vector3(planetLandGO.GetComponent<Planet>().planetScale, planetLandGO.GetComponent<Planet>().planetScale, 1);
         planetLandGO.transform.localPosition = new Vector3(planetLandGO.GetComponent<Planet>().GetPlanetCoordinates().x, planetLandGO.GetComponent<Planet>().GetPlanetCoordinates().y, 0);
         TransitionController.Instance.mapGO.SetActive(false);
-        Debug.Log("Put back earth!!");
 
         lastPlanetVisit.ClearLinkedPlanets();
-        earth.ClearLinkedPlanets();
-        Destroy(earth.linkLine);
+        planetWellington.ClearLinkedPlanets();
+        Destroy(planetWellington.linkLine);
         nextPlanetVisit = null;
         lastPlanetVisit = null;
 
@@ -382,6 +393,8 @@ public class JourneyController : MonoBehaviour
         }
         currentPassengers.Clear();
 
+        // Set text
+        text_CurrentLocation.text = "Stationed: Planet Wellington";
 
         // Generate new potential passengers for all planets 
        foreach(GameObject planetGO in WorldController.Instance.GetPlanets())

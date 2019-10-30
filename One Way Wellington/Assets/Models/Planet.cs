@@ -11,8 +11,8 @@ public class Planet : MonoBehaviour
     private int planetGraphicSuffix;
     public SpriteRenderer surface;
     public SpriteRenderer clouds;
-    public Planet nextPlanet; // further from earth 
-    public Planet previousPlanet; // closer to earth 
+    public Planet nextPlanet; // further from wellington 
+    public Planet previousPlanet; // closer to wellington 
     public float planetScale;
     public Vector2 planetCoordinates;
 
@@ -39,7 +39,7 @@ public class Planet : MonoBehaviour
         {
             if (allowClick)
             {
-                if (planetName != "Earth")
+                if (planetName != "Wellington")
                 {
                     if (planetUI != null) Destroy(planetUI);
                     planetUI = Instantiate(JourneyController.Instance.PlanetUIPrefab);

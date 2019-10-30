@@ -138,7 +138,7 @@ public class PlanetInterface : MonoBehaviour
         button_ContinueJourney.onClick.AddListener(() => ContinueJourney());
         tmp_PlanetName.GetComponent<TextMeshProUGUI>().SetText(this.planet.GetPlanetName());
         int distance = (int) Vector2.Distance(planet.GetPlanetCoordinates(), Vector2.zero);
-        tmp_PlanetDistance.SetText(distance + " light-years from earth");
+        tmp_PlanetDistance.SetText(distance + " light-years from wellington");
 
         foreach (PotentialPassenger passenger in planet.GetPotentialPassengers()) 
         {
