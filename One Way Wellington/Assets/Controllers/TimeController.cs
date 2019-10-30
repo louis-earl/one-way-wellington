@@ -9,6 +9,7 @@ public class TimeController : MonoBehaviour
     public static TimeController Instance;
     public float timeOWW;
 
+
     // Colours
     private static Color colourPressed = new Color(1f, 0.8666666f, 0f);
     private static Color colourNormal = new Color(0.2313726f, 0.1529412f, 0.7294118f);
@@ -40,6 +41,8 @@ public class TimeController : MonoBehaviour
     {
         timeOWW = 0;
         if (Instance == null) Instance = this;
+
+        Time.timeScale = 1;
     }
 
     // Update is called once per frame

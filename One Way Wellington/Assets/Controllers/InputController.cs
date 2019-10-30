@@ -46,6 +46,10 @@ public class InputController : MonoBehaviour
     private bool isMode_RemoveFurniture;
     private bool isMode_Rooms;
 
+    // Exposure timer 
+    public float timeSinceLastInput;
+    public GameObject resetGamePrefab;
+    public GameObject resetGameInstance;
 
 
 
@@ -88,13 +92,15 @@ public class InputController : MonoBehaviour
     private float timeOfPlay_BlueprintPlop = 0f;
     public AudioSource audio_Blueprint_PlopComplete;
 
-
+    // Debug
+    public GameObject debugPanel;
 
     
 
     // Start is called before the first frame update
     void Start()
     {
+
         if (Instance == null) Instance = this;
 
         // Background scale
@@ -116,13 +122,39 @@ public class InputController : MonoBehaviour
         // Switch background GO 
         InputController.Instance.backgroundGO_Ship.SetActive(true);
         InputController.Instance.backgroundGO_Map.SetActive(false);
-    }
 
-    private bool isCanceled = false;
+        timeSinceLastInput = Time.unscaledTime;
+        Destroy(resetGameInstance);
+        resetGameInstance = null;
+
+}
+
+
+
+private bool isCanceled = false;
 
     // Update is called once per frame
     void Update()
     {
+        // Exposure timer
+        if (Input.anyKey)
+        {
+            timeSinceLastInput = Time.unscaledTime;
+        }
+        else if (timeSinceLastInput + 75 < Time.unscaledTime)
+        {
+            if (resetGameInstance == null)
+            {
+                resetGameInstance = Instantiate(resetGamePrefab);
+            }
+        }
+
+        // Debug 
+        if (Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.L) && Input.GetKey(KeyCode.LeftControl) && Input.GetKey(KeyCode.RightControl))
+        {
+            debugPanel.SetActive(true);
+        }
+
         // Camera zoom 
         currFramePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         currFramePosition.z = 0;
