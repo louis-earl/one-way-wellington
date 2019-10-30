@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.Tilemaps;
 
 public class WorldController : MonoBehaviour
@@ -82,6 +83,11 @@ public class WorldController : MonoBehaviour
             JobSpriteController.Instance.UpdateJob(tile);
             RoomSpriteController.Instance.UpdateRoom(tile);
         }
+    }
+
+    public void NewGame()
+    {
+        SceneManager.LoadScene("Main");
     }
 
     // Generate n number of planets in the world 
