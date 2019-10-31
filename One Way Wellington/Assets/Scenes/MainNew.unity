@@ -7333,6 +7333,8 @@ MonoBehaviour:
   isMapMode: 0
   wormholeScreen: {fileID: 1220572313}
   backgroundRainbow: {fileID: 67423370}
+  mapButton: {fileID: 905317279}
+  shipButton: {fileID: 837412185}
 --- !u!4 &811697631
 Transform:
   m_ObjectHideFlags: 0

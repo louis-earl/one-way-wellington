@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.EventSystems;
 
 public class TransitionController : MonoBehaviour
 {
@@ -19,10 +20,13 @@ public class TransitionController : MonoBehaviour
     public GameObject backgroundRainbow;
     private bool isWormholeMode; //used to avoid conflicting planet arrival 
 
+    public Button mapButton;
+    public Button shipButton;
+
     // Start is called before the first frame update
     void Start()
     {
-        //blackScreen.enabled = false;
+        blackScreen.enabled = true;
 
         wormholeScreen.SetActive(true);
         wormholeScreen.GetComponent<PanelAlpha>().alpha = 0;
@@ -31,8 +35,7 @@ public class TransitionController : MonoBehaviour
         backgroundRainbow.SetActive(false);
 
         if (Instance == null) Instance = this;
-
-        
+  
     }
 
     // Called from UI button
@@ -50,6 +53,11 @@ public class TransitionController : MonoBehaviour
 
     private IEnumerator TransitionOutMain()
     {
+
+        mapButton.interactable = false;
+        shipButton.interactable = false;
+
+
         blackScreen.enabled = true;
         blackScreen.color = new Color(0, 0, 0, 0);
         InputController.Instance.cameraZoomEnabled = false;
@@ -66,7 +74,6 @@ public class TransitionController : MonoBehaviour
             t += Time.unscaledDeltaTime;
             yield return new WaitForSeconds(Time.unscaledDeltaTime);
         }
-
 
         StartCoroutine(TransitionInMap());
 
@@ -113,6 +120,12 @@ public class TransitionController : MonoBehaviour
         InputController.Instance.cameraZoomEnabled = true;
         InputController.Instance.cameraBoundMin = -600;
         InputController.Instance.cameraBoundMax = 600;
+
+        mapButton.interactable = true;
+        shipButton.interactable = true;
+
+
+
         yield return null;
     }
 
@@ -120,6 +133,9 @@ public class TransitionController : MonoBehaviour
 
     private IEnumerator TransitionOutMap()
     {
+        mapButton.interactable = false;
+        shipButton.interactable = false;
+
         blackScreen.enabled = true;
         blackScreen.color = new Color(0, 0, 0, 0);
 
@@ -149,6 +165,7 @@ public class TransitionController : MonoBehaviour
 
         StartCoroutine(TransitionInMain());
         isMapMode = false;
+
         yield return null;
     }
 
@@ -181,8 +198,6 @@ public class TransitionController : MonoBehaviour
         // TODO: Resume travel speed or time here?
         UserInterfaceController.Instance.ShowMainUI();
         
-
-
         float t = 0;
         while (t < 0.5)
         {
@@ -199,6 +214,8 @@ public class TransitionController : MonoBehaviour
         InputController.Instance.cameraSizeMax = 50;
 
         InputController.Instance.cameraZoomEnabled = true;
+        mapButton.interactable = true;
+        shipButton.interactable = true;
 
 
         yield return null;
@@ -262,6 +279,10 @@ public class TransitionController : MonoBehaviour
     // Called by journey controller on planet land 
     public IEnumerator TransitionLanding()
     {
+
+        mapButton.interactable = false;
+        shipButton.interactable = false;
+
         InputController.Instance.cameraSizeMax = 10000;
         InputController.Instance.cameraBoundMin = -100000;
         InputController.Instance.cameraBoundMax = 100000;
@@ -287,6 +308,9 @@ public class TransitionController : MonoBehaviour
 
         JourneyController.Instance.OnLandComplete();
 
+        mapButton.interactable = false;
+        shipButton.interactable = false;
+
         blackScreen.color = new Color(0, 0, 0, 1);
 
         // return black screen
@@ -298,12 +322,18 @@ public class TransitionController : MonoBehaviour
         blackScreen.color = new Color(0, 0, 0, 0);
         blackScreen.enabled = false;
 
+        mapButton.interactable = false;
+        shipButton.interactable = false;
+
         yield return null;
     }
 
     // Called when first launching journey to board passengers at first planet 
     public IEnumerator TransitionLandingWithoutZoom()
     {
+        mapButton.interactable = false;
+        shipButton.interactable = false;
+
         blackScreen.enabled = true;
         blackScreen.color = new Color(0, 0, 0, 0);
         InputController.Instance.cameraZoomEnabled = false;
@@ -317,6 +347,9 @@ public class TransitionController : MonoBehaviour
 
         JourneyController.Instance.OnLandComplete();
 
+        mapButton.interactable = false;
+        shipButton.interactable = false;
+
         yield return null;
     }
 
@@ -324,6 +357,13 @@ public class TransitionController : MonoBehaviour
     public IEnumerator TransitionWormhole(Planet planet)
     {
         // Note: Replaces TransitionLanding() and TransitionArrival() 
+
+        // disable ui 
+        mapButton.interactable = false;
+        shipButton.interactable = false;
+
+
+
         isWormholeMode = true;
         JourneyController.Instance.nextPlanetVisit = planet;
 
@@ -346,6 +386,9 @@ public class TransitionController : MonoBehaviour
         StartCoroutine(TransitionInMain());
         isMapMode = false;
 
+        mapButton.interactable = false;
+        shipButton.interactable = false;
+
         // Position camera 
         InputController.Instance.desiredCameraPos = new Vector3(50, 50, -10);
         Camera.main.transform.position = new Vector3(50, 50, -10);
@@ -362,18 +405,23 @@ public class TransitionController : MonoBehaviour
         // Wait for wormhole screen 
         yield return new WaitForSeconds(1.5f);
 
+        mapButton.interactable = false;
+        shipButton.interactable = false;
 
         // Deactivate wormhole screen
         while (wormholeScreen.GetComponent<Image>().color.a > 0)
         {
             wormholeScreen.GetComponent<PanelAlpha>().alpha -= Time.unscaledDeltaTime * 2f;
             JourneyController.Instance.text_CurrentLocation.text = "Traveling: Planet " + planet.GetPlanetName();
-
+            mapButton.interactable = false;
+            shipButton.interactable = false;
             yield return new WaitForSeconds(Time.unscaledDeltaTime);
         }
         wormholeScreen.SetActive(false);
         InputController.Instance.cameraZoomEnabled = false;
 
+        mapButton.interactable = false;
+        shipButton.interactable = false;
 
         // Wait for rainow-wormhole travel 
         yield return new WaitForSeconds(3);
@@ -396,6 +444,8 @@ public class TransitionController : MonoBehaviour
         JourneyController.Instance.shipSpeedCurrent = 0;
         JourneyController.Instance.shipCoordinates = planet.GetPlanetCoordinates();
 
+        mapButton.interactable = false;
+        shipButton.interactable = false;
 
         // Planet graphic
         planetLandGO = planet.gameObject;
@@ -423,6 +473,7 @@ public class TransitionController : MonoBehaviour
 
         InputController.Instance.cameraZoomEnabled = true;
         isWormholeMode = false;
+
 
         yield return null;
     }
@@ -492,6 +543,9 @@ public class TransitionController : MonoBehaviour
         InputController.Instance.cameraBoundMin = -20;
         InputController.Instance.cameraBoundMax = 120;
         InputController.Instance.cameraZoomEnabled = true;
+        mapButton.interactable = true;
+        shipButton.interactable = true;
+
 
         yield return null;
     }

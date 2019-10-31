@@ -481,6 +481,10 @@ private bool isCanceled = false;
     void UpdateDragging()
     {
         // If we're over a UI element, then bail out from this.
+        if (EventSystem.current == null)
+        {
+            return;
+        }
         if (EventSystem.current.IsPointerOverGameObject())
         {
             return;
