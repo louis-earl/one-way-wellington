@@ -32,6 +32,9 @@ public class Character : MonoBehaviour
     public Vector2 lastLocation;
     public float stuckCheckTime;
 
+    // Sprite direction 
+    private float lastPosX;
+
 
     private void Start()
     {
@@ -83,7 +86,19 @@ public class Character : MonoBehaviour
     {
         currentX = transform.position.x;
         currentY = transform.position.y;
-   
+
+        // Sprite direction 
+        if (lastPosX < transform.position.x)
+        {
+            transform.GetChild(0).transform.localScale = new Vector3(1, 1, 1);
+        }
+        else
+        {
+            transform.GetChild(0).transform.localScale = new Vector3(-1, 1, 1);
+        }
+        lastPosX = transform.position.x;
+
+
         if (currentJob == null && targetJob != null)
         {
             if (targetJob.GetPrerequisiteJob() == null) currentJob = targetJob;

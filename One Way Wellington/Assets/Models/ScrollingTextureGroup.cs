@@ -7,7 +7,7 @@ public class ScrollingTextureGroup : MonoBehaviour
     public float scrollSpeed;
     public SpriteRenderer[] spriteRenderers;
 
-
+    public bool isStartMenu;
 
     // Use this for initialization
     void Start()
@@ -22,14 +22,21 @@ public class ScrollingTextureGroup : MonoBehaviour
         {
             spriteRenderers[i] = transform.GetChild(i).GetComponent<SpriteRenderer>();
         }
+
+        if (isStartMenu)
+        {
+            SetSpeed(0.5f);
+        }
     }
 
     private void Update()
     {
-        // Don't move the background in map mode, but the ship may continue to travel independently 
-        if (TransitionController.Instance.isMapMode) SetSpeed(0);
-        else SetSpeed(JourneyController.Instance.GetShipSpeedCurrent());
-
+        if (!isStartMenu)
+        {
+            // Don't move the background in map mode, but the ship may continue to travel independently 
+            if (TransitionController.Instance.isMapMode) SetSpeed(0);
+            else SetSpeed(JourneyController.Instance.GetShipSpeedCurrent());        
+        }
         for (int i = 1; i < spriteRenderers.Length; i++)
         {
             spriteRenderers[i].transform.localPosition = new Vector3(Camera.main.transform.position.x * i * 0.05f, Camera.main.transform.position.y * i * 0.05f, 0);

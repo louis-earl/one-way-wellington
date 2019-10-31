@@ -5880,6 +5880,7 @@ MonoBehaviour:
   GuardPrefab: {fileID: 2822388052134463289, guid: 89d8ec9012d14124abfe4ce1265de0da,
     type: 3}
   PassengerPrefab: {fileID: 0}
+  blackScreen: {fileID: 1386249585}
 --- !u!4 &767505023
 Transform:
   m_ObjectHideFlags: 0
@@ -7048,6 +7049,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scrollSpeed: 0
   spriteRenderers: []
+  isStartMenu: 0
 --- !u!1 &1010535356
 GameObject:
   m_ObjectHideFlags: 0
@@ -15798,6 +15800,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scrollSpeed: 0
   spriteRenderers: []
+  isStartMenu: 0
 --- !u!4 &1761575271
 Transform:
   m_ObjectHideFlags: 0
@@ -27056,7 +27059,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 73631c117269f3946abba6c3b22a02f7,
+      objectReference: {fileID: 21300000, guid: 6fcb6800bd6a8bc4887a69069826e630,
         type: 3}
     - target: {fileID: 7657502702179021740, guid: a9061c87b69309242aa154c5f26a486e,
         type: 3}

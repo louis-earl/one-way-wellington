@@ -22,7 +22,7 @@ public class TransitionController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        blackScreen.enabled = false;
+        //blackScreen.enabled = false;
 
         wormholeScreen.SetActive(true);
         wormholeScreen.GetComponent<PanelAlpha>().alpha = 0;

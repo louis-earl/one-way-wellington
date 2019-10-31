@@ -27,7 +27,7 @@ public class ResetGame : MonoBehaviour
            
         if (15.5 - (Time.unscaledTime - startTime) < 0 )
         {
-            SceneManager.LoadScene("Main");
+            SceneManager.LoadScene("Start");
             Destroy(gameObject);
         }
         

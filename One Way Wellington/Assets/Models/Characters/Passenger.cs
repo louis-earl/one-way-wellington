@@ -11,9 +11,6 @@ public class Passenger : Character
     
     protected int fare;
 
-    // Sprite direction 
-    private float lastPosX;
-
     // Appearance 
     protected int hairStyle;
     protected Color hairColor;
@@ -134,16 +131,7 @@ public class Passenger : Character
 
         // Program from here onwards!
 
-        // Sprite 
-        if (lastPosX < transform.position.x)
-        {
-            transform.GetChild(0).transform.localScale = new Vector3(1, 1, 1);
-        }
-        else
-        {
-            transform.GetChild(0).transform.localScale = new Vector3(-1, 1, 1);
-        }
-        lastPosX = transform.position.x;
+        
 
         // Needs
         energy = Mathf.Clamp(energy - (1 * Time.deltaTime), 0, 100);

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class ObjectiveController : MonoBehaviour
 {
@@ -201,6 +202,21 @@ public class ObjectiveController : MonoBehaviour
         currentObjectives = new List<Objective>();
 
         StartCoroutine(InitialNotificationDelayed());
+
+        if (SceneManager.GetActiveScene().name == "MainNew")
+        {
+            AddObjectivesForNewGame();
+        }
+        else
+        {
+            AddObjectivesForLoadGame();
+        }
+
+
+    }
+
+    private void AddObjectivesForNewGame()
+    {
 
         allObjectives.Add("Wellywood Cinematographer",
             new Objective(
@@ -434,6 +450,96 @@ public class ObjectiveController : MonoBehaviour
         // Initial Objective 
         AddObjective(allObjectives["Wellywood Cinematographer"]);
         
+    }
+
+    private void AddObjectivesForLoadGame()
+    {
+
+        allObjectives.Add("Wellywood Cinematographer",
+            new Objective(
+                "Wellywood Cinematographer",
+                new List<Goal>
+                {
+                    new Goal_CameraPan("Hold the right mouse button and drag to pan the camera", new Vector2(Camera.main.transform.position.x, Camera.main.transform.position.y), 10),
+                    new Goal_CameraSize("Use the mouse scroll wheel to zoom the camera", Camera.main.orthographicSize, 15)
+                },
+                0,
+                new List<string>
+                {
+                    "Milestone I"
+                }
+         ));
+
+
+
+
+
+        allObjectives.Add("Milestone I",
+           new Objective(
+               "Milestone I",
+               new List<Goal>
+               {
+                    new Goal_Passenger("Transport 10 passengers to Wellington in one journey", 10),
+               },
+               2000,
+               new List<string>
+               {
+                    "Milestone II"
+               }
+        ));
+
+
+
+        allObjectives.Add("Milestone II",
+           new Objective(
+               "Milestone II",
+               new List<Goal>
+               {
+                    new Goal_Passenger("Transport 25 passengers to Wellington in one journey", 25),
+               },
+               2500,
+               new List<string>
+               {
+                    "Milestone III"
+               }
+        ));
+
+
+
+        allObjectives.Add("Milestone III",
+           new Objective(
+               "Milestone III",
+               new List<Goal>
+               {
+                    new Goal_Passenger("Transport 50 passengers to Wellington in one journey", 50),
+               },
+               5000,
+               new List<string>
+               {
+                    "Milestone IV"
+               }
+        ));
+
+
+        allObjectives.Add("Milestone IV",
+           new Objective(
+               "Milestone IV",
+               new List<Goal>
+               {
+                    new Goal_Passenger("Transport 100 passengers to Wellington in one journey", 100),
+               },
+               5000,
+               new List<string>
+               {
+
+               }
+        ));
+
+
+
+        // Initial Objective 
+        AddObjective(allObjectives["Wellywood Cinematographer"]);
+
     }
 
 }

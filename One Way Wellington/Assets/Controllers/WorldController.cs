@@ -90,10 +90,6 @@ public class WorldController : MonoBehaviour
         }
     }
 
-    public void NewGame()
-    {
-        SceneManager.LoadScene("Main");
-    }
 
     // Generate n number of planets in the world 
     private void GeneratePlanets(int n)

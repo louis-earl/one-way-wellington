@@ -1,8 +1,11 @@
 ﻿
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 
 // Game save and load operations 
@@ -17,10 +20,89 @@ public class PersistenceController : MonoBehaviour
     public GameObject GuardPrefab;
     public GameObject PassengerPrefab;
 
+    public Image blackScreen;
+
     // Start is called before the first frame update
     void Start()
     {
         if (Instance == null) Instance = this;
+
+        blackScreen.gameObject.SetActive(true);
+        blackScreen.enabled = true;
+        blackScreen.color = Color.black;
+
+        if (SceneManager.GetActiveScene().name == "MainLoad")
+        {
+            StartCoroutine(LoadShipAfterSceneLoad());
+        }
+        else
+        {
+
+            StartCoroutine(FadeIntoScene());
+
+        }
+    }
+
+    private bool IsAllControllersLoaded ()
+    {
+        if (BuildModeController.Instance != null
+            && CurrencyController.Instance != null
+            && EnemyController.Instance != null
+            && InputController.Instance != null
+            && JobQueueController.Instance != null
+            && JourneyController.Instance != null
+            && NotificationController.Instance != null
+            && ObjectiveController.Instance != null
+            && OxygenController.Instance != null
+            && RoomController.Instance != null
+            && TileSpriteController.Instance != null
+            && FurnitureSpriteController.Instance != null
+            && JobSpriteController.Instance != null
+            && RoomSpriteController.Instance != null
+            && TimeController.Instance != null
+            && TransitionController.Instance != null
+            && UserInterfaceController.Instance != null
+            && WorldController.Instance != null)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    private IEnumerator LoadShipAfterSceneLoad()
+    {
+        bool isSceneLoaded = false;
+        while (isSceneLoaded == false)
+        {
+            if (IsAllControllersLoaded())
+            {
+                LoadGame("save1");
+                isSceneLoaded = true;
+                StartCoroutine(FadeIntoScene());
+            }
+            yield return new WaitForEndOfFrame();
+        }
+        yield return null;
+    }
+
+    private IEnumerator FadeIntoScene()
+    {
+        bool isControllersLoaded = false;
+        while (isControllersLoaded == false)
+        {
+            if (IsAllControllersLoaded())
+            {
+                isControllersLoaded = true;
+            }
+            yield return new WaitForEndOfFrame();
+        }
+
+        while (blackScreen.color.a >= 0.03)
+        {
+            blackScreen.color = new Color(0, 0, 0, (blackScreen.color.a - Time.deltaTime));
+            yield return new WaitForEndOfFrame();
+        }
+        yield return null;
     }
 
     public void SaveGame(string saveName)
@@ -31,7 +113,7 @@ public class PersistenceController : MonoBehaviour
 
         // SAVE
         saveFile.bankBalance = CurrencyController.Instance.GetBankBalance();
-        saveFile.timeOWW = TimeController.Instance.timeOWW;
+        saveFile.timeOWW = 0;
         saveFile.world = WorldController.Instance.GetWorld();
 
         // STAFF

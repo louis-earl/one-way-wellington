@@ -35,7 +35,11 @@ public class Guard : Staff
             if (targetJob == null)
             {
                 // We are idle, wander the ship 
-                targetJob = new Job(delegate () { }, WorldController.Instance.GetWorld().GetRandomHullTile(), 1f, "Wander", JobPriority.Low, tileExcludeOtherJobs: false);
+                TileOWW randomTile = WorldController.Instance.GetWorld().GetRandomHullTile();
+                if (randomTile != null)
+                {
+                    targetJob = new Job(delegate () { }, randomTile, 1f, "Wander", JobPriority.Medium, tileExcludeOtherJobs: false);
+                }
             }
         }
 
