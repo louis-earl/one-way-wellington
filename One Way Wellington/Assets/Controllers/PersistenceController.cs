@@ -155,6 +155,7 @@ public class PersistenceController : MonoBehaviour
             saveFile.staffHealth[i] = WorldController.Instance.staff[i].GetComponent<Staff>().GetHealth();
         }
 
+        
 
         // JOBS
         saveFile.buildersJobQueue = JobQueueController.BuildersJobQueue.GetSerializedJobs();
@@ -214,6 +215,26 @@ public class PersistenceController : MonoBehaviour
         fileStream.Close();
     }
 
+
+    public void GoToMainMenu()
+    {
+        Time.timeScale = 1;
+        SceneManager.LoadScene("Start");
+
+    }
+
+    public void LoadNewScene()
+    {
+        Time.timeScale = 1;
+        SceneManager.LoadScene("MainLoad");
+    }
+
+    public void NewScene()
+    {
+        Time.timeScale = 1;
+        SceneManager.LoadScene("MainNew");
+
+    }
 
     public void UnloadGame()
     {

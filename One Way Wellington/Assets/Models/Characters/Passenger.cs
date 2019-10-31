@@ -114,14 +114,28 @@ public class Passenger : Character
         // Load sprite resources 
         spriteRenderer_Hair.sprite = Resources.Load<Sprite>("Images/Characters/Passengers/Hair/Hair" + hairStyle.ToString());
         spriteRenderer_Hair.color = hairColor;
+        spriteRenderer_Hair.sortingOrder = spriteRenderer_Hair.sortingOrder + (50 * JourneyController.Instance.passengerParent.transform.childCount);
+
         spriteRenderer_Skin.sprite = Resources.Load<Sprite>("Images/Characters/Passengers/Skin/Skin" + skin.ToString());
+        spriteRenderer_Skin.sortingOrder = spriteRenderer_Skin.sortingOrder + (50 * JourneyController.Instance.passengerParent.transform.childCount);
+
         spriteRenderer_Decal.sprite = Resources.Load<Sprite>("Images/Characters/Passengers/Decal/Decal" + decal.ToString());
+        spriteRenderer_Decal.sortingOrder = spriteRenderer_Decal.sortingOrder + (50 * JourneyController.Instance.passengerParent.transform.childCount);
+
         spriteRenderer_Shirt.sprite = Resources.Load<Sprite>("Images/Characters/Passengers/Shirt/Shirt" + shirtStyle.ToString());
         spriteRenderer_Shirt.color = shirtColor;
+        spriteRenderer_Shirt.sortingOrder = spriteRenderer_Shirt.sortingOrder + (50 * JourneyController.Instance.passengerParent.transform.childCount);
+
         spriteRenderer_Pants.sprite = Resources.Load<Sprite>("Images/Characters/Passengers/Pants/Pants" + pantStyle.ToString());
         spriteRenderer_Pants.color = this.pantColor;
+        spriteRenderer_Pants.sortingOrder = spriteRenderer_Pants.sortingOrder + (50 * JourneyController.Instance.passengerParent.transform.childCount);
+
         spriteRenderer_Shoes.sprite = Resources.Load<Sprite>("Images/Characters/Passengers/Shoes/Shoes" + shoeStyle.ToString());
+        spriteRenderer_Shoes.sortingOrder = spriteRenderer_Shoes.sortingOrder + (50 * JourneyController.Instance.passengerParent.transform.childCount);
+
         spriteRenderer_Shades.sprite = Resources.Load<Sprite>("Images/Characters/Passengers/Shades/Shades" + shades.ToString());
+        spriteRenderer_Shades.sortingOrder = spriteRenderer_Shades.sortingOrder + (50 * JourneyController.Instance.passengerParent.transform.childCount);
+
     }
 
     protected override void Refresh()

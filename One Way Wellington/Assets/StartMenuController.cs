@@ -13,6 +13,8 @@ public class StartMenuController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Time.timeScale = 1;
+
         blackScreen.gameObject.SetActive(true);
         blackScreen.color = Color.clear;
     }

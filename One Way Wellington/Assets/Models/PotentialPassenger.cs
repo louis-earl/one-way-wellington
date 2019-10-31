@@ -57,7 +57,7 @@ public class PotentialPassenger
         pantStyle = Random.Range(1, 2);
         pantColor = Random.Range(0.1f, 1f);
         decal = Random.Range(0, 6);
-        shades = Random.Range(0, 8);
+        shades = Random.Range(0, 13);
         shirtStyle = Random.Range(1, 1);
         shirtColor = shirtColors[Random.Range(0, shirtColors.Count)];
         shoeStyle = Random.Range(1, 2);
