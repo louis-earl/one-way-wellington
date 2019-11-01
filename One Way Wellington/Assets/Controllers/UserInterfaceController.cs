@@ -208,6 +208,18 @@ public class UserInterfaceController : MonoBehaviour
 
     }
 
+    public void HideBuildUI()
+    {
+        CloseAllBuilding(); // Might cause error if GameObject is disabled 
+        panel_Building.SetActive(false);
+    }
+
+    public void ShowBuildUI()
+    {
+        CloseAllBuilding(); // Might cause error if GameObject is disabled 
+        panel_Building.SetActive(true);
+    }
+
     public void ShowMainUI()
     {
         CloseAllBuilding(); // Might cause error if GameObject is disabled 

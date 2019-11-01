@@ -17,7 +17,6 @@ public class Goal_Passenger : Goal
         {
             return true;
         }
-        Debug.LogWarning("Goal checker not working properly!!");
         return false;
     }
 }

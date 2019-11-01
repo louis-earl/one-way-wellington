@@ -105,13 +105,13 @@ public class WorldController : MonoBehaviour
             while (hasPlaced == false)
             {
 
-                Vector2 temp = new Vector2(Random.Range(-600, 600), Random.Range(-400, 400));
+                Vector2 temp = new Vector2(Random.Range(-600f, 600f), Random.Range(-400f, 400f));
                 bool canPlace = true;
                 for (int j = 0; j < i; j++)
                 {
                     if (planets[j] != null)
                     {
-                        if (Vector2.Distance(planets[j].GetComponent<Planet>().GetPlanetCoordinates(), temp) < 40)
+                        if (Vector2.Distance(planets[j].GetComponent<Planet>().GetPlanetCoordinates(), temp) < 42)
                         {
                             canPlace = false;
                         }
@@ -119,8 +119,6 @@ public class WorldController : MonoBehaviour
                 }
                 if (canPlace)
                 {
-
-
                     planets.Add(InstantiatePlanet(temp, GeneratePlanetName()));
                     hasPlaced = true;
                 }

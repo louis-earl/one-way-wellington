@@ -440,7 +440,7 @@ MonoBehaviour:
   m_firstVisibleCharacter: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 20, y: 0, z: 0, w: 0}
+  m_margin: {x: 15, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 6655920843265242265}
     characterCount: 28
@@ -1248,7 +1248,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 25
-  m_SortingLayerID: 0
+  m_SortingLayerID: -1131593575
   m_SortingOrder: 40
   m_TargetDisplay: 0
 --- !u!114 &912814755047573708
@@ -2554,7 +2554,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 33
-  m_textAlignment: 258
+  m_textAlignment: 257
   m_characterSpacing: 0
   m_wordSpacing: 0
   m_lineSpacing: 0
@@ -2585,7 +2585,7 @@ MonoBehaviour:
   m_firstVisibleCharacter: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 13.566406, y: 0, z: -72.91339, w: 0}
+  m_margin: {x: 13.5, y: 0, z: -72.91339, w: 0}
   m_textInfo:
     textComponent: {fileID: 8059543348232183662}
     characterCount: 11

@@ -308,6 +308,8 @@ public class TransitionController : MonoBehaviour
 
         JourneyController.Instance.OnLandComplete();
 
+        UserInterfaceController.Instance.HideBuildUI();
+
         mapButton.interactable = false;
         shipButton.interactable = false;
 
@@ -344,6 +346,7 @@ public class TransitionController : MonoBehaviour
             yield return new WaitForSeconds(Time.unscaledDeltaTime);
         }
         mapGO.SetActive(false);
+        UserInterfaceController.Instance.HideBuildUI();
 
         JourneyController.Instance.OnLandComplete();
 
@@ -379,7 +382,10 @@ public class TransitionController : MonoBehaviour
 
             yield return new WaitForSeconds(Time.unscaledDeltaTime);
         }
- 
+
+        UserInterfaceController.Instance.HideBuildUI();
+
+
         // Set scene to rainbow-wormhole travel 
         backgroundRainbow.SetActive(true);
         backgroundRainbow.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
@@ -407,6 +413,8 @@ public class TransitionController : MonoBehaviour
 
         mapButton.interactable = false;
         shipButton.interactable = false;
+        UserInterfaceController.Instance.HideBuildUI();
+
 
         // Deactivate wormhole screen
         while (wormholeScreen.GetComponent<Image>().color.a > 0)
@@ -415,6 +423,8 @@ public class TransitionController : MonoBehaviour
             JourneyController.Instance.text_CurrentLocation.text = "Traveling: Planet " + planet.GetPlanetName();
             mapButton.interactable = false;
             shipButton.interactable = false;
+            UserInterfaceController.Instance.HideBuildUI();
+
             yield return new WaitForSeconds(Time.unscaledDeltaTime);
         }
         wormholeScreen.SetActive(false);
@@ -422,6 +432,8 @@ public class TransitionController : MonoBehaviour
 
         mapButton.interactable = false;
         shipButton.interactable = false;
+        UserInterfaceController.Instance.HideBuildUI();
+
 
         // Wait for rainow-wormhole travel 
         yield return new WaitForSeconds(3);
@@ -446,6 +458,8 @@ public class TransitionController : MonoBehaviour
 
         mapButton.interactable = false;
         shipButton.interactable = false;
+        UserInterfaceController.Instance.HideBuildUI();
+
 
         // Planet graphic
         planetLandGO = planet.gameObject;
@@ -532,6 +546,7 @@ public class TransitionController : MonoBehaviour
         InputController.Instance.backgroundGO_Map.SetActive(false);
 
         isMapMode = false;
+        UserInterfaceController.Instance.ShowBuildUI();
 
         blackScreen.color = new Color(0, 0, 0, 1);
         while (blackScreen.color.a > 0)

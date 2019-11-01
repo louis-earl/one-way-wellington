@@ -38,6 +38,11 @@ public class StaffInterface : MonoBehaviour
         sliderHealth.value = staff.GetHealth();
     }
 
+    private void Start()
+    {
+        staffName.text = staff.name;
+    }
+
     private void OnMouseEnter()
     {
         InputController.Instance.cameraZoomEnabled = false;
